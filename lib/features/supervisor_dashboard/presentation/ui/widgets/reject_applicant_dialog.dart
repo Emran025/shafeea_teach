@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
 
 class RejectApplicantDialog extends StatefulWidget {
   final int applicantId;
 
-  const RejectApplicantDialog({
-    super.key,
-    required this.applicantId,
-  });
+  const RejectApplicantDialog({super.key, required this.applicantId});
 
   @override
   State<RejectApplicantDialog> createState() => _RejectApplicantDialogState();
@@ -29,11 +26,8 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
   void _rejectApplicant() {
     if (_formKey.currentState!.validate()) {
       context.read<SupervisorBloc>().add(
-            RejectApplicant(
-              widget.applicantId,
-              _reasonController.text,
-            ),
-          );
+        RejectApplicant(widget.applicantId, _reasonController.text),
+      );
     }
   }
 
@@ -51,9 +45,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
       },
       child: Dialog(
         backgroundColor: Theme.of(context).colorScheme.background,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Form(
@@ -66,18 +58,18 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                   child: Text(
                     'رفض الطلب',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        ),
+                      color: Theme.of(context).colorScheme.onBackground,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),
                 Text(
                   'سبب الرفض',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onBackground.withOpacity(0.87),
-                      ),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onBackground.withOpacity(0.87),
+                  ),
                 ),
                 const SizedBox(height: 8),
                 TextFormField(
@@ -87,12 +79,11 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                   maxLength: 1000,
                   decoration: InputDecoration(
                     hintText: 'أدخل سبب الرفض',
-                    hintStyle:
-                        Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onBackground.withOpacity(0.54),
-                            ),
+                    hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onBackground.withOpacity(0.54),
+                    ),
                     prefixIcon: Icon(
                       Icons.message,
                       color: Theme.of(
@@ -118,7 +109,8 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                 const SizedBox(height: 24),
                 BlocBuilder<SupervisorBloc, SupervisorState>(
                   builder: (context, state) {
-                    final isLoading = state is SupervisorLoaded &&
+                    final isLoading =
+                        state is SupervisorLoaded &&
                         state.rejectStatus == ActionStatus.loading;
                     return SizedBox(
                       width: double.infinity,
@@ -126,8 +118,9 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                         onPressed: isLoading ? null : _rejectApplicant,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).colorScheme.error,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onError,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onError,
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -147,12 +140,11 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                               )
                             : Text(
                                 'رفض',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
+                                style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
-                                      color:
-                                          Theme.of(context).colorScheme.onError,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onError,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -166,8 +158,9 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                   child: OutlinedButton(
                     onPressed: () => Navigator.of(context).pop(false),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor:
-                          Theme.of(context).colorScheme.onBackground,
+                      foregroundColor: Theme.of(
+                        context,
+                      ).colorScheme.onBackground,
                       side: BorderSide(
                         color: Theme.of(
                           context,
@@ -180,11 +173,9 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                     ),
                     child: Text(
                       'إلغاء',
-                      style:
-                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                              ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      ),
                     ),
                   ),
                 ),

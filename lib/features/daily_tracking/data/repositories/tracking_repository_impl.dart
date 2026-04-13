@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import 'package:shafeea/core/error/exceptions.dart';
+import 'package:shafeea/core/models/tracking_type.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 
 // Domain Layer imports
 import '../../../../core/error/failures.dart';
@@ -28,16 +28,15 @@ final class TrackingRepositoryImpl implements TrackingRepository {
   final TrackingLocalDataSource _localDataSource;
 
   TrackingRepositoryImpl({required TrackingLocalDataSource localDataSource})
-      : _localDataSource = localDataSource;
+    : _localDataSource = localDataSource;
 
   @override
   Future<Either<Failure, Map<TrackingType, TrackingDetailEntity>>>
-      getOrCreateTodayDraftTrackingDetails({required String enrollmentId}) {
+  getOrCreateTodayDraftTrackingDetails({required String enrollmentId}) {
     // REFINEMENT: Wrap the logic in a generic helper for conciseness and robustness.
     return _tryCatch<Map<TrackingType, TrackingDetailEntity>>(() async {
-      final int enrollmentIdInt = int.parse(enrollmentId);
       final modelsMap = await _localDataSource
-          .getOrCreateTodayDraftTrackingDetails(enrollmentId: enrollmentIdInt);
+          .getOrCreateTodayDraftTrackingDetails(enrollmentId: enrollmentId);
 
       return modelsMap.map((key, model) => MapEntry(key, model.toEntity()));
     });
@@ -102,9 +101,8 @@ final class TrackingRepositoryImpl implements TrackingRepository {
     int? toPage,
   }) {
     return _tryCatch<List<Mistake>>(() async {
-      final int enrollmentIdInt = int.parse(enrollmentId);
       final mistakeModels = await _localDataSource.getAllMistakes(
-        enrollmentId: enrollmentIdInt,
+        enrollmentId: enrollmentId,
         type: type, // Pass it down
         fromPage: fromPage,
         toPage: toPage,
@@ -119,9 +117,8 @@ final class TrackingRepositoryImpl implements TrackingRepository {
     required ChartFilter filter,
   }) {
     return _tryCatch<List<BarChartDatas>>(() async {
-      final int enrollmentIdInt = int.parse(enrollmentId);
       final chartData = await _localDataSource.getErrorAnalysisChartData(
-        enrollmentId: enrollmentIdInt,
+        enrollmentId: enrollmentId,
         filter: filter,
       );
       return chartData;

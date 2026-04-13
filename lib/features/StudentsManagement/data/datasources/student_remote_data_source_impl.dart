@@ -1,9 +1,9 @@
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/api/api_consumer.dart';
-import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
+import 'package:shafeea/core/api/api_consumer.dart';
+import 'package:shafeea/core/api/end_ponits.dart';
 
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_model.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_sync_response_model.dart';
+import 'package:shafeea/features/StudentsManagement/data/models/student_model.dart';
+import 'package:shafeea/features/StudentsManagement/data/models/student_sync_response_model.dart';
 import '../../domain/entities/paginated_result.dart';
 import '../models/tracking_model.dart';
 import 'student_remote_data_source.dart';
@@ -172,25 +172,18 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
         responseJson['data'] as List<dynamic>? ?? [];
 
     // 5. Resiliently parse each item in the list into a TrackingModel.
-    // A single malformed item in the list will be ignored instead of
-    // crashing the entire process.
     return trackingsListJson
         .map((trackingJson) {
           try {
             if (trackingJson is! Map<String, dynamic>) {
-              // Log this malformed item for debugging purposes.
-              // For example: logger.warning('Skipping invalid item in tracking list: $trackingJson');
               return null;
             }
             return TrackingModel.fromJson(trackingJson);
           } catch (e) {
-            // Log the parsing error for a specific item.
-            // For example: logger.error('Failed to parse tracking item', error: e, stackTrace: stackTrace);
-            return [];
+            return null;
           }
         })
         .whereType<TrackingModel>()
         .toList();
   }
-
 }

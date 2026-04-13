@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/error/failures.dart';
-import 'package:tajalwaqaracademy/core/usecases/usecase.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/repositories/settings_repository.dart';
+import 'package:shafeea/core/error/failures.dart';
+import 'package:shafeea/core/usecases/usecase.dart';
+import 'package:shafeea/features/settings/domain/repositories/settings_repository.dart';
 
 import '../entities/privacy_policy_entity.dart';
 

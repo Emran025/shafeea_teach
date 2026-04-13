@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/widgets/approve_applicant_dialog.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/widgets/reject_applicant_dialog.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/shared/widgets/avatar.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/ui/widgets/approve_applicant_dialog.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/ui/widgets/reject_applicant_dialog.dart';
 
 import '../../../../../core/models/gender.dart';
 
@@ -107,9 +107,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                 context: context,
                 builder: (_) => BlocProvider.value(
                   value: BlocProvider.of<SupervisorBloc>(context),
-                  child: RejectApplicantDialog(
-                    applicantId: applicant.id,
-                  ),
+                  child: RejectApplicantDialog(applicantId: applicant.id),
                 ),
               );
               if (result == true) {

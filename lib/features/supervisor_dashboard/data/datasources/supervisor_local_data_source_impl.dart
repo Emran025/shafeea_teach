@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:shafeea/core/models/user_role.dart';
+import 'package:shafeea/features/auth/data/datasources/auth_local_data_source.dart';
 
 import '../models/count_delta.dart';
 import '../models/student_summaray_record.dart';
@@ -32,11 +32,11 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   final Database _db;
   final AuthLocalDataSource _authLocalDataSource;
 
-  SupervisorLocalDataSourceImpl(
-      {required Database database,
-      required AuthLocalDataSource authLocalDataSource})
-      : _db = database,
-        _authLocalDataSource = authLocalDataSource;
+  SupervisorLocalDataSourceImpl({
+    required Database database,
+    required AuthLocalDataSource authLocalDataSource,
+  }) : _db = database,
+       _authLocalDataSource = authLocalDataSource;
 
   @override
   Future<List<Record>> getAllEntitysWithTimestamps(UserRole entityType) async {
@@ -51,7 +51,8 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
       whereCondation = "WHERE roleId = ? AND tenant_id = ?";
       table = _kUsersTable;
     }
-    final result = await _db.rawQuery('''
+    final result = await _db.rawQuery(
+      '''
       SELECT
         id,
         createdAt,
@@ -60,7 +61,9 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
       FROM $table
       $whereCondation
       ORDER BY createdAt
-    ''', (entityType == UserRole.halaqa) ? [tenantId] : [entityType.id, tenantId]);
+    ''',
+      (entityType == UserRole.halaqa) ? [tenantId] : [entityType.id, tenantId],
+    );
 
     return result.map((map) => Record.fromMap(map)).toList();
   }
@@ -78,13 +81,16 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
       whereCondation = "WHERE roleId = ? AND tenant_id = ?";
       table = _kUsersTable;
     }
-    final result = await _db.rawQuery('''
+    final result = await _db.rawQuery(
+      '''
       SELECT
         min(createdAt) as startTime,
         max(lastModified) as endTime
       FROM $table
       $whereCondation
-    ''', (entityType == UserRole.halaqa) ? [tenantId] : [entityType.id, tenantId]);
+    ''',
+      (entityType == UserRole.halaqa) ? [tenantId] : [entityType.id, tenantId],
+    );
 
     if (result.isEmpty ||
         result.first['startTime'] == null ||
@@ -270,14 +276,11 @@ final class SupervisorLocalDataSourceImpl implements SupervisorLocalDataSource {
   ) async {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
-    await _db.insert(
-        _kSyncMetadataTable,
-        {
-          'entity_type': entityType,
-          'last_server_sync_timestamp': timestamp, // Store as int
-          'tenant_id': tenantId,
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    await _db.insert(_kSyncMetadataTable, {
+      'entity_type': entityType,
+      'last_server_sync_timestamp': timestamp, // Store as int
+      'tenant_id': tenantId,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }
 

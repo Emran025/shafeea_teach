@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;

@@ -1,6 +1,6 @@
 // path: lib/features/settings/data/models/user_profile_model.dart
 
-import 'package:tajalwaqaracademy/features/settings/domain/entities/user_profile_entity.dart';
+import 'package:shafeea/features/settings/domain/entities/user_profile_entity.dart';
 
 import '../../../../core/models/user_role.dart';
 import '../../../auth/data/models/user_model.dart';
@@ -34,20 +34,26 @@ class UserProfileModel {
       user: UserModel.fromJson(json['user'], UserRole.teacher),
       // The 'active_sessions' list is parsed by mapping each JSON object
       // to a UserSessionModel.
-      activeSessions: (json['active_sessions'] as List)
+      activeSessions: (json['activeSessions'] as List? ?? [])
           .map((sessionJson) => UserSessionModel.fromJson(sessionJson))
           .toList(),
     );
   }
 
-  
-    /// A factory constructor to create a [UserSessionModel] from a [UserSessionEntity].
+  /// A factory constructor to create a [UserSessionModel] from a [UserSessionEntity].
   /// This is useful when data flows from the domain layer back to the data layer.
   factory UserProfileModel.fromEntity(UserProfileEntity entity) {
     return UserProfileModel(
-      user: UserModel(id: entity.user.id, name: entity.user.name, email: entity.user.email, phone: entity.user.phone, role: entity.user.role),
-      activeSessions: entity.activeSessions.map((toElement)=> UserSessionModel.fromEntity(toElement)).toList(),
-
+      user: UserModel(
+        id: entity.user.id,
+        name: entity.user.name,
+        email: entity.user.email,
+        phone: entity.user.phone,
+        role: entity.user.role,
+      ),
+      activeSessions: entity.activeSessions
+          .map((toElement) => UserSessionModel.fromEntity(toElement))
+          .toList(),
     );
   }
 
@@ -62,7 +68,6 @@ class UserProfileModel {
           .toList(),
     );
   }
-  
 
   /// Converts the user's editable data to a JSON map for sending to the API.
   ///
@@ -75,6 +80,3 @@ class UserProfileModel {
     return {'user': (user).toJson()};
   }
 }
-
-
-

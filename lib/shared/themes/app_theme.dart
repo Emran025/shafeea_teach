@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-part 'package:tajalwaqaracademy/core/constants/app_colors.dart';
+part 'package:shafeea/core/constants/app_colors.dart';
 
 // An enumeration to define the available theme types in a type-safe way.
 // This prevents errors from using simple strings or integers.
@@ -73,7 +73,6 @@ class AppThemes {
     surface: AppColors.mediumDark,
     onSurface: AppColors.lightCream,
     primaryContainer: AppColors.accent12,
-
   );
 
   static const ColorScheme _readingColorScheme = ColorScheme(

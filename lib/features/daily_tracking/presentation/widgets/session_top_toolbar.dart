@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 /// This toolbar provides actions relevant to the current tracking task,
 /// such as saving progress, viewing the task report, and other session-related tools.
 
-import 'package:tajalwaqaracademy/core/models/cheet_tile.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/presentation/pages/student_error_analysis_chart.dart';
+import 'package:shafeea/core/models/cheet_tile.dart';
+import 'package:shafeea/features/daily_tracking/presentation/pages/student_error_analysis_chart.dart';
 
 /// A specialized bottom toolbar for the recitation session screen.
 ///

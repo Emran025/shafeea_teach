@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/core/models/mistake_type.dart';
+import 'package:shafeea/core/models/mistake_type.dart';
 
 /// A widget that displays a row of selectable icons representing different mistake types.
 /// This version is designed to be used in an Overlay for a hover-and-release interaction.
@@ -11,7 +11,10 @@ class MistakeTypeSelector extends StatelessWidget {
   // We define a fixed size for each icon button for easier hit-testing.
   static const double iconButtonSize = 50.0;
   static const List<MistakeType> selectableTypes = [
-      MistakeType.memory, MistakeType.grammar, MistakeType.pronunciation, MistakeType.timing
+    MistakeType.memory,
+    MistakeType.grammar,
+    MistakeType.pronunciation,
+    MistakeType.timing,
   ];
 
   const MistakeTypeSelector({
@@ -35,7 +38,13 @@ class MistakeTypeSelector extends StatelessWidget {
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: selectableTypes
-                  .map((type) => _buildMistakeIcon(context, type, type == currentHighlight))
+                  .map(
+                    (type) => _buildMistakeIcon(
+                      context,
+                      type,
+                      type == currentHighlight,
+                    ),
+                  )
                   .toList(),
             );
           },
@@ -44,8 +53,12 @@ class MistakeTypeSelector extends StatelessWidget {
     );
   }
 
-  Widget _buildMistakeIcon(BuildContext context, MistakeType type, bool isHighlighted) {
-   final IconData icon;
+  Widget _buildMistakeIcon(
+    BuildContext context,
+    MistakeType type,
+    bool isHighlighted,
+  ) {
+    final IconData icon;
     final Color color;
 
     switch (type) {

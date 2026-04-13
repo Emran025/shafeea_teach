@@ -4,9 +4,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/widgets/student_count_chart.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
+import 'package:shafeea/core/models/user_role.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/ui/widgets/student_count_chart.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
 
 import '../../../../../core/models/cheet_tile.dart';
 import '../../../../../shared/widgets/draggable_scrollable_sheet.dart';

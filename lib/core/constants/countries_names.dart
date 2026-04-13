@@ -1,5 +1,4 @@
-import 'package:tajalwaqaracademy/core/models/countery_model.dart';
-
+import 'package:shafeea/core/models/countery_model.dart';
 
 List<CountryModel> countries = [
   CountryModel(

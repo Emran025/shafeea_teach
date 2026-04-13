@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:tajalwaqaracademy/core/entities/pagination_info_entity.dart';
+import 'package:shafeea/core/entities/pagination_info_entity.dart';
 
 /// A data model that encapsulates pagination metadata from an API response.
 ///

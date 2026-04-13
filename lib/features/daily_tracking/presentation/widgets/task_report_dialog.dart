@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/presentation/widgets/mistakes_list.dart';
+import 'package:shafeea/features/daily_tracking/presentation/widgets/mistakes_list.dart';
 
 import '../bloc/tracking_session_bloc.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-// import 'package:tajalwaqaracademy/features/HalqasManagement/presentation/ui/screens/halqas_management_screen.dart';
-// import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/screens/students_management_screen.dart';
-import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
+import 'package:shafeea/core/models/user_role.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+// import 'package:shafeea/features/HalqasManagement/presentation/ui/screens/halqas_management_screen.dart';
+// import 'package:shafeea/features/StudentsManagement/presentation/ui/screens/students_management_screen.dart';
+import 'package:shafeea/shared/widgets/avatar.dart';
 
 import '../../../../../shared/widgets/recitation_mode_sidebar.dart';
 import '../../../../settings/presentation/screens/settings_screen.dart';
@@ -23,7 +23,7 @@ class _TecherDashboardState extends State<TecherDashboard> {
   int _currentIndex = 0;
 
   final List<Widget> _tabs = [
-    ModernDashboardScreen(role: UserRole.teacher,),
+    ModernDashboardScreen(role: UserRole.teacher),
     // HalqasManagementScreen(),
     // StudentsManagementScreen(),
     MonitoringScreen(),

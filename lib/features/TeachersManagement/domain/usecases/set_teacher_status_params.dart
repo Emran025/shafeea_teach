@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/features/TeachersManagement/domain/repositories/teacher_repository.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/features/TeachersManagement/domain/repositories/teacher_repository.dart';
 
 import '../../../../core/error/failures.dart';
 import 'usecase.dart';
@@ -36,8 +36,7 @@ class SetTeacherStatusUseCase implements UseCase<Unit, SetTeacherStatusParams> {
 
 /// Encapsulates the parameters required for the [SetTeacherStatusUseCase].
 
-
-final class SetTeacherStatusParams  {
+final class SetTeacherStatusParams {
   final String teacherId;
   final ActiveStatus newStatus;
 
@@ -45,7 +44,4 @@ final class SetTeacherStatusParams  {
     required this.teacherId,
     required this.newStatus,
   });
-
 }
-
-

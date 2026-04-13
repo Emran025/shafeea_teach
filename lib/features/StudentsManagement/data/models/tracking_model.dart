@@ -114,7 +114,7 @@ final class TrackingModel {
   /// Requires the `enrollmentId` foreign key. Note this map does NOT include the details.
   Map<String, dynamic> toMap(int enrollmentId) {
     return {
-      // BEST PRACTICE: Convert the integer ID to a string to match the 'TEXT' schema.
+      'id': id,
       'uuid': id.toString(),
       'enrollmentId': enrollmentId,
       'trackDate': date,
@@ -122,7 +122,7 @@ final class TrackingModel {
       'attendanceTypeId': attendanceTypeId.id,
       'behaviorNote': behaviorNote,
       'status': status,
-      'createdAt ': (DateTime.tryParse(createdAt) ?? DateTime.now())
+      'createdAt': (DateTime.tryParse(createdAt) ?? DateTime.now())
           .millisecondsSinceEpoch,
       'lastModified': (DateTime.tryParse(updatedAt) ?? DateTime.now())
           .millisecondsSinceEpoch,

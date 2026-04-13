@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../../../../../features/StudentsManagement/domain/entities/halqa_entity.dart';
-import 'package:uuid/uuid.dart';
 
 @immutable
 final class AssignedHalaqasModel {
@@ -26,23 +25,22 @@ final class AssignedHalaqasModel {
   factory AssignedHalaqasModel.fromJson(Map<String, dynamic>? json) {
     return json != null
         ? AssignedHalaqasModel(
-            // Generate a unique UUID for the assignment itself
-            id: const Uuid().v4(),
+            // Use server's enrollmentId as our local ID
+            id: json['enrollmentId']?.toString() ?? '0',
             name: json['name'] as String? ?? 'Unnamed Halqa',
             avatar: json['avatar'] as String? ?? 'assets/images/logo2.png',
             enrolledAt:
-                json['enrolledAt'] as String? ??
+                json['assignedAt'] as String? ??
                 DateTime.now().toIso8601String(),
-            halaqaId: (json['id'] as int)
+            halaqaId: (json['id'] as int? ?? 0)
                 .toString(), // Assuming API gives integer ID for halqa
           )
-        : AssignedHalaqasModel(
-            // Generate a unique UUID for the assignment itself
-            id: const Uuid().v4(),
+        : const AssignedHalaqasModel(
+            id: '0',
             name: 'Unnamed Halqa',
             avatar: 'assets/images/logo2.png',
-            enrolledAt: DateTime.now().toIso8601String(),
-            halaqaId: '0', // Assuming API gives integer ID for halqa
+            enrolledAt: '',
+            halaqaId: '0',
           );
   }
 
@@ -64,8 +62,9 @@ final class AssignedHalaqasModel {
 
   Map<String, dynamic> toMap(int studentId) {
     return {
+      'id': int.tryParse(id) ?? 0,
       "uuid": id,
-      "halqaId": halaqaId,
+      "halqaId": int.tryParse(halaqaId) ?? 0,
       "studentId": studentId,
       "assignedAt": enrolledAt,
       "playloud": jsonEncode({"avatar": avatar, "name": name}),

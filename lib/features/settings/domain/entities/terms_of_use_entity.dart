@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/privacy_policy_entity.dart';
+import 'package:shafeea/features/settings/domain/entities/privacy_policy_entity.dart';
 
 class TermsOfUseEntity extends Equatable {
   final String version;
@@ -20,11 +20,11 @@ class TermsOfUseEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        version,
-        lastUpdated,
-        summary,
-        sections,
-        changelog,
-        isActive,
-      ];
+    version,
+    lastUpdated,
+    summary,
+    sections,
+    changelog,
+    isActive,
+  ];
 }

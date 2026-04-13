@@ -1,8 +1,8 @@
 // applicant_model.dart
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/core/models/gender.dart';
+import 'package:shafeea/core/models/user_role.dart';
 import '../../../../core/entities/list_item_entity.dart';
 import '../../../../core/models/pagination_info_model.dart';
 import '../../domain/entities/applicant_entity.dart';
@@ -20,9 +20,8 @@ class ApplicantModel extends Equatable {
 
   factory ApplicantModel.fromJson(Map<String, dynamic> json) {
     return ApplicantModel(
-      applicantType: UserRole.fromLabel(json['application_type'] as String),
-
-      submittedAt: json['submitted_at'] as String? ?? "${DateTime.now()}",
+      applicantType: UserRole.fromLabel(json['applicationType'] as String),
+      submittedAt: json['submittedAt'] as String? ?? "${DateTime.now()}",
       user: UserModel.fromJson(
         json['user'] as Map<String, dynamic>,
         ActiveStatus.fromLabel(json['status'] as String).labelAr,

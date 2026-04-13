@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

@@ -3,11 +3,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/countries_names.dart';
-import 'package:tajalwaqaracademy/core/models/countery_model.dart';
-import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
-import 'package:tajalwaqaracademy/shared/widgets/country_picker_dialog.dart';
-import 'package:tajalwaqaracademy/shared/widgets/custom_text_field.dart';
+import 'package:shafeea/core/constants/countries_names.dart';
+import 'package:shafeea/core/models/countery_model.dart';
+import 'package:shafeea/shared/widgets/avatar.dart';
+import 'package:shafeea/shared/widgets/country_picker_dialog.dart';
+import 'package:shafeea/shared/widgets/custom_text_field.dart';
 
 import '../../../../../core/models/active_status.dart';
 import '../../../../../core/models/gender.dart';

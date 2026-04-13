@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
+import 'package:shafeea/core/api/end_ponits.dart';
 
 import '../entities/success_entity.dart';
 

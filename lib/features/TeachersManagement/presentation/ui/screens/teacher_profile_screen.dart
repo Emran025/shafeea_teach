@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/core/models/active_status.dart';
 
-import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
+import 'package:shafeea/shared/widgets/avatar.dart';
 
 import '../../../../../config/di/injection.dart';
 import '../../../../../shared/widgets/taj.dart';

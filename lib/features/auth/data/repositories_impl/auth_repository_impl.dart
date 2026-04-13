@@ -14,9 +14,9 @@ import '../models/user_model.dart';
 
 import 'package:injectable/injectable.dart';
 
-import 'package:tajalwaqaracademy/core/network/network_info.dart';
-import 'package:tajalwaqaracademy/core/services/device_info_service.dart';
-import 'package:tajalwaqaracademy/features/auth/domain/entities/login_credentials_entity.dart';
+import 'package:shafeea/core/network/network_info.dart';
+import 'package:shafeea/core/services/device_info_service.dart';
+import 'package:shafeea/features/auth/domain/entities/login_credentials_entity.dart';
 
 /// Orchestrates calls to [AuthRemoteDataSource], catches any
 /// [ServerException], and exposes a clean [Either]<String, T> API.

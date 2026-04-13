@@ -1,7 +1,7 @@
 import 'dart:convert'; // Required for json.decode
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
+import 'package:shafeea/core/api/end_ponits.dart';
 
 // Define the key locally or import it from your constants file
 const String _kAccessTokensListKey = 'ACCESS_TOKENS_LIST';

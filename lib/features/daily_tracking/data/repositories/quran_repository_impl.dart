@@ -3,10 +3,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../core/error/failures.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran_local_data_source.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/surah.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/repositories/quran_repository.dart';
+import 'package:shafeea/features/daily_tracking/data/datasources/quran_local_data_source.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/surah.dart';
+import 'package:shafeea/features/daily_tracking/domain/repositories/quran_repository.dart';
 
 import '../../../../core/error/exceptions.dart';
 

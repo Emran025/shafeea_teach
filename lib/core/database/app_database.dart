@@ -428,6 +428,7 @@ class AppDatabase {
         isDeleted     INTEGER NOT NULL DEFAULT 0,
         tenant_id     TEXT NOT NULL,
 
+        UNIQUE(tenant_id, uuid),
         FOREIGN KEY(studentId) REFERENCES $_kUsersTable(id) ON DELETE CASCADE ON UPDATE CASCADE
       )
     ''');
@@ -485,6 +486,7 @@ class AppDatabase {
         isDeleted        INTEGER NOT NULL DEFAULT 0,
         tenant_id        TEXT NOT NULL,
 
+        UNIQUE(tenant_id, uuid),
         UNIQUE(tenant_id, enrollmentId, trackDate , status),
         FOREIGN KEY(enrollmentId) REFERENCES $_kHalqaStudentsTable(id) ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(attendanceTypeId) REFERENCES $_kAttendanceTypesTable(id) ON DELETE RESTRICT ON UPDATE CASCADE
@@ -508,6 +510,7 @@ class AppDatabase {
         isDeleted          INTEGER NOT NULL DEFAULT 0,
         tenant_id          TEXT NOT NULL,
         
+        UNIQUE(tenant_id, uuid),
         UNIQUE(tenant_id, trackingId, typeId),
         FOREIGN KEY(trackingId) REFERENCES $_kDailyTrackingTable(id)   ON DELETE CASCADE ON UPDATE CASCADE,
         FOREIGN KEY(typeId)     REFERENCES $_kTrackingTypesTable(id)   ON DELETE RESTRICT ON UPDATE CASCADE

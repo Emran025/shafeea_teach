@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/repositories/halaqa_repository.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/features/HalaqasManagement/domain/repositories/halaqa_repository.dart';
 
 import '../../../../core/error/failures.dart';
 import 'usecase.dart';

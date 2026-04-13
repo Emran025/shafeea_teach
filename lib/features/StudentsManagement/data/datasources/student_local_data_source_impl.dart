@@ -4,10 +4,10 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
-import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:shafeea/core/error/exceptions.dart';
+import 'package:shafeea/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/core/models/user_role.dart';
 // import '../../../../core/models/user_role.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/models/sync_queue_model.dart';
@@ -407,19 +407,10 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
           }
           await usersBatch.commit(noResult: true);
 
-          final updatedStudentUuids = updatedStudents
-              .map((s) => s.studentModel.id)
-              .toList();
-          final updatedStudentIds = await _fetchStudentIdsByUuids(
-            dbExecutor: txn,
-            uuids: updatedStudentUuids,
-          );
-
           final halqaBatch = txn.batch();
-          for (int i = 0; i < updatedStudents.length; i++) {
-            final assignedHalaqaMap = updatedStudents[i].assignedHalaqa.toMap(
-              updatedStudentIds[i],
-            );
+          for (final studentInfo in updatedStudents) {
+            final studentIdInt = int.tryParse(studentInfo.studentModel.id) ?? 0;
+            final assignedHalaqaMap = studentInfo.assignedHalaqa.toMap(studentIdInt);
             assignedHalaqaMap['tenant_id'] = tenantId;
             halqaBatch.insert(
               _kHalqaStudentsTable,
@@ -429,19 +420,12 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
           }
           await halqaBatch.commit(noResult: true);
 
-          final enrollmentIds = await _fetchEnrollmentIdsByStudentIds(
-            dbExecutor: txn,
-            studentIds: updatedStudentIds,
-            additionalWhere: 'isDeleted = ?',
-            additionalArgs: [0],
-          );
-          print("sucsass");
-
           final planBatch = txn.batch();
-          for (int i = 0; i < updatedStudents.length; i++) {
-            final studentInfo = updatedStudents[i];
+          for (final studentInfo in updatedStudents) {
             final followUpPlan = studentInfo.followUpPlan;
-            final enrollmentId = enrollmentIds[i];
+            // The enrollment ID is now stored in assignedHalaqa.id (as a string)
+            final enrollmentId = int.tryParse(studentInfo.assignedHalaqa.id) ?? 0;
+            
             final followUpPlanMap = followUpPlan.toPlanDbMap(enrollmentId);
             followUpPlanMap['tenant_id'] = tenantId;
             planBatch.insert(
@@ -449,14 +433,11 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
               followUpPlanMap,
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
-            planBatch.update(
+            
+            planBatch.delete(
               _kPlanDetailsTable,
-              {
-                'isDeleted': 1,
-                'lastModified': DateTime.now().millisecondsSinceEpoch,
-              },
-              where: 'planUuid = ?',
-              whereArgs: [followUpPlan.planId],
+              where: 'planUuid = ? AND tenant_id = ?',
+              whereArgs: [followUpPlan.planId, tenantId],
             );
 
             for (final detail in followUpPlan.details) {
@@ -474,28 +455,15 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
         if (deletedStudents.isNotEmpty) {
           final deleteBatch = txn.batch();
-          final deletedStudentUuids = deletedStudents
-              .map((s) => s.studentModel.id)
-              .toList();
-
-          final deletedStudentIds = await _fetchStudentIdsByUuids(
-            dbExecutor: txn,
-            uuids: deletedStudentUuids,
-          );
-
-          final deletedEnrollmentIds = await _fetchEnrollmentIdsByStudentIds(
-            dbExecutor: txn,
-            studentIds: deletedStudentIds,
-            additionalWhere: 'isDeleted = ?',
-            additionalArgs: [0],
-          );
-
-          for (int i = 0; i < deletedStudents.length; i++) {
+          for (final studentInfo in deletedStudents) {
+            final studentIdInt = int.tryParse(studentInfo.studentModel.id) ?? 0;
+            final enrollmentIdInt = int.tryParse(studentInfo.assignedHalaqa.id) ?? 0;
+            
             _softDeleteStudentData(
               deleteBatch,
-              deletedStudents[i],
-              deletedStudentIds[i],
-              deletedEnrollmentIds[i],
+              studentInfo,
+              studentIdInt,
+              enrollmentIdInt,
             );
           }
           await deleteBatch.commit(noResult: true);
@@ -577,7 +545,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     try {
       final studentMap = student.toMap();
       studentMap['tenant_id'] = tenantId;
-      _db.insert(
+      await _db.insert(
         _kUsersTable,
         studentMap,
         conflictAlgorithm: ConflictAlgorithm.replace,
@@ -597,13 +565,10 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
     try {
-      final studentDbId = (await _fetchStudentIdsByUuids(
-        dbExecutor: _db,
-        uuids: [studentId],
-      )).first;
-      final studentMap = student.toMap(studentDbId);
+      final studentIdInt = int.tryParse(studentId) ?? 0;
+      final studentMap = student.toMap(studentIdInt);
       studentMap['tenant_id'] = tenantId;
-      _db.insert(
+      await _db.insert(
         _kHalqaStudentsTable,
         studentMap,
         conflictAlgorithm: ConflictAlgorithm.replace,
@@ -611,7 +576,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     } on DatabaseException catch (e) {
       throw CacheException(
         message:
-            'Failed to save  Assigned student in Halaqas (${student.id}): ${e.toString()}',
+            'Failed to save Assigned student in Halaqas (${student.id}): ${e.toString()}',
       );
     }
   }
@@ -623,45 +588,52 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   ) async {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
-    // , int enrollmentId
+    final serverUserId = int.tryParse(studentId) ?? 0;
+
     try {
       await _db.transaction((txn) async {
-        final studentEnrollmentDbId = (await _fetchEnrollmentIdbyStudentUuids(
-          dbExecutor: _db,
-          uuids: [studentId],
-        )).first;
-        final followUpPlanMap = followUpPlan.toPlanDbMap(studentEnrollmentDbId);
+        // Resolve enrollment ID from the database using studentId
+        final enrollmentIdMaps = await txn.query(
+          _kHalqaStudentsTable,
+          columns: ['id'],
+          where: 'studentId = ? AND isDeleted = ? AND tenant_id = ?',
+          whereArgs: [serverUserId, 0, tenantId],
+        );
+
+        if (enrollmentIdMaps.isEmpty) {
+          throw CacheException(
+            message: 'Cannot save plan. No active enrollment found locally for student $studentId',
+          );
+        }
+        final enrollmentId = enrollmentIdMaps.first['id'] as int;
+
+        final followUpPlanMap = followUpPlan.toPlanDbMap(enrollmentId);
         followUpPlanMap['tenant_id'] = tenantId;
         await txn.insert(
           _kFollowUpPlansTable,
           followUpPlanMap,
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
-        await txn.update(
+        
+        await txn.delete(
           _kPlanDetailsTable,
-          {
-            'isDeleted': 1,
-            'lastModified': DateTime.now().millisecondsSinceEpoch,
-          },
-          where: 'planUuid = ?',
-          whereArgs: [followUpPlan.planId],
+          where: 'planUuid = ? AND tenant_id = ?',
+          whereArgs: [followUpPlan.planId, tenantId],
         );
 
         for (final detail in followUpPlan.details) {
           final detailMap = detail.toMap(planUuid: followUpPlan.planId);
           detailMap['tenant_id'] = tenantId;
           await txn.insert(
-            _kPlanDetailsTable, // جدول التفاصيل
-            detailMap, // تمرير planId للربط
+            _kPlanDetailsTable,
+            detailMap,
             conflictAlgorithm: ConflictAlgorithm.replace,
           );
-          print(detail);
         }
       });
     } on DatabaseException catch (e) {
       throw CacheException(
-        message:
-            'Failed to save student followUpPlan ($studentId): ${e.toString()}',
+        message: 'Failed to save student followUpPlan ($studentId): ${e.toString()}',
       );
     }
   }
@@ -738,8 +710,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
         where: "halqaId = ? AND studentId = ? AND assignedAt = ?",
         whereArgs: [
-          studentId,
           studentInfo.assignedHalaqa.halaqaId,
+          studentId,
           studentInfo.assignedHalaqa.enrolledAt,
         ],
       );
@@ -989,74 +961,77 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   }) async {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
-    await _db.delete(_kDailyTrackingTable);
-    await _db.delete(_kDailyTrackingDetailTable);
+    final serverStudentId = int.tryParse(studentId) ?? 0;
 
-    // ROBUSTNESS: Verify the parent enrollment record exists locally first.
-    final enrollmentIds = await _fetchEnrollmentIdbyStudentUuids(
-      dbExecutor: _db,
-      uuids: [studentId],
+    // Verify the parent enrollment record exists locally first.
+    final enrollmentMaps = await _db.query(
+      _kHalqaStudentsTable,
+      columns: ['id'],
+      where: 'studentId = ? AND isDeleted = ? AND tenant_id = ?',
+      whereArgs: [serverStudentId, 0, tenantId],
     );
 
-    if (enrollmentIds.isEmpty) {
+    if (enrollmentMaps.isEmpty) {
       throw CacheException(
-        message:
-            'Cannot cache trackings. Parent enrollment for student UUID $studentId not found.',
+        message: 'Cannot cache trackings. Parent enrollment for student ID $studentId not found.',
       );
     }
-    final enrollmentId = enrollmentIds.first;
+    final enrollmentId = enrollmentMaps.first['id'] as int;
 
     try {
-      // ATOMICITY: Perform the entire operation within a single transaction.
       await _db.transaction((txn) async {
-        // Step 1: Cleanly delete old data. ON DELETE CASCADE will handle children.
+        // Step 1: Cleanly delete old data for this enrollment.
+        await txn.delete(
+          _kDailyTrackingTable,
+          where: 'enrollmentId = ? AND tenant_id = ?',
+          whereArgs: [enrollmentId, tenantId],
+        );
 
         // Step 2: Iterate through the new tracking data from the server.
         for (final trackingModel in trackings) {
-          // 2a. Insert the parent `daily_tracking` record and get its new local ID.
           final trackingMap = trackingModel.toMap(enrollmentId);
           trackingMap['tenant_id'] = tenantId;
-          final newParentTrackingId = await txn.insert(
+          
+          await txn.insert(
             _kDailyTrackingTable,
             trackingMap,
+            conflictAlgorithm: ConflictAlgorithm.replace,
           );
 
           if (trackingModel.details.isNotEmpty) {
-            // Use a batch for inserting the mistakes for maximum efficiency.
             final mistakesBatch = txn.batch();
 
             for (final detailModel in trackingModel.details) {
-              // 2b. Insert the `daily_tracking_detail` record and get its new local ID.
-              final detailMap = detailModel.toMap(newParentTrackingId);
+              final detailMap = detailModel.toMap(trackingModel.id);
               detailMap['tenant_id'] = tenantId;
-              final newDetailId = await txn.insert(
+              
+              await txn.insert(
                 _kDailyTrackingDetailTable,
                 detailMap,
+                conflictAlgorithm: ConflictAlgorithm.replace,
               );
 
-              // 2c. If this detail has mistakes, add them to the batch.
               if (detailModel.mistakes.isNotEmpty) {
                 for (final mistakeModel in detailModel.mistakes) {
-                  // The `toMap` function needs the LOCAL ID of its parent detail.
-                  final mistakeMap = mistakeModel.toMap(newDetailId);
+                  final mistakeMap = mistakeModel.toMap(detailModel.id);
                   mistakeMap['tenant_id'] = tenantId;
-                  mistakesBatch.insert(_kMistakesTable, mistakeMap);
+                  mistakesBatch.insert(
+                    _kMistakesTable, 
+                    mistakeMap,
+                    conflictAlgorithm: ConflictAlgorithm.replace,
+                  );
                 }
               }
             }
-
-            // Commit all mistakes for this tracking day in one go.
             await mistakesBatch.commit(noResult: true);
           }
         }
       });
 
-      // Notify listeners that data has changed.
       _dbChangeNotifier.add(null);
     } on DatabaseException catch (e) {
       throw CacheException(
-        message:
-            'Failed to cache follow-up trackings in transaction: ${e.toString()}',
+        message: 'Failed to cache follow-up trackings: ${e.toString()}',
       );
     }
   }
@@ -1232,26 +1207,32 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     final tenantId = "${user!.id}";
     try {
       // 1. Fetch all student enrollments along with their UUIDs.
-      final enrollmentMaps = await _db.rawQuery('''
+      final enrollmentMaps = await _db.rawQuery(
+        '''
         SELECT HS.id, U.uuid
         FROM $_kHalqaStudentsTable HS
         JOIN $_kUsersTable U ON HS.studentId = U.id
         WHERE U.roleId = ? AND U.isDeleted = ? AND U.tenant_id = ?
-      ''', [UserRole.student.id, 0, tenantId]);
+      ''',
+        [UserRole.student.id, 0, tenantId],
+      );
 
       if (enrollmentMaps.isEmpty) {
         return {};
       }
 
-      final enrollmentIds = enrollmentMaps.map((map) => map['id'] as int).toList();
+      final enrollmentIds = enrollmentMaps
+          .map((map) => map['id'] as int)
+          .toList();
       final studentUuidByEnrollmentId = {
-        for (var map in enrollmentMaps) map['id'] as int: map['uuid'] as String
+        for (var map in enrollmentMaps) map['id'] as int: map['uuid'] as String,
       };
 
       // 2. Fetch all tracking records for these enrollments.
       final trackingMaps = await _db.query(
         _kDailyTrackingTable,
-        where: 'enrollmentId IN (${List.filled(enrollmentIds.length, '?').join(',')}) AND tenant_id = ?',
+        where:
+            'enrollmentId IN (${List.filled(enrollmentIds.length, '?').join(',')}) AND tenant_id = ?',
         whereArgs: [...enrollmentIds, tenantId],
       );
 
@@ -1261,10 +1242,11 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
       // 3. Efficiently fetch all child details and group them by trackingId.
       final trackingIds = trackingMaps.map((map) => map['id'] as int).toList();
-      final detailsByTrackingId = await _fetchAllTrackingDetailsGroupedByParentId(
-        dbExecutor: _db,
-        trackingIds: trackingIds,
-      );
+      final detailsByTrackingId =
+          await _fetchAllTrackingDetailsGroupedByParentId(
+            dbExecutor: _db,
+            trackingIds: trackingIds,
+          );
 
       // 4. Assemble the final models.
       final allTrackings = trackingMaps.map((trackingMap) {
@@ -1320,7 +1302,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
             final newParentTrackingId = await txn.insert(
               _kDailyTrackingTable,
               trackingMap,
-              conflictAlgorithm: conflictResolution == ConflictResolution.overwrite
+              conflictAlgorithm:
+                  conflictResolution == ConflictResolution.overwrite
                   ? ConflictAlgorithm.replace
                   : ConflictAlgorithm.ignore,
             );

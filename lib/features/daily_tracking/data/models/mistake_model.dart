@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:tajalwaqaracademy/core/models/mistake_type.dart'; // Your enhanced enum
+import 'package:shafeea/core/models/mistake_type.dart'; // Your enhanced enum
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/mistake.dart';
@@ -12,8 +12,7 @@ import '../../domain/entities/mistake.dart';
 /// 3. Converting itself into a pure, domain-layer [Mistake] entity (`toEntity`).
 @immutable
 class MistakeModel {
-  // Use local int ID for database relations, and String UUID for sync/identity
-  final int localId;
+  final int id;
   final String uuid;
   final String trackingDetailId; // Local ID of the parent daily_tracking_detail
   final int ayahIdQuran;
@@ -22,7 +21,7 @@ class MistakeModel {
   final int lastModified;
 
   const MistakeModel({
-    required this.localId,
+    required this.id,
     required this.uuid,
     required this.trackingDetailId,
     required this.ayahIdQuran,
@@ -34,7 +33,7 @@ class MistakeModel {
   /// A factory for  creating a [MistakeModel] from a json map.
   factory MistakeModel.fromJson(Map<String, dynamic> json) {
     return MistakeModel(
-      localId: json['id'] as int? ?? 0,
+      id: json['id'] as int? ?? 0,
       uuid: json['uuid'] as String? ?? '',
       trackingDetailId: (json['trackingDetailId'] as int? ?? 0).toString(),
       ayahIdQuran: json['ayahId_quran'] as int? ?? 0,
@@ -47,7 +46,7 @@ class MistakeModel {
   /// A factory for creating a [MistakeModel] from a database map.
   factory MistakeModel.fromMap(Map<String, dynamic> map) {
     return MistakeModel(
-      localId: map['id'] as int? ?? 0,
+      id: map['id'] as int? ?? 0,
       uuid: map['uuid'] as String? ?? '',
       trackingDetailId: (map['trackingDetailId'] as int? ?? 0).toString(),
       ayahIdQuran: map['ayahId_quran'] as int? ?? 0,
@@ -75,6 +74,7 @@ class MistakeModel {
   /// to establish the foreign key relationship.
   Map<String, dynamic> toMap(int parentDetailId) {
     return {
+      if (id != 0) 'id': id,
       'uuid': uuid.isEmpty ? const Uuid().v4() : uuid,
       'trackingDetailId': parentDetailId,
       'ayahId_quran': ayahIdQuran,
@@ -111,8 +111,7 @@ class MistakeModel {
   /// Creates a [MistakeModel] from a from Entity mistake.
   factory MistakeModel.fromEntity(Mistake entity) {
     return MistakeModel(
-      localId:
-          0, // Local ID is not set here, it will be assigned by the database
+      id: 0, // Local ID is not set here, it will be assigned by the database
       uuid: entity.id,
       trackingDetailId: entity.trackingDetailId,
       // Assuming it's a string ID
@@ -126,7 +125,7 @@ class MistakeModel {
 
   /// Creates a copy of this model but with the given fields replaced with the new values.
   MistakeModel copyWith({
-    int? localId,
+    int? id,
     String? uuid,
     String? trackingDetailId,
     int? ayahIdQuran,
@@ -135,7 +134,7 @@ class MistakeModel {
     int? lastModified,
   }) {
     return MistakeModel(
-      localId: localId ?? this.localId,
+      id: id ?? this.id,
       uuid: uuid ?? this.uuid,
       trackingDetailId: trackingDetailId ?? this.trackingDetailId,
       ayahIdQuran: ayahIdQuran ?? this.ayahIdQuran,

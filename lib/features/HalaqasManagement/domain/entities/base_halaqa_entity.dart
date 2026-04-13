@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
+import 'package:shafeea/core/models/active_status.dart';
 
 import '../../../../core/models/gender.dart';
 
@@ -21,7 +21,6 @@ abstract class BaseHalaqaEntity extends Equatable {
   final String avatar;
   final ActiveStatus status;
 
-
   const BaseHalaqaEntity({
     required this.id,
     required this.name,
@@ -32,9 +31,6 @@ abstract class BaseHalaqaEntity extends Equatable {
     required this.status,
   });
 
-
   @override
   List<Object?> get props => [id, name, avatar, status];
 }
-
-

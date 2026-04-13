@@ -3,8 +3,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
-import 'package:tajalwaqaracademy/features/auth/data/models/user_model.dart';
+import 'package:shafeea/core/error/exceptions.dart';
+import 'package:shafeea/features/auth/data/models/user_model.dart';
 import 'auth_local_data_source.dart';
 
 // Constants for SharedPreferences (User Data)

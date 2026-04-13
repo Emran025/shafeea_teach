@@ -1,6 +1,6 @@
 // applicant_model.dart
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:shafeea/core/models/user_role.dart';
 import '../../../../core/entities/list_item_entity.dart';
 
 class ApplicantEntity extends Equatable {

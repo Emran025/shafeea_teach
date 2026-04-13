@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:tajalwaqaracademy/core/error/failures.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import 'package:shafeea/core/error/failures.dart';
+import 'package:shafeea/core/models/tracking_type.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 
 // Import the pure domain entities
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/tracking_detail_entity.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/tracking_detail_entity.dart';
 
 import '../entities/mistake.dart';
 

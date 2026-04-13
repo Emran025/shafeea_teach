@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/composite_performance_data.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/line_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/composite_performance_data.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/line_chart_datas.dart';
 import '../../../../../core/models/cheet_tile.dart';
 import '../../../../../shared/themes/app_theme.dart';
 import '../../../../supervisor_dashboard/presentation/ui/widgets/base_line_chart.dart';

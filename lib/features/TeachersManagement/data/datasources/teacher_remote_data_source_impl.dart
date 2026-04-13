@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/api/api_consumer.dart';
-import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
+import 'package:shafeea/core/api/api_consumer.dart';
+import 'package:shafeea/core/api/end_ponits.dart';
 import '../../domain/entities/paginated_teachers_result.dart';
 import '../models/teacher_model.dart';
 import '../models/teacher_sync_response_model.dart';

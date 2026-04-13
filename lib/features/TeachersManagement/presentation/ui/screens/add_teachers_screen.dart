@@ -2,14 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/constants/countries_names.dart';
-import 'package:tajalwaqaracademy/core/models/countery_model.dart';
-import 'package:tajalwaqaracademy/shared/func/date_format.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/shared/widgets/country_picker_dialog.dart';
-import 'package:tajalwaqaracademy/shared/widgets/custom_text_field.dart';
-import 'package:tajalwaqaracademy/shared/widgets/phone_zone.dart';
-import 'package:tajalwaqaracademy/shared/widgets/pick_date.dart';
+import 'package:shafeea/core/constants/countries_names.dart';
+import 'package:shafeea/core/models/countery_model.dart';
+import 'package:shafeea/shared/func/date_format.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/shared/widgets/country_picker_dialog.dart';
+import 'package:shafeea/shared/widgets/custom_text_field.dart';
+import 'package:shafeea/shared/widgets/phone_zone.dart';
+import 'package:shafeea/shared/widgets/pick_date.dart';
 
 import '../../../../../shared/widgets/pick_time.dart';
 

@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_model.dart';
+import 'package:shafeea/features/StudentsManagement/data/models/student_model.dart';
 
 import '../../../../core/models/active_status.dart';
 import '../../../../core/models/report_frequency.dart';
@@ -32,8 +32,6 @@ abstract interface class StudentLocalDataSource {
     required List<StudentInfoModel> updatedStudents,
     required List<StudentInfoModel> deletedStudents,
   });
-
-
 
   /// Queues a local change (create, update, delete) for later synchronization.
   Future<void> queueSyncOperation({

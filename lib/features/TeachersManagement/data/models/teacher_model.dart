@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/core/utils/time_of_day_converter.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/core/models/gender.dart';
+import 'package:shafeea/core/models/user_role.dart';
+import 'package:shafeea/core/utils/time_of_day_converter.dart';
 
 import '../../domain/entities/teacher_entity.dart';
 import '../../domain/entities/teacher_list_item_entity.dart';

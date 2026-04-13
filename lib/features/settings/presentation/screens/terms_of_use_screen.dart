@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/features/settings/presentation/bloc/settings_bloc.dart';
+import 'package:shafeea/features/settings/presentation/bloc/settings_bloc.dart';
 
 import '../../domain/entities/privacy_policy_entity.dart';
 import '../../domain/entities/terms_of_use_entity.dart';

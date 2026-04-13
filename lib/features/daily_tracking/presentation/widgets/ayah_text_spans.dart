@@ -3,12 +3,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/core/models/mistake_type.dart';
-import 'package:tajalwaqaracademy/core/utils/app_assets.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/mistake.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/tracking_session_bloc.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/presentation/widgets/ayah_text_span.dart';
+import 'package:shafeea/core/models/mistake_type.dart';
+import 'package:shafeea/core/utils/app_assets.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/mistake.dart';
+import 'package:shafeea/features/daily_tracking/presentation/bloc/tracking_session_bloc.dart';
+import 'package:shafeea/features/daily_tracking/presentation/widgets/ayah_text_span.dart';
 
 class AyahTextSpans extends StatefulWidget {
   final List<Ayah> ayahsInSurah;

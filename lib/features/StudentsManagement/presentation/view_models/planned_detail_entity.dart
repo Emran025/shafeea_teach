@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/core/models/tracking_units.dart';
+import 'package:shafeea/core/models/tracking_units.dart';
 
 class PlannedDetailEntity {
   final TrackingUnitTyps unit;

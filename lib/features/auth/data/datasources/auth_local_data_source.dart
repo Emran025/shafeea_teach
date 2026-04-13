@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/features/auth/data/models/user_model.dart';
+import 'package:shafeea/features/auth/data/models/user_model.dart';
 
 /// Defines the abstract contract for the local data source of authentication.
 ///

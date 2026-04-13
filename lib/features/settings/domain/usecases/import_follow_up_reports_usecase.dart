@@ -1,11 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/error/failures.dart';
-import 'package:tajalwaqaracademy/core/usecases/usecase.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/repositories/student_repository.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/import_config.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/import_summary.dart';
-
+import 'package:shafeea/core/error/failures.dart';
+import 'package:shafeea/core/usecases/usecase.dart';
+import 'package:shafeea/features/StudentsManagement/domain/repositories/student_repository.dart';
+import 'package:shafeea/features/settings/domain/entities/import_config.dart';
+import 'package:shafeea/features/settings/domain/entities/import_summary.dart';
 
 @injectable
 class ImportFollowUpReportsUseCase

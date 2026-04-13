@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/features/HalaqasManagement/domain/entities/halaqa_list_item_entity.dart';
+import 'package:shafeea/features/HalaqasManagement/domain/entities/halaqa_list_item_entity.dart';
 import 'package:flutter/material.dart';
 
 @immutable

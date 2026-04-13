@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
 import 'package:flutter/material.dart';
 
 @immutable

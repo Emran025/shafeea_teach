@@ -2,13 +2,13 @@
 
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:shafeea/features/auth/data/datasources/auth_local_data_source.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../StudentsManagement/data/models/student_model.dart';
 import '../../../TeachersManagement/data/models/teacher_model.dart';
 import 'core_data_local_data_source.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:shafeea/core/models/user_role.dart';
 
 const String _kUsersTable = 'users';
 

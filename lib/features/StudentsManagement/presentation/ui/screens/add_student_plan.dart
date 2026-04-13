@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/models/report_frequency.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_units.dart';
-import 'package:tajalwaqaracademy/shared/widgets/custom_text_field.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/core/models/report_frequency.dart';
+import 'package:shafeea/core/models/tracking_type.dart';
+import 'package:shafeea/core/models/tracking_units.dart';
+import 'package:shafeea/shared/widgets/custom_text_field.dart';
 
 class StudentsPlanForm extends StatefulWidget {
   final formKey = GlobalKey<FormState>();

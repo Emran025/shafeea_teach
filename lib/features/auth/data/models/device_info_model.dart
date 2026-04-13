@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:tajalwaqaracademy/features/auth/domain/entities/device_info_entity.dart';
+import 'package:shafeea/features/auth/domain/entities/device_info_entity.dart';
 
 /// A data model representing a snapshot of the device's context.
 ///
@@ -72,6 +72,7 @@ final class DeviceInfoModel {
       'fcm_token': pushNotificationToken,
     };
   }
+
   /// Converts this model into a [DeviceInfoEntity].
   /// This is useful when data flows from the data layer to the domain layer.
   DeviceInfoEntity toEntity() {
@@ -88,5 +89,4 @@ final class DeviceInfoModel {
   }
 }
 
-// Map<String, dynamic> 
-
+// Map<String, dynamic>

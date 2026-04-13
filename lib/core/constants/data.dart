@@ -1,12 +1,11 @@
-
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_units.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_info_entity.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
-import 'package:tajalwaqaracademy/features/TeachersManagement/domain/entities/teacher_list_item_entity.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/core/models/gender.dart';
+import 'package:shafeea/core/models/tracking_type.dart';
+import 'package:shafeea/core/models/tracking_units.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/student_info_entity.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
+import 'package:shafeea/features/TeachersManagement/domain/entities/teacher_list_item_entity.dart';
 
 import '../../../features/StudentsManagement/data/models/follow_up_plan_model.dart';
 import '../../../features/StudentsManagement/data/models/plan_detail_model.dart';
@@ -61,7 +60,8 @@ final List<TrackingModel> studentTrackings = [
     id: 1001,
     date: '2025-07-21',
     note: 'بداية أسبوع غير موفقة، كان الطالب مشتتاً.',
-    enrollmentId: 1 , behaviorNote: 3, // (من 5)
+    enrollmentId: 1,
+    behaviorNote: 3, // (من 5)
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-21T18:00:00Z',
     updatedAt: '2025-07-21T18:00:00Z',
@@ -74,7 +74,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[1],
         actualAmount: 0, // لم يحفظ شيئًا
         status: 'completed',
-        comment:  'لم يتمكن من الحفظ بسبب الإرهاق.',
+        comment: 'لم يتمكن من الحفظ بسبب الإرهاق.',
         score: 2, // (من 5)
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
@@ -88,7 +88,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[48], // إلى صفحة 48
         actualAmount: 8, // المطلوب 10، أنجز 8 فقط
         status: 'completed',
-        comment:  'المراجعة كانت متقطعة وبها أخطاء.',
+        comment: 'المراجعة كانت متقطعة وبها أخطاء.',
         score: 3,
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
@@ -102,7 +102,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[110],
         actualAmount: 10, // أنجز المطلوب
         status: 'completed',
-        comment:  'التلاوة كانت جيدة.',
+        comment: 'التلاوة كانت جيدة.',
         score: 4,
         createdAt: '2025-07-21T18:00:00Z',
         updatedAt: '2025-07-21T18:00:00Z',
@@ -116,7 +116,8 @@ final List<TrackingModel> studentTrackings = [
     id: 1002,
     date: '2025-07-22',
     note: 'يوم استثنائي، أظهر الطالب تركيزًا عاليًا.',
-    enrollmentId: 1 , behaviorNote: 5,
+    enrollmentId: 1,
+    behaviorNote: 5,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-22T18:00:00Z',
     updatedAt: '2025-07-22T18:00:00Z',
@@ -129,7 +130,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[283],
         actualAmount: 2, // المطلوب 1، لكنه أنجز 2 لتعويض الأمس
         status: 'completed',
-        comment:  'حفظ متقن للصفحة المقررة وصفحة إضافية.',
+        comment: 'حفظ متقن للصفحة المقررة وصفحة إضافية.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
@@ -143,7 +144,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[60],
         actualAmount: 11, // تجاوز المطلوب
         status: 'completed',
-        comment:  'مراجعة ممتازة وثابتة.',
+        comment: 'مراجعة ممتازة وثابتة.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
@@ -157,7 +158,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[121],
         actualAmount: 10,
         status: 'completed',
-        comment:  'تلاوة خاشعة ومؤثرة.',
+        comment: 'تلاوة خاشعة ومؤثرة.',
         score: 5,
         createdAt: '2025-07-22T18:00:00Z',
         updatedAt: '2025-07-22T18:00:00Z',
@@ -172,7 +173,8 @@ final List<TrackingModel> studentTrackings = [
     attendanceTypeId: AttendanceType.present,
     date: '2025-07-23',
     note: 'أداء مستقر، التزم بالخطة المحددة.',
-    enrollmentId: 1 , behaviorNote: 4,
+    enrollmentId: 1,
+    behaviorNote: 4,
     createdAt: '2025-07-23T18:00:00Z',
     updatedAt: '2025-07-23T18:00:00Z',
     details: [
@@ -184,7 +186,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[284],
         actualAmount: 1, // أنجز المطلوب بالضبط
         status: 'completed',
-        comment:  'حفظ جيد.',
+        comment: 'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-23T18:00:00Z',
         updatedAt: '2025-07-23T18:00:00Z',
@@ -198,7 +200,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[70],
         actualAmount: 10, // أنجز المطلوب بالضبط
         status: 'completed',
-        comment:  'مراجعة جيدة.',
+        comment: 'مراجعة جيدة.',
         score: 4,
         createdAt: '2025-07-23T18:00:00Z',
         updatedAt: '2025-07-23T18:00:00Z',
@@ -214,7 +216,8 @@ final List<TrackingModel> studentTrackings = [
     attendanceTypeId: AttendanceType.present,
     date: '2025-07-24',
     note: 'يوم مستقر، تم الالتزام بالخطة.',
-    enrollmentId: 1 , behaviorNote: 4,
+    enrollmentId: 1,
+    behaviorNote: 4,
     createdAt: '2025-07-24T18:00:00Z',
     updatedAt: '2025-07-24T18:00:00Z',
     details: [
@@ -226,7 +229,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[285],
         actualAmount: 1, // أنجز المطلوب
         status: 'completed',
-        comment:  'حفظ جيد.',
+        comment: 'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-24T18:00:00Z',
         updatedAt: '2025-07-24T18:00:00Z',
@@ -240,7 +243,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[80],
         actualAmount: 10, // أنجز المطلوب
         status: 'completed',
-        comment:  'المراجعة تمت بشكل جيد.',
+        comment: 'المراجعة تمت بشكل جيد.',
         score: 4,
         createdAt: '2025-07-24T18:00:00Z',
         updatedAt: '2025-07-24T18:00:00Z',
@@ -255,7 +258,8 @@ final List<TrackingModel> studentTrackings = [
     attendanceTypeId: AttendanceType.present,
     date: '2025-07-25',
     note: 'كان الطالب متعباً قليلاً.',
-    enrollmentId: 1 , behaviorNote: 3,
+    enrollmentId: 1,
+    behaviorNote: 3,
     createdAt: '2025-07-25T18:00:00Z',
     updatedAt: '2025-07-25T18:00:00Z',
     details: [
@@ -267,7 +271,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[286],
         actualAmount: 1, // أنجز المطلوب
         status: 'completed',
-        comment:  'حفظ جيد.',
+        comment: 'حفظ جيد.',
         score: 4,
         createdAt: '2025-07-25T18:00:00Z',
         updatedAt: '2025-07-25T18:00:00Z',
@@ -281,7 +285,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[88],
         actualAmount: 8, // تقصير بصفحتين
         status: 'completed',
-        comment:  'لم يكمل المراجعة المقررة.',
+        comment: 'لم يكمل المراجعة المقررة.',
         score: 3,
         createdAt: '2025-07-25T18:00:00Z',
         updatedAt: '2025-07-25T18:00:00Z',
@@ -310,7 +314,8 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-26',
     note: 'تركيز عالٍ ورغبة في تعويض الأمس.',
-    enrollmentId: 1 , behaviorNote: 5,
+    enrollmentId: 1,
+    behaviorNote: 5,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-26T18:00:00Z',
     updatedAt: '2025-07-26T18:00:00Z',
@@ -323,7 +328,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[287],
         actualAmount: 1,
         status: 'completed',
-        comment:  'حفظ متقن.',
+        comment: 'حفظ متقن.',
         score: 5,
         createdAt: '2025-07-26T18:00:00Z',
         updatedAt: '2025-07-26T18:00:00Z',
@@ -337,7 +342,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[100],
         actualAmount: 12, // تعويض عن تقصير الأمس وزيادة
         status: 'completed',
-        comment:  'راجع المقرر وزيادة لتعويض الأمس.',
+        comment: 'راجع المقرر وزيادة لتعويض الأمس.',
         score: 5,
         createdAt: '2025-07-26T18:00:00Z',
         updatedAt: '2025-07-26T18:00:00Z',
@@ -351,7 +356,8 @@ final List<TrackingModel> studentTrackings = [
     id: 1007,
     date: '2025-07-27',
     note: 'غياب الطالب لظرف طارئ.',
-    enrollmentId: 1 , behaviorNote: 1, // سلوك منخفض لأنه لم يحضر
+    enrollmentId: 1,
+    behaviorNote: 1, // سلوك منخفض لأنه لم يحضر
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-27T18:00:00Z',
     updatedAt: '2025-07-27T18:00:00Z',
@@ -364,7 +370,8 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-28',
     note: 'العقل ما زال متأثراً بالغياب.',
-    enrollmentId: 1 , behaviorNote: 2,
+    enrollmentId: 1,
+    behaviorNote: 2,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-28T18:00:00Z',
     updatedAt: '2025-07-28T18:00:00Z',
@@ -377,7 +384,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[288],
         actualAmount: 0, // لم يحفظ
         status: 'completed',
-        comment:  'لم يستطع التركيز في الحفظ.',
+        comment: 'لم يستطع التركيز في الحفظ.',
         score: 1,
         createdAt: '2025-07-28T18:00:00Z',
         updatedAt: '2025-07-28T18:00:00Z',
@@ -391,7 +398,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[105],
         actualAmount: 5, // تقصير كبير
         status: 'completed',
-        comment:  'مراجعة ضعيفة.',
+        comment: 'مراجعة ضعيفة.',
         score: 2,
         createdAt: '2025-07-28T18:00:00Z',
         updatedAt: '2025-07-28T18:00:00Z',
@@ -409,7 +416,8 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-29',
     note: 'بدأ يستعيد تركيزه.',
-    enrollmentId: 1 , behaviorNote: 4,
+    enrollmentId: 1,
+    behaviorNote: 4,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-29T18:00:00Z',
     updatedAt: '2025-07-29T18:00:00Z',
@@ -422,7 +430,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[288],
         actualAmount: 1, // حفظ مقرر اليوم
         status: 'completed',
-        comment:  'تم حفظ مقرر اليوم لتعويض أمس.',
+        comment: 'تم حفظ مقرر اليوم لتعويض أمس.',
         score: 4,
         createdAt: '2025-07-29T18:00:00Z',
         updatedAt: '2025-07-29T18:00:00Z',
@@ -436,7 +444,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[115],
         actualAmount: 10,
         status: 'completed',
-        comment:  'مراجعة جيدة.',
+        comment: 'مراجعة جيدة.',
         score: 4,
         createdAt: '2025-07-29T18:00:00Z',
         updatedAt: '2025-07-29T18:00:00Z',
@@ -451,7 +459,8 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-30',
     note: 'يوم رائع، حماس عالي.',
-    enrollmentId: 1 , behaviorNote: 5,
+    enrollmentId: 1,
+    behaviorNote: 5,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-30T18:00:00Z',
     updatedAt: '2025-07-30T18:00:00Z',
@@ -464,7 +473,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[290],
         actualAmount: 2, // تجاوز المطلوب
         status: 'completed',
-        comment:  'حفظ صفحتين بإتقان.',
+        comment: 'حفظ صفحتين بإتقان.',
         score: 5,
         createdAt: '2025-07-30T18:00:00Z',
         updatedAt: '2025-07-30T18:00:00Z',
@@ -479,7 +488,8 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-07-31',
     note: 'عانى من التشتت الذهني.',
-    enrollmentId: 1 , behaviorNote: 3,
+    enrollmentId: 1,
+    behaviorNote: 3,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-07-31T18:00:00Z',
     updatedAt: '2025-07-31T18:00:00Z',
@@ -492,7 +502,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[122],
         actualAmount: 7, // تقصير
         status: 'completed',
-        comment:  'مراجعة غير مكتملة.',
+        comment: 'مراجعة غير مكتملة.',
         score: 2,
         createdAt: '2025-07-31T18:00:00Z',
         updatedAt: '2025-07-31T18:00:00Z',
@@ -506,7 +516,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[138],
         actualAmount: 5, // تقصير
         status: 'completed',
-        comment:  'تلاوة سريعة.',
+        comment: 'تلاوة سريعة.',
         score: 3,
         createdAt: '2025-07-31T18:00:00Z',
         updatedAt: '2025-07-31T18:00:00Z',
@@ -521,7 +531,8 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-08-01',
     note: 'أداء قياسي لتعويض كل التقصير السابق.',
-    enrollmentId: 1 , behaviorNote: 5,
+    enrollmentId: 1,
+    behaviorNote: 5,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-08-01T18:00:00Z',
     updatedAt: '2025-08-01T18:00:00Z',
@@ -533,7 +544,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[291],
         toTrackingUnitId: trackingUnitDetail[291],
         actualAmount: 1,
-        comment: '',  status: 'completed',
+        comment: '',
+        status: 'completed',
         score: 5,
         createdAt: '2025-08-01T18:00:00Z',
         updatedAt: '2025-08-01T18:00:00Z',
@@ -547,7 +559,7 @@ final List<TrackingModel> studentTrackings = [
         toTrackingUnitId: trackingUnitDetail[143],
         actualAmount: 20, // ضعف المقرر
         status: 'completed',
-        comment:  'مراجعة جزء كامل بإتقان.',
+        comment: 'مراجعة جزء كامل بإتقان.',
         score: 5,
         createdAt: '2025-08-01T18:00:00Z',
         updatedAt: '2025-08-01T18:00:00Z',
@@ -562,7 +574,8 @@ final List<TrackingModel> studentTrackings = [
 
     date: '2025-08-02',
     note: 'عودة إلى المسار الصحيح.',
-    enrollmentId: 1 , behaviorNote: 4,
+    enrollmentId: 1,
+    behaviorNote: 4,
     attendanceTypeId: AttendanceType.present,
     createdAt: '2025-08-02T18:00:00Z',
     updatedAt: '2025-08-02T18:00:00Z',
@@ -574,7 +587,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[292],
         toTrackingUnitId: trackingUnitDetail[292],
         actualAmount: 1,
-        comment: '', status: 'completed',
+        comment: '',
+        status: 'completed',
         score: 4,
         createdAt: '2025-08-02T18:00:00Z',
         updatedAt: '2025-08-02T18:00:00Z',
@@ -587,7 +601,8 @@ final List<TrackingModel> studentTrackings = [
         fromTrackingUnitId: trackingUnitDetail[144],
         toTrackingUnitId: trackingUnitDetail[153],
         actualAmount: 10,
-        comment: '', status: 'completed',
+        comment: '',
+        status: 'completed',
         score: 4,
         createdAt: '2025-08-02T18:00:00Z',
         updatedAt: '2025-08-02T18:00:00Z',
@@ -1256,5 +1271,3 @@ final List<TeacherDetailEntity> fakeTeachers2 = [
     updatedAt: "${DateTime.now()}",
   ),
 ];
-
-

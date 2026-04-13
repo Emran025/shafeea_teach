@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/models/report_frequency.dart';
-import 'package:tajalwaqaracademy/shared/func/date_format.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/core/models/report_frequency.dart';
+import 'package:shafeea/shared/func/date_format.dart';
 
-import 'package:tajalwaqaracademy/shared/widgets/frequency_selector.dart';
-import 'package:tajalwaqaracademy/shared/widgets/horizontal_calendar_date_picker.dart';
+import 'package:shafeea/shared/widgets/frequency_selector.dart';
+import 'package:shafeea/shared/widgets/horizontal_calendar_date_picker.dart';
 
 import '../widgets/student_list_card_with_options.dart';
 
@@ -176,5 +176,4 @@ class _StudentsContinuousMonitoringState
       child: Text(text, style: Theme.of(context).textTheme.bodyLarge!),
     );
   }
-
 }

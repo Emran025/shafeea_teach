@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/error/failures.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/repositories/student_repository.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/usecases/usecase.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/view_models/factories/follow_up_report_factory.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/view_models/follow_up_report_bundle_entity.dart';
+import 'package:shafeea/core/error/failures.dart';
+import 'package:shafeea/features/StudentsManagement/domain/repositories/student_repository.dart';
+import 'package:shafeea/features/StudentsManagement/domain/usecases/usecase.dart';
+import 'package:shafeea/features/StudentsManagement/presentation/view_models/factories/follow_up_report_factory.dart';
+import 'package:shafeea/features/StudentsManagement/presentation/view_models/follow_up_report_bundle_entity.dart';
 // ... (imports)
 
 @lazySingleton

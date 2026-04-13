@@ -3,9 +3,9 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
-import 'package:tajalwaqaracademy/features/settings/data/datasources/settings_local_data_source.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
+import 'package:shafeea/core/error/exceptions.dart';
+import 'package:shafeea/features/settings/data/datasources/settings_local_data_source.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
 
 import '../../../../core/database/app_database.dart';
 import '../models/privacy_policy_model.dart';

@@ -4,8 +4,8 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/repositories/quran_repository.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/features/daily_tracking/domain/repositories/quran_repository.dart';
 import 'package:injectable/injectable.dart';
 
 /// A use case for fetching all the ayahs for a specific page of the Quran.

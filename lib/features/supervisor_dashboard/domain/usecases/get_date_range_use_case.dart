@@ -3,7 +3,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/repositories/repository.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/repositories/repository.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/user_role.dart';

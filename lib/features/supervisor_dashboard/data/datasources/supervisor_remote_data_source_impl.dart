@@ -1,8 +1,8 @@
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/api/api_consumer.dart';
-import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:shafeea/core/api/api_consumer.dart';
+import 'package:shafeea/core/api/end_ponits.dart';
+import 'package:shafeea/core/error/exceptions.dart';
+import 'package:shafeea/core/models/user_role.dart';
 
 import '../models/applicant_model.dart';
 import '../models/applicant_profile_model.dart';

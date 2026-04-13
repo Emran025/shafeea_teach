@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:shafeea/core/error/exceptions.dart';
+import 'package:shafeea/core/models/user_role.dart';
+import 'package:shafeea/features/auth/data/datasources/auth_local_data_source.dart';
 import '../../../../core/models/active_status.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/models/sync_queue_model.dart';
@@ -144,8 +144,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
               'isDeleted': 1,
               'lastModified': DateTime.now().millisecondsSinceEpoch,
             },
-            where: 'uuid = ? AND tenant_id = ?',
-            whereArgs: [halaqa.id, tenantId],
+            where: 'id = ? AND tenant_id = ?',
+            whereArgs: [int.tryParse(halaqa.id) ?? 0, tenantId],
           );
         }
         // Commit all operations in the batch at once.
@@ -225,12 +225,6 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
     try {
-      await _db.update(
-        _kHalqasTable,
-        {'isDeleted': 1, 'lastModified': DateTime.now().millisecondsSinceEpoch},
-        where: 'uuid = ? AND tenant_id = ?',
-        whereArgs: [halaqa.id, tenantId],
-      );
       final halaqaMap = halaqa.toMap();
       halaqaMap['tenant_id'] = tenantId;
       await _db.insert(
@@ -254,8 +248,8 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
       final rowsAffected = await _db.update(
         _kHalqasTable,
         {'isDeleted': 1, 'lastModified': DateTime.now().millisecondsSinceEpoch},
-        where: 'uuid = ? AND tenant_id = ?',
-        whereArgs: [halaqaId, tenantId],
+        where: 'id = ? AND tenant_id = ?',
+        whereArgs: [int.tryParse(halaqaId) ?? 0, tenantId],
       );
 
       if (rowsAffected == 0) {

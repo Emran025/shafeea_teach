@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/line_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/line_chart_datas.dart';
 import '../../../../../shared/themes/app_theme.dart';
 
 /// Widget أساسي لمخطط الخطوط (Line Chart)

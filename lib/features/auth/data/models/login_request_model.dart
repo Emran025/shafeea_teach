@@ -1,6 +1,6 @@
-import 'package:tajalwaqaracademy/features/auth/data/models/device_info_model.dart';
-import 'package:tajalwaqaracademy/features/auth/domain/entities/device_info_entity.dart';
-import 'package:tajalwaqaracademy/features/auth/domain/entities/login_credentials_entity.dart';
+import 'package:shafeea/features/auth/data/models/device_info_model.dart';
+import 'package:shafeea/features/auth/domain/entities/device_info_entity.dart';
+import 'package:shafeea/features/auth/domain/entities/login_credentials_entity.dart';
 
 /// The data model for a complete logIn request payload.
 ///

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/core/error/failures.dart';
-import 'package:tajalwaqaracademy/core/usecases/usecase.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import 'package:shafeea/core/error/failures.dart';
+import 'package:shafeea/core/usecases/usecase.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 import 'package:injectable/injectable.dart';
 
 import '../repositories/tracking_repository.dart';
@@ -17,7 +17,8 @@ class GetErrorAnalysisChartData
 
   @override
   Future<Either<Failure, List<BarChartDatas>>> call(
-      GetErrorAnalysisChartDataParams params) async {
+    GetErrorAnalysisChartDataParams params,
+  ) async {
     return await repository.getErrorAnalysisChartData(
       enrollmentId: params.enrollmentId,
       filter: params.filter,

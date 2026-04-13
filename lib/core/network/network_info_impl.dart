@@ -1,6 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-import 'package:tajalwaqaracademy/core/network/network_info.dart';
+import 'package:shafeea/core/network/network_info.dart';
 
 /// The concrete implementation of the [NetworkInfo] contract.
 ///
@@ -19,7 +19,7 @@ final class NetworkInfoImpl implements NetworkInfo {
   /// It requires an [InternetConnection] instance, which is supplied by the
   /// dependency injection container, promoting loose coupling.
   NetworkInfoImpl({required InternetConnection connectionChecker})
-      : _connectionChecker = connectionChecker;
+    : _connectionChecker = connectionChecker;
 
   /// Checks the network status by calling the underlying library's method.
   @override

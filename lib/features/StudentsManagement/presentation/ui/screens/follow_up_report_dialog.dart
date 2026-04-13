@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/widgets/daily_details_dialog.dart';
-import 'package:tajalwaqaracademy/shared/widgets/taj.dart';
+import 'package:shafeea/features/StudentsManagement/presentation/ui/widgets/daily_details_dialog.dart';
+import 'package:shafeea/shared/widgets/taj.dart';
 
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
 import '../../../../../shared/func/date_format.dart';
 import '../../view_models/follow_up_report_bundle_entity.dart';
 import '../../view_models/follow_up_report_entity.dart';

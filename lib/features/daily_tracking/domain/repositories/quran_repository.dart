@@ -2,8 +2,8 @@
 
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/surah.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/surah.dart';
 
 /// An abstract contract for the Quran repository.
 ///
@@ -27,9 +27,12 @@ abstract class QuranRepository {
   /// Similar to [getPageData], it returns an `Either` type, providing
   /// a [Failure] on error or the complete list of [Surah] entities on success.
   Future<Either<Failure, List<Surah>>> getSurahsList();
+
   /// Fetches the complete list of all [Surah] entities in the Quran.
   ///
   /// Similar to [getMistakesAyahs], it returns an `Either` type, providing
   /// a [Failure] on error or the complete list of [MistakesAyahs] entities on success.
-  Future<Either<Failure, List<Ayah>>> getMistakesAyahsList(List <int> ayahsNumbers);
+  Future<Either<Failure, List<Ayah>>> getMistakesAyahsList(
+    List<int> ayahsNumbers,
+  );
 }

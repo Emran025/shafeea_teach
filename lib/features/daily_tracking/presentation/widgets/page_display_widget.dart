@@ -4,10 +4,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:tajalwaqaracademy/core/utils/app_assets.dart';
-import 'package:tajalwaqaracademy/core/utils/app_strings.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/presentation/widgets/ayah_text_spans.dart';
+import 'package:shafeea/core/utils/app_assets.dart';
+import 'package:shafeea/core/utils/app_strings.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/features/daily_tracking/presentation/widgets/ayah_text_spans.dart';
 import '../../domain/entities/mistake.dart';
 import '../bloc/quran_reader_bloc.dart';
 // import 'package:shimmer/shimmer.dart';
@@ -24,7 +24,7 @@ import 'top_title_page_header_widget.dart'; // Add shimmer package to pubspec.ya
 class PageDisplayWidget extends StatefulWidget {
   final int pageNumber;
 
-  const PageDisplayWidget({super.key, required this.pageNumber });
+  const PageDisplayWidget({super.key, required this.pageNumber});
 
   @override
   State<PageDisplayWidget> createState() => _PageDisplayWidgetState();

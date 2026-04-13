@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/core/models/gender.dart';
 
 class Avatar extends StatelessWidget {
   final Gender? gender;

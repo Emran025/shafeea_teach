@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/core/utils/data_status.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/core/utils/data_status.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
 import '../../domain/entities/mistake.dart';
 import '../bloc/quran_reader_bloc.dart';
 import '../bloc/tracking_session_bloc.dart';

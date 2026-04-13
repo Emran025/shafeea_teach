@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/core/entities/tracking_unit.dart';
+import 'package:shafeea/core/entities/tracking_unit.dart';
 
 class TrackingUnitDetailModel {
   final int id;
@@ -49,9 +49,17 @@ class TrackingUnitDetailModel {
     );
   }
 
-   TrackingUnitDetail toEntity(
-  ) {
-    return TrackingUnitDetail(id, unitId, fromSurah, fromPage, fromAyah, toSurah, toPage, toAyah);
+  TrackingUnitDetail toEntity() {
+    return TrackingUnitDetail(
+      id,
+      unitId,
+      fromSurah,
+      fromPage,
+      fromAyah,
+      toSurah,
+      toPage,
+      toAyah,
+    );
   }
 
   factory TrackingUnitDetailModel.fromJson(Map<String, dynamic> json) {

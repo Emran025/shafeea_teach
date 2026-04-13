@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
 
 import '../../../core/models/user_role.dart';
 import '../../auth/presentation/bloc/auth_bloc.dart';

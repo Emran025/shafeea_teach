@@ -1,10 +1,10 @@
 import 'package:go_router/go_router.dart';
-import 'package:tajalwaqaracademy/features/auth/presentation/ui/screens/logIn_screen.dart';
-import 'package:tajalwaqaracademy/features/app/pages/splash_screen.dart';
-import 'package:tajalwaqaracademy/features/app/pages/welcome_screen.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/admin_home_screen.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/applicant_profile_screen.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/teacher_home_screen.dart';
+import 'package:shafeea/features/auth/presentation/ui/screens/logIn_screen.dart';
+import 'package:shafeea/features/app/pages/splash_screen.dart';
+import 'package:shafeea/features/app/pages/welcome_screen.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/ui/screens/admin_home_screen.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/ui/screens/applicant_profile_screen.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/ui/screens/teacher_home_screen.dart';
 
 /// The main router configuration for the application.
 ///

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
+import 'package:shafeea/core/error/exceptions.dart';
 import 'api_consumer.dart';
 
 /// The concrete implementation of the [ApiConsumer] contract using the Dio library.
@@ -38,7 +38,7 @@ final class DioConsumer implements ApiConsumer {
       return response.data;
     } on DioException catch (e) {
       // Translate a Dio-specific error into an application-specific exception.
-       handleDioExceptions(e);
+      handleDioExceptions(e);
     }
   }
 
@@ -52,12 +52,14 @@ final class DioConsumer implements ApiConsumer {
     try {
       final response = await _dio.post(
         path,
-        data: isFormData ? FormData.fromMap(data as Map<String, dynamic>) : data,
+        data: isFormData
+            ? FormData.fromMap(data as Map<String, dynamic>)
+            : data,
         queryParameters: queryParameters,
       );
       return response.data;
     } on DioException catch (e) {
-       handleDioExceptions(e);
+      handleDioExceptions(e);
     }
   }
 
@@ -71,12 +73,14 @@ final class DioConsumer implements ApiConsumer {
     try {
       final response = await _dio.patch(
         path,
-        data: isFormData ? FormData.fromMap(data as Map<String, dynamic>) : data,
+        data: isFormData
+            ? FormData.fromMap(data as Map<String, dynamic>)
+            : data,
         queryParameters: queryParameters,
       );
       return response.data;
     } on DioException catch (e) {
-       handleDioExceptions(e);
+      handleDioExceptions(e);
     }
   }
 
@@ -90,12 +94,14 @@ final class DioConsumer implements ApiConsumer {
     try {
       final response = await _dio.delete(
         path,
-        data: isFormData ? FormData.fromMap(data as Map<String, dynamic>) : data,
+        data: isFormData
+            ? FormData.fromMap(data as Map<String, dynamic>)
+            : data,
         queryParameters: queryParameters,
       );
       return response.data;
     } on DioException catch (e) {
-       handleDioExceptions(e);
+      handleDioExceptions(e);
     }
   }
 }

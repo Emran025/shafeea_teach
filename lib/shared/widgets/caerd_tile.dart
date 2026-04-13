@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/shared/widgets/taj.dart';
+import 'package:shafeea/shared/widgets/taj.dart';
 
 import '../themes/app_theme.dart';
 

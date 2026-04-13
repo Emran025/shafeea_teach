@@ -1,8 +1,8 @@
 // path: lib/features/settings/data/datasources/settings_remote_data_source_impl.dart
 
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/user_profile_entity.dart';
+import 'package:shafeea/core/models/user_role.dart';
+import 'package:shafeea/features/settings/domain/entities/user_profile_entity.dart';
 
 import '../../../../core/api/api_consumer.dart';
 import '../../../../core/api/end_ponits.dart';
@@ -168,10 +168,7 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
   @override
   Future<void> submitSupportTicket(SupportTicketModel ticket) async {
     try {
-      await _api.post(
-        EndPoint.tickets,
-        data: ticket.toJson(),
-      );
+      await _api.post(EndPoint.tickets, data: ticket.toJson());
     } catch (e) {
       throw ServerException(message: 'Failed to submit support ticket.');
     }

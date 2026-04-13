@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/features/settings/presentation/screens/profile_screen.dart';
+import 'package:shafeea/features/settings/presentation/screens/profile_screen.dart';
 
 import 'data_management_screen.dart';
 import '../bloc/settings_bloc.dart';

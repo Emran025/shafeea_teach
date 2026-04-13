@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/plan_detail_entity.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/plan_detail_entity.dart';
 
 import '../../../../core/models/report_frequency.dart';
+
 @immutable
 class FollowUpPlanEntity {
   final String planId;

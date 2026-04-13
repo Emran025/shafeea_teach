@@ -2,27 +2,27 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tajalwaqaracademy/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:shafeea/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:uuid/uuid.dart';
 
 // Core imports
-import 'package:tajalwaqaracademy/core/database/app_database.dart';
-import 'package:tajalwaqaracademy/core/error/exceptions.dart';
-import 'package:tajalwaqaracademy/core/models/sync_queue_model.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
+import 'package:shafeea/core/database/app_database.dart';
+import 'package:shafeea/core/error/exceptions.dart';
+import 'package:shafeea/core/models/sync_queue_model.dart';
+import 'package:shafeea/core/models/tracking_type.dart';
 
 // Models
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/tracking_detail_model.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/data/models/mistake_model.dart';
+import 'package:shafeea/features/StudentsManagement/data/models/tracking_detail_model.dart';
+import 'package:shafeea/features/daily_tracking/data/models/mistake_model.dart';
 
 // The contract it implements
-import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran_local_data_source.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/chart_data_point.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import 'package:shafeea/features/daily_tracking/data/datasources/quran_local_data_source.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/chart_data_point.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 import '../../domain/entities/stop_point.dart';
 import 'tracking_local_data_source.dart';
-import 'package:tajalwaqaracademy/core/models/mistake_type.dart';
+import 'package:shafeea/core/models/mistake_type.dart';
 
 // Models
 
@@ -58,14 +58,17 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
 
   @override
   Future<Map<TrackingType, TrackingDetailModel>>
-  getOrCreateTodayDraftTrackingDetails({required int enrollmentId}) async {
+  getOrCreateTodayDraftTrackingDetails({required String enrollmentId}) async {
     final db = await _appDb.database;
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
     try {
+      // Resolve UUID to Local ID
+      final int localEnrollmentId = await _resolveEnrollmentId(db, enrollmentId, tenantId);
+
       final trackingRecord = await _findOrCreateParentDraftTracking(
         db,
-        enrollmentId,
+        localEnrollmentId,
         tenantId,
       );
       final trackingId = trackingRecord['id'] as int;
@@ -78,7 +81,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       if (detailMaps.length < 3) {
         final lastUnitsMap = await _getLastCompletedUnitIds(
           db,
-          enrollmentId,
+          localEnrollmentId,
           tenantId,
         );
         await _createMissingDetails(
@@ -328,7 +331,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
 
   @override
   Future<List<MistakeModel>> getAllMistakes({
-    required int enrollmentId,
+    required String enrollmentId,
     TrackingType? type,
     int? fromPage,
     int? toPage,
@@ -337,6 +340,9 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
     try {
+      // Resolve UUID to Local ID
+      final int localEnrollmentId = await _resolveEnrollmentId(db, enrollmentId, tenantId);
+
       String baseQuery =
           '''
       SELECT m.*
@@ -348,7 +354,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         -- AND tdt.status = 'completed'
     ''';
 
-      List<dynamic> arguments = [enrollmentId, tenantId];
+      List<dynamic> arguments = [localEnrollmentId, tenantId];
 
       // ================== DYNAMIC TYPE FILTERING ==================
       if (type != null) {
@@ -384,17 +390,20 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
 
   @override
   Future<List<BarChartDatas>> getErrorAnalysisChartData({
-    required int enrollmentId,
+    required String enrollmentId,
     required ChartFilter filter,
   }) async {
     final db = await _appDb.database;
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
     try {
+      // Resolve UUID to Local ID
+      final int localEnrollmentId = await _resolveEnrollmentId(db, enrollmentId, tenantId);
+
       if (filter.dimension == FilterDimension.time) {
-        return _fetchDataByTime(db, enrollmentId, tenantId, filter);
+        return _fetchDataByTime(db, localEnrollmentId, tenantId, filter);
       } else {
-        return _fetchDataByQuantity(db, enrollmentId, tenantId, filter);
+        return _fetchDataByQuantity(db, localEnrollmentId, tenantId, filter);
       }
     } on DatabaseException catch (e) {
       throw CacheException(
@@ -724,6 +733,23 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   // =========================================================================
   //                             Private Helper Methods
   // =========================================================================
+
+  Future<int> _resolveEnrollmentId(Database db, String uuidOrId, String tenantId) async {
+    final int? numericId = int.tryParse(uuidOrId);
+    final result = await db.query(
+      'halqa_students',
+      columns: ['id'],
+      where: '(id = ? OR uuid = ?) AND tenant_id = ?',
+      whereArgs: [numericId ?? -1, uuidOrId, tenantId],
+      limit: 1,
+    );
+
+    if (result.isEmpty) {
+      throw CacheException(message: 'Enrollment with ID $uuidOrId not found locally.');
+    }
+
+    return result.first['id'] as int;
+  }
 
   /// Finds the most recent draft tracking record for a student, or creates a new one for today if none exists.
   Future<Map<String, dynamic>> _findOrCreateParentDraftTracking(

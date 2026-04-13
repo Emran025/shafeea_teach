@@ -4,9 +4,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/data/datasources/quran_local_data_source.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/data/models/ayah_model.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/data/models/surah_model.dart';
+import 'package:shafeea/features/daily_tracking/data/datasources/quran_local_data_source.dart';
+import 'package:shafeea/features/daily_tracking/data/models/ayah_model.dart';
+import 'package:shafeea/features/daily_tracking/data/models/surah_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

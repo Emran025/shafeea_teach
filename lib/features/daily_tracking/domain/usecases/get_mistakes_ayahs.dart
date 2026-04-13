@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/repositories/quran_repository.dart';
+import 'package:shafeea/features/daily_tracking/domain/repositories/quran_repository.dart';
 import 'package:injectable/injectable.dart';
 
 import '../entities/ayah.dart';
@@ -31,7 +31,9 @@ class GetMistakesAyahs implements UseCase<List<Ayah>, GetMistakesAyahsParams> {
   /// returns its result, which is an `Either` type containing either a
   /// `Failure` or a list of `Ayah` entities.
   @override
-  Future<Either<Failure, List<Ayah>>> call(GetMistakesAyahsParams params) async {
+  Future<Either<Failure, List<Ayah>>> call(
+    GetMistakesAyahsParams params,
+  ) async {
     return await repository.getMistakesAyahsList(params.ayahsNumbers);
   }
 }

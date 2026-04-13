@@ -1,7 +1,7 @@
 // lib/features/students/domain/usecases/delete_student.dart
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/error/failures.dart';
+import 'package:shafeea/core/error/failures.dart';
 
 import '../repositories/student_repository.dart';
 import 'usecase.dart';

@@ -3,12 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import '../../../../core/models/tracking_unit_model.dart';
 import '../../domain/entities/tracking_detail_entity.dart';
-import 'package:tajalwaqaracademy/core/constants/tracking_unit_detail.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
+import 'package:shafeea/core/constants/tracking_unit_detail.dart';
+import 'package:shafeea/core/models/tracking_type.dart';
 
-import 'package:tajalwaqaracademy/features/daily_tracking/data/models/mistake_model.dart';
-import 'package:uuid/uuid.dart';
-
+import 'package:shafeea/features/daily_tracking/data/models/mistake_model.dart';
 
 /// The data model for the detailed breakdown of a daily tracking record.
 ///
@@ -118,11 +116,11 @@ final class TrackingDetailModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'uuid': uuid,
+      'uuid': uuid.isEmpty ? id.toString() : uuid,
       'trackingId': trackingId,
-      'trackingTypeId': trackingTypeId.toString(),
-      'fromTrackingUnitId': fromTrackingUnitId.toJson(),
-      'toTrackingUnitId': toTrackingUnitId.toJson(),
+      'trackingTypeId': trackingTypeId.id,
+      'fromTrackingUnitId': fromTrackingUnitId.id,
+      'toTrackingUnitId': toTrackingUnitId.id,
       'actualAmount': actualAmount,
       'comment': comment,
       'status': status,
@@ -134,7 +132,6 @@ final class TrackingDetailModel {
     };
   }
 
-
   factory TrackingDetailModel.fromCsvRow(Map<String, dynamic> row) {
     final mistakesJson = row['mistakesJson'] as String;
     final mistakes = (jsonDecode(mistakesJson) as List<dynamic>)
@@ -145,8 +142,9 @@ final class TrackingDetailModel {
       id: 0,
       uuid: '',
       trackingId: row['trackingId'] as int,
-      trackingTypeId: TrackingType.values
-          .firstWhere((e) => e.toString() == row['detailType'] as String),
+      trackingTypeId: TrackingType.values.firstWhere(
+        (e) => e.toString() == row['detailType'] as String,
+      ),
       fromTrackingUnitId: TrackingUnitDetailModel(
         0,
         int.tryParse(row['from_unitId'] as String? ?? '0') ?? 0,
@@ -177,11 +175,13 @@ final class TrackingDetailModel {
       mistakes: mistakes,
     );
   }
+
   /// This map aligns with the schema of the `daily_tracking_detail` table.
   /// NOTE: This does NOT include the mistakes, as they are saved to a separate table.
   Map<String, dynamic> toMap(int parentTrackingId) {
     return {
-      'uuid': uuid.isEmpty ? const Uuid().v4() : uuid,
+      'id': id,
+      'uuid': uuid.isEmpty ? id.toString() : uuid,
       'trackingId': parentTrackingId,
       'typeId': trackingTypeId.id,
       'actualAmount': actualAmount,
@@ -262,8 +262,12 @@ final class TrackingDetailModel {
       uuid: entity.uuid,
       trackingId: int.parse(entity.trackingId),
       trackingTypeId: entity.trackingTypeId,
-      fromTrackingUnitId: TrackingUnitDetailModel.fromEntity( entity.fromTrackingUnitId),
-      toTrackingUnitId: TrackingUnitDetailModel.fromEntity( entity.toTrackingUnitId),
+      fromTrackingUnitId: TrackingUnitDetailModel.fromEntity(
+        entity.fromTrackingUnitId,
+      ),
+      toTrackingUnitId: TrackingUnitDetailModel.fromEntity(
+        entity.toTrackingUnitId,
+      ),
       actualAmount: entity.actualAmount,
       comment: entity.comment,
       status: entity.status,

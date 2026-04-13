@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/composite_performance_data.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/line_chart_data.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/composite_performance_data.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/line_chart_data.dart';
 
 /// نموذج بيانات لمجموعة بيانات متعددة الفترات الزمنية
 /// يحتوي على 12 فترة زمنية من البيانات

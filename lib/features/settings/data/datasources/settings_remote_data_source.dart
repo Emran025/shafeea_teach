@@ -1,6 +1,6 @@
 // path: lib/features/settings/data/datasources/settings_remote_data_source.dart
 
-import 'package:tajalwaqaracademy/features/settings/domain/entities/user_profile_entity.dart';
+import 'package:shafeea/features/settings/domain/entities/user_profile_entity.dart';
 
 import '../models/faq_model.dart';
 import '../models/privacy_policy_model.dart';
@@ -41,4 +41,3 @@ abstract class SettingsRemoteDataSource {
   /// Throws a [ServerException] for all error cases.
   Future<TermsOfUseModel> getTermsOfUse();
 }
-

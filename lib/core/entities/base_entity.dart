@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
+import 'package:shafeea/core/models/active_status.dart';
 
 import '../../../../core/models/gender.dart';
 
@@ -9,7 +9,7 @@ import '../../../../core/models/gender.dart';
 ///
 /// It contains the core properties shared between the list view and the
 /// detailed view. Using [Equatable] for value-based equality.
-abstract class BaseEntity  {
+abstract class BaseEntity {
   final String id;
   final String name;
   final Gender gender;
@@ -27,5 +27,4 @@ abstract class BaseEntity  {
     required this.avatar,
     required this.status,
   });
-
 }

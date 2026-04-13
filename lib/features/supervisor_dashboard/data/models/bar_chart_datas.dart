@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/chart_data_point.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/chart_data_point.dart';
 
 /// نموذج بيانات لمخطط الأعمدة (Bar Chart)
 class BarChartDatas extends Equatable {
@@ -22,9 +22,12 @@ class BarChartDatas extends Equatable {
   });
 
   @override
-  List<Object?> get props =>
-      [data, xAxisLabel, yAxisLabel, maxY, periodDate, periodLabel];
+  List<Object?> get props => [
+    data,
+    xAxisLabel,
+    yAxisLabel,
+    maxY,
+    periodDate,
+    periodLabel,
+  ];
 }
-
-
-

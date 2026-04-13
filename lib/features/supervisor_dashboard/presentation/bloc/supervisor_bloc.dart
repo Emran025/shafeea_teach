@@ -3,8 +3,8 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_entity.dart';
+import 'package:shafeea/core/models/user_role.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/applicant_entity.dart';
 
 import '../../data/models/composite_performance_data.dart';
 import '../../domain/entities/chart_filter_entity.dart';
@@ -58,11 +58,13 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
   ) async {
     final currentState = state;
     if (currentState is SupervisorLoaded) {
-      emit(currentState.copyWith(
-        message: null,
-        errorMessage: null,
-        rejectStatus: ActionStatus.initial,
-      ));
+      emit(
+        currentState.copyWith(
+          message: null,
+          errorMessage: null,
+          rejectStatus: ActionStatus.initial,
+        ),
+      );
     }
   }
 
@@ -283,9 +285,8 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
     final result = await getApplicantProfileUC(event.applicantId);
     result.fold(
       (failure) => emit(SupervisorError(message: failure.message)),
-      (applicantProfile) => emit(
-        SupervisorLoaded(applicantProfile: applicantProfile),
-      ),
+      (applicantProfile) =>
+          emit(SupervisorLoaded(applicantProfile: applicantProfile)),
     );
   }
 
@@ -298,20 +299,19 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
 
     emit(SupervisorLoading());
     final result = await approveApplicantUC(event.applicantId);
-    result.fold(
-      (failure) => emit(SupervisorError(message: failure.message)),
-      (_) {
-        final updatedApplicants = currentState.applicants
-            .where((element) => element.id != event.applicantId)
-            .toList();
-        emit(
-          currentState.copyWith(
-            applicants: updatedApplicants,
-            applicantProfile: null,
-          ),
-        );
-      },
-    );
+    result.fold((failure) => emit(SupervisorError(message: failure.message)), (
+      _,
+    ) {
+      final updatedApplicants = currentState.applicants
+          .where((element) => element.id != event.applicantId)
+          .toList();
+      emit(
+        currentState.copyWith(
+          applicants: updatedApplicants,
+          applicantProfile: null,
+        ),
+      );
+    });
   }
 
   Future<void> _onRejectApplicant(
@@ -323,8 +323,7 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
 
     emit(currentState.copyWith(rejectStatus: ActionStatus.loading));
 
-    final result =
-        await rejectApplicantUC(event.applicantId, event.reason);
+    final result = await rejectApplicantUC(event.applicantId, event.reason);
     result.fold(
       (failure) => emit(
         currentState.copyWith(

@@ -1,9 +1,9 @@
 // import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/follow_up_plan_entity.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/halqa_entity.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_entity.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/follow_up_plan_entity.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/halqa_entity.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/student_entity.dart';
 
 /// Represents the full, detailed profile of a single student.
 ///

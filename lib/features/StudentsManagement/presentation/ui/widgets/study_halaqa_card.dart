@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/shared/func/date_format.dart';
+import 'package:shafeea/shared/func/date_format.dart';
 
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
 import '../../../../../shared/widgets/avatar.dart';
 import '../../../../../shared/widgets/taj.dart';
 import '../../../domain/entities/halqa_entity.dart';

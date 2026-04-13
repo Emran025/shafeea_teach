@@ -7,8 +7,8 @@ import '../../../../core/models/mistake_type.dart';
 import '../../../../core/utils/data_status.dart';
 
 // Import your existing domain entities
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/tracking_detail_entity.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/tracking_detail_entity.dart';
+import 'package:shafeea/core/models/tracking_type.dart';
 
 // Import our new domain entities and use cases
 import '../../domain/entities/mistake.dart';

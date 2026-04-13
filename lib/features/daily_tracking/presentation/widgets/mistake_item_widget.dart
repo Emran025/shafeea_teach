@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/core/models/mistake_type.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/core/models/mistake_type.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
 import '../../domain/entities/mistake.dart';
 import '../bloc/tracking_session_bloc.dart';
 import 'ayah_text_spans.dart';

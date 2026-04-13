@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/core/models/gender.dart';
 
 import '../../domain/entities/halaqa_entity.dart';
 import '../../domain/entities/halaqa_list_item_entity.dart';
@@ -152,6 +152,7 @@ final class HalaqaModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': int.tryParse(id) ?? 0,
       'uuid': id,
       'name': name,
       'isActive': status.id,

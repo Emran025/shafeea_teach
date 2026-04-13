@@ -1,8 +1,8 @@
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/chart_data_point.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/composite_performance_data.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/line_chart_data.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/line_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/chart_data_point.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/composite_performance_data.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/line_chart_data.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/line_chart_datas.dart';
 
 import '../../core/models/mistake_type.dart';
 
@@ -28,7 +28,6 @@ final List<ChartDataPoint> mockErrorData = const [
 // =============================================================================
 
 final LineChartDatas mockProgressData = LineChartDatas(
-
   xAxisLabel: 'الأسبوع',
   yAxisLabel: 'عدد الصفحات',
   maxY: 100,
@@ -95,7 +94,7 @@ final CompositePerformanceData mockOverallPerformanceData =
 // =============================================================================
 
 final BarChartDatas mockGraduatesData = BarChartDatas(
-   // title: 'عدد الحفاظ المتخرجين (سنوي)',
+  // title: 'عدد الحفاظ المتخرجين (سنوي)',
   xAxisLabel: 'السنة',
   yAxisLabel: 'العدد',
   maxY: 50,
@@ -158,7 +157,6 @@ final List<BarChartDatas> mockErrorDataPeriods = List.generate(
 final List<LineChartData> mockProgressDataPeriods = List.generate(
   12,
   (index) => LineChartData(
-    
     xAxisLabel: 'الأسبوع',
     yAxisLabel: 'عدد الصفحات',
     maxY: 100,

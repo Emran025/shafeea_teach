@@ -6,10 +6,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/surah.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_page_data.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/usecases/get_surahs_list.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/surah.dart';
+import 'package:shafeea/features/daily_tracking/domain/usecases/get_page_data.dart';
+import 'package:shafeea/features/daily_tracking/domain/usecases/get_surahs_list.dart';
 
 import '../../../../core/utils/data_status.dart';
 import '../../domain/usecases/get_mistakes_ayahs.dart';

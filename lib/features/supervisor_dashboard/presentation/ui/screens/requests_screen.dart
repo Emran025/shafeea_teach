@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:shafeea/core/models/user_role.dart';
 import '../../../../../shared/themes/app_theme.dart';
 import '../../../../../shared/widgets/caerd_tile.dart';
 
 import 'package:go_router/go_router.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_entity.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/applicant_entity.dart';
 import '../../../../../shared/widgets/avatar.dart';
 import '../../bloc/supervisor_bloc.dart';
 
@@ -128,7 +128,10 @@ class _RequestsScreenState extends State<RequestsScreen> {
     return CustomListTile(
       title: applicant.user.name,
       moreIcon: Icons.more_vert,
-      leading: Avatar(gender: applicant.user.gender, pic: applicant.user.avatar),
+      leading: Avatar(
+        gender: applicant.user.gender,
+        pic: applicant.user.avatar,
+      ),
       subtitle: "${applicant.user.country} - ${applicant.user.city}",
       backgroundColor: AppColors.accent12,
       hasMoreIcon: false,

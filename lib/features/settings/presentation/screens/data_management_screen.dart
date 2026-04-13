@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/export_config.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/import_config.dart';
-import 'package:tajalwaqaracademy/features/settings/presentation/bloc/settings_bloc.dart';
-import 'package:tajalwaqaracademy/features/settings/presentation/widgets/enum_to_string.dart';
+import 'package:shafeea/features/settings/domain/entities/export_config.dart';
+import 'package:shafeea/features/settings/domain/entities/import_config.dart';
+import 'package:shafeea/features/settings/presentation/bloc/settings_bloc.dart';
+import 'package:shafeea/features/settings/presentation/widgets/enum_to_string.dart';
 
 import '../../domain/entities/import_export.dart';
 
@@ -176,8 +176,7 @@ class _ExportDataViewState extends State<ExportDataView> {
               _SettingsCard(
                 padding: EdgeInsets.zero,
                 child: Column(
-                  children: EntityType.values
-                      .map((data) {
+                  children: EntityType.values.map((data) {
                     final isSelected = _selectedData.contains(data);
                     return CheckboxListTile(
                       activeColor: colorScheme.primary,
@@ -473,9 +472,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButtonFormField<EntityType>(
                   value: _selectedEntityType,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
+                  decoration: const InputDecoration(border: InputBorder.none),
                   items: EntityType.values.map((EntityType type) {
                     return DropdownMenuItem<EntityType>(
                       value: type,

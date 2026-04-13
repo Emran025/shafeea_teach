@@ -8,12 +8,12 @@ import 'package:csv/csv.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/student_model.dart';
-import 'package:tajalwaqaracademy/features/TeachersManagement/data/models/teacher_model.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/export_config.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/import_config.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/import_export.dart';
-import 'package:tajalwaqaracademy/features/settings/domain/entities/import_summary.dart';
+import 'package:shafeea/features/StudentsManagement/data/models/student_model.dart';
+import 'package:shafeea/features/TeachersManagement/data/models/teacher_model.dart';
+import 'package:shafeea/features/settings/domain/entities/export_config.dart';
+import 'package:shafeea/features/settings/domain/entities/import_config.dart';
+import 'package:shafeea/features/settings/domain/entities/import_export.dart';
+import 'package:shafeea/features/settings/domain/entities/import_summary.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
@@ -234,7 +234,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
           final csvData = <List<dynamic>>[];
           csvData.add(StudentModel.csvHeader());
           csvData.addAll(students.map((s) => s.toCsv()));
-          final csvString = const ListToCsvConverter().convert(csvData);
+          final csvString =  Csv().encode(csvData);
           archive.addFile(
             ArchiveFile(
               'students.csv',
@@ -247,7 +247,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
           final csvData = <List<dynamic>>[];
           csvData.add(TeacherModel.csvHeader());
           csvData.addAll(teachers.map((t) => t.toCsv()));
-          final csvString = const ListToCsvConverter().convert(csvData);
+          final csvString = Csv().encode(csvData);
           archive.addFile(
             ArchiveFile(
               'teachers.csv',
@@ -336,7 +336,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
           }
         }
       } else if (filePath.endsWith('.csv')) {
-        final csvData = const CsvToListConverter().convert(content);
+        final csvData = Csv().decode(content);
         if (csvData.isNotEmpty) {
           final header = csvData[0];
           final dataRows = csvData.sublist(1);
@@ -408,19 +408,22 @@ class SettingsRepositoryImpl implements SettingsRepository {
     return await _getRemoteData<List<FaqEntity>>(() async {
       final faqResponseModel = await remoteDataSource.getFaqs(page);
       return faqResponseModel.data
-          .map((model) => FaqEntity(
-                id: model.id,
-                question: model.question,
-                answer: model.answer,
-                viewCount: model.viewCount,
-              ))
+          .map(
+            (model) => FaqEntity(
+              id: model.id,
+              question: model.question,
+              answer: model.answer,
+              viewCount: model.viewCount,
+            ),
+          )
           .toList();
     });
   }
 
   @override
   Future<Either<Failure, void>> submitSupportTicket(
-      SupportTicketEntity ticket) async {
+    SupportTicketEntity ticket,
+  ) async {
     return await _getRemoteData<void>(
       () => remoteDataSource.submitSupportTicket(
         SupportTicketModel(subject: ticket.subject, body: ticket.body),
@@ -434,6 +437,4 @@ class SettingsRepositoryImpl implements SettingsRepository {
       () => remoteDataSource.getTermsOfUse().then((model) => model.toEntity()),
     );
   }
-
-
 }

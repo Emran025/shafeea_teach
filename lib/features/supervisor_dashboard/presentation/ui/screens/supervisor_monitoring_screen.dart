@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/screens/students_continuous_monitoring.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/features/StudentsManagement/presentation/ui/screens/students_continuous_monitoring.dart';
 
 import '../../../../HalaqasManagement/presentation/ui/screens/halqas_continuous_monitoring.dart';
 

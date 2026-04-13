@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart'; // Using the domain enum
-import 'package:tajalwaqaracademy/shared/widgets/recitation_mode_sidebar.dart';
+import 'package:shafeea/core/models/tracking_type.dart'; // Using the domain enum
+import 'package:shafeea/shared/widgets/recitation_mode_sidebar.dart';
 
 // Import the BLoC and its components
 import '../../../../shared/widgets/avatar.dart';

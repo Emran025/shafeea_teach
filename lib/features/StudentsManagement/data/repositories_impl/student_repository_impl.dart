@@ -5,8 +5,8 @@ import 'package:csv/csv.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:tajalwaqaracademy/core/models/report_frequency.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_info_entity.dart';
+import 'package:shafeea/core/models/report_frequency.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/student_info_entity.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/error/exceptions.dart';
@@ -196,7 +196,6 @@ final class StudentRepositoryImpl implements StudentRepository {
     }
   }
 
-
   /// Returns [Right(unit)] on success, or a [Left(Failure)] on error.
   @override
   Future<Either<Failure, Unit>> setStudentStatus({
@@ -213,14 +212,14 @@ final class StudentRepositoryImpl implements StudentRepository {
     required ExportConfig config,
   }) async {
     try {
-      // 1. Fetch Data using Core DataSource
-      // ملاحظة: نفترض أنك أضفت getAllFollowUpTrackings للـ CoreDataSource
       final reports = await _localDataSource.getAllFollowUpTrackings();
 
       final directory = await getApplicationDocumentsDirectory();
       final timestamp = DateTime.now().toIso8601String();
       final fileExtension = config.fileFormat;
-      final file = File('${directory.path}/followup_export_$timestamp.$fileExtension');
+      final file = File(
+        '${directory.path}/followup_export_$timestamp.$fileExtension',
+      );
 
       String content = '';
       if (config.fileFormat == DataExportFormat.csv) {
@@ -231,7 +230,6 @@ final class StudentRepositoryImpl implements StudentRepository {
 
       await file.writeAsString(content);
       return Right(file.path);
-
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
@@ -264,46 +262,112 @@ final class StudentRepositoryImpl implements StudentRepository {
   String _formatTrackingAsCsv(Map<String, List<TrackingModel>> reports) {
     final List<List<dynamic>> rows = [];
     rows.add([
-      'studentId', 'trackingId', 'date', 'note', 'attendance', 'behaviorNote',
-      'createdAt', 'updatedAt', 'detailType', 'actualAmount', 'gap',
-      'performanceScore', 'comment', 'status', 'from_unitId', 'from_fromSurah',
-      'from_fromPage', 'from_fromAyah', 'from_toSurah', 'from_toPage',
-      'from_toAyah', 'to_unitId', 'to_fromSurah', 'to_fromPage', 'to_fromAyah',
-      'to_toSurah', 'to_toPage', 'to_toAyah', 'mistakesJson',
+      'studentId',
+      'trackingId',
+      'date',
+      'note',
+      'attendance',
+      'behaviorNote',
+      'createdAt',
+      'updatedAt',
+      'detailType',
+      'actualAmount',
+      'gap',
+      'performanceScore',
+      'comment',
+      'status',
+      'from_unitId',
+      'from_fromSurah',
+      'from_fromPage',
+      'from_fromAyah',
+      'from_toSurah',
+      'from_toPage',
+      'from_toAyah',
+      'to_unitId',
+      'to_fromSurah',
+      'to_fromPage',
+      'to_fromAyah',
+      'to_toSurah',
+      'to_toPage',
+      'to_toAyah',
+      'mistakesJson',
     ]);
 
     reports.forEach((studentId, trackings) {
       for (final tracking in trackings) {
         if (tracking.details.isEmpty) {
           rows.add([
-            studentId, tracking.id, tracking.date, tracking.note,
-            tracking.attendanceTypeId, tracking.behaviorNote,
-            tracking.createdAt, tracking.updatedAt,
-            null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,
+            studentId,
+            tracking.id,
+            tracking.date,
+            tracking.note,
+            tracking.attendanceTypeId,
+            tracking.behaviorNote,
+            tracking.createdAt,
+            tracking.updatedAt,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
           ]);
         } else {
           for (final detail in tracking.details) {
-            final mistakesJson = jsonEncode(detail.mistakes.map((m) => m.toJson()).toList());
+            final mistakesJson = jsonEncode(
+              detail.mistakes.map((m) => m.toJson()).toList(),
+            );
             rows.add([
-              studentId, tracking.id, tracking.date, tracking.note,
-              tracking.attendanceTypeId, tracking.behaviorNote,
-              tracking.createdAt, tracking.updatedAt,
-              detail.trackingTypeId, detail.actualAmount, detail.gap,
-              detail.score, detail.comment, detail.status,
-              detail.fromTrackingUnitId.unitId, detail.fromTrackingUnitId.fromSurah,
-              detail.fromTrackingUnitId.fromPage, detail.fromTrackingUnitId.fromAyah,
-              detail.fromTrackingUnitId.toSurah, detail.fromTrackingUnitId.toPage,
-              detail.fromTrackingUnitId.toAyah, detail.toTrackingUnitId.unitId,
-              detail.toTrackingUnitId.fromSurah, detail.toTrackingUnitId.fromPage,
-              detail.toTrackingUnitId.fromAyah, detail.toTrackingUnitId.toSurah,
-              detail.toTrackingUnitId.toPage, detail.toTrackingUnitId.toAyah,
+              studentId,
+              tracking.id,
+              tracking.date,
+              tracking.note,
+              tracking.attendanceTypeId,
+              tracking.behaviorNote,
+              tracking.createdAt,
+              tracking.updatedAt,
+              detail.trackingTypeId,
+              detail.actualAmount,
+              detail.gap,
+              detail.score,
+              detail.comment,
+              detail.status,
+              detail.fromTrackingUnitId.unitId,
+              detail.fromTrackingUnitId.fromSurah,
+              detail.fromTrackingUnitId.fromPage,
+              detail.fromTrackingUnitId.fromAyah,
+              detail.fromTrackingUnitId.toSurah,
+              detail.fromTrackingUnitId.toPage,
+              detail.fromTrackingUnitId.toAyah,
+              detail.toTrackingUnitId.unitId,
+              detail.toTrackingUnitId.fromSurah,
+              detail.toTrackingUnitId.fromPage,
+              detail.toTrackingUnitId.fromAyah,
+              detail.toTrackingUnitId.toSurah,
+              detail.toTrackingUnitId.toPage,
+              detail.toTrackingUnitId.toAyah,
               mistakesJson,
             ]);
           }
         }
       }
     });
-    return const ListToCsvConverter().convert(rows);
+    return Csv().encode(rows);
   }
 
   String _formatTrackingAsJson(Map<String, List<TrackingModel>> reports) {
@@ -317,14 +381,19 @@ final class StudentRepositoryImpl implements StudentRepository {
     String csvData,
     ConflictResolution conflictResolution,
   ) async {
-    final List<List<dynamic>> rows = const CsvToListConverter().convert(csvData);
+    final List<List<dynamic>> rows = Csv().decode(csvData);
     if (rows.length < 2) {
-      return Left(CacheFailure(message: 'CSV file must have a header and at least one data row.'));
+      return Left(
+        CacheFailure(
+          message: 'CSV file must have a header and at least one data row.',
+        ),
+      );
     }
 
     final header = rows.first.map((e) => e.toString()).toList();
     final dataRows = rows.skip(1);
-    final trackingsByStudent = <String, Map<String, List<Map<String, dynamic>>>>{};
+    final trackingsByStudent =
+        <String, Map<String, List<Map<String, dynamic>>>>{};
     final errorMessages = <String>[];
     int successfulRows = 0;
 
@@ -346,7 +415,9 @@ final class StudentRepositoryImpl implements StudentRepository {
     final result = <String, List<TrackingModel>>{};
     trackingsByStudent.forEach((studentId, trackingsData) {
       result[studentId] = trackingsData.entries.map((entry) {
-        final details = entry.value.map((rowData) => TrackingDetailModel.fromCsvRow(rowData)).toList();
+        final details = entry.value
+            .map((rowData) => TrackingDetailModel.fromCsvRow(rowData))
+            .toList();
         return TrackingModel.fromCsvRow(entry.value.first, details);
       }).toList();
     });
@@ -357,12 +428,14 @@ final class StudentRepositoryImpl implements StudentRepository {
       conflictResolution: conflictResolution,
     );
 
-    return Right(ImportSummary(
-      totalRows: dataRows.length,
-      successfulRows: successfulRows,
-      failedRows: errorMessages.length,
-      errorMessages: errorMessages,
-    ));
+    return Right(
+      ImportSummary(
+        totalRows: dataRows.length,
+        successfulRows: successfulRows,
+        failedRows: errorMessages.length,
+        errorMessages: errorMessages,
+      ),
+    );
   }
 
   Future<Either<Failure, ImportSummary>> _importTrackingJson(
@@ -386,10 +459,12 @@ final class StudentRepositoryImpl implements StudentRepository {
       conflictResolution: conflictResolution,
     );
 
-    return Right(ImportSummary(
-      totalRows: totalRows,
-      successfulRows: totalRows,
-      failedRows: 0,
-    ));
+    return Right(
+      ImportSummary(
+        totalRows: totalRows,
+        successfulRows: totalRows,
+        failedRows: 0,
+      ),
+    );
   }
 }

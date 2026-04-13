@@ -79,7 +79,7 @@ final class TeacherRepositoryImpl implements TeacherRepository {
       await _localDataSource.queueSyncOperation(
         uuid: teacher.id,
         operation: 'upsert',
-        payload: model.toMap(),
+        payload: model.toJson(),
       );
 
       // 4. Trigger a sync attempt in the background.

@@ -1,7 +1,7 @@
 // lib/features/quran_reader/data/models/ayah_model.dart
 
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/ayah.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/ayah.dart';
 
 class AyahModel extends Equatable {
   final int number; // Corresponds to ID

@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
+import 'package:shafeea/core/models/active_status.dart';
 
 import '../../../../core/error/failures.dart';
 import '../repositories/student_repository.dart';

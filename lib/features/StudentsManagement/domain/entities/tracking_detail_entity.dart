@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/core/entities/tracking_unit.dart';
+import 'package:shafeea/core/entities/tracking_unit.dart';
 
 import '../../../../core/models/tracking_type.dart';
 import 'package:flutter/material.dart';

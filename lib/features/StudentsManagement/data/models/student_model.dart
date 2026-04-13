@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
-import 'package:tajalwaqaracademy/core/utils/time_of_day_converter.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/core/models/gender.dart';
+import 'package:shafeea/core/models/user_role.dart';
+import 'package:shafeea/core/utils/time_of_day_converter.dart';
+import 'package:shafeea/features/StudentsManagement/domain/entities/student_list_item_entity.dart';
 
 import '../../domain/entities/student_entity.dart';
 
@@ -89,7 +89,8 @@ final class StudentModel {
       residence: map['residence'] as String? ?? '',
       city: map['city'] as String? ?? '',
       availableTime: timeOfDayToString(
-          stringToTimeOfDay(map['availableTime'] as String? ?? '00:00')),
+        stringToTimeOfDay(map['availableTime'] as String? ?? '00:00'),
+      ),
       status: ActiveStatus.fromLabel(map['status'] as String? ?? 'inactive'),
       stopReasons: map['stopReasons'] as String?,
       avatar: map['avatar'] as String?,
@@ -106,6 +107,7 @@ final class StudentModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': int.tryParse(id) ?? 0,
       'uuid': id,
       'roleId': UserRole.student.id,
       'name': name,
@@ -137,6 +139,7 @@ final class StudentModel {
       'isDeleted': isDeleted ? 1 : 0,
     };
   }
+
   Map<String, dynamic> toJson() {
     return {
       'uuid': id,
@@ -275,7 +278,7 @@ final class StudentModel {
       'createdAt',
       'memorizationLevel',
       'qualification',
-      'isDeleted'
+      'isDeleted',
     ];
   }
 
@@ -303,7 +306,7 @@ final class StudentModel {
       createdAt,
       memorizationLevel,
       qualification,
-      isDeleted
+      isDeleted,
     ];
   }
 }

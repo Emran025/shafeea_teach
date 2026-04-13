@@ -1,15 +1,14 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
-import 'package:tajalwaqaracademy/core/models/gender.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/constants/data.dart';
-import 'package:tajalwaqaracademy/shared/widgets/taj.dart';
+import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/core/models/gender.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/core/constants/data.dart';
+import 'package:shafeea/shared/widgets/taj.dart';
 
 import '../../../../StudentsManagement/domain/entities/student_entity.dart';
 import '../../../domain/entities/halaqa_list_item_entity.dart';
-
 
 class HalaqaEditScreen extends StatefulWidget {
   const HalaqaEditScreen({super.key});
@@ -21,17 +20,13 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
     with TickerProviderStateMixin {
   List<String> teachers = ["أ. خالد", "أ. سمير", "أ. فاطمة"];
   HalaqaListItemEntity halqa = HalaqaListItemEntity(
-   id: '0',
-   name:  "حلقة كبار السن",
-   country:  "اليمن",
-   residence:  "اب",
-      avatar: "",
-   status : ActiveStatus.active,
-   gender:Gender.male,
-  
-
-   
-    
+    id: '0',
+    name: "حلقة كبار السن",
+    country: "اليمن",
+    residence: "اب",
+    avatar: "",
+    status: ActiveStatus.active,
+    gender: Gender.male,
   );
 
   late List<StudentDetailEntity> currentStudents;
@@ -317,7 +312,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                             ),
                             onPressed: () {
                               setState(() {
-                               // halqa = tempSelected;
+                                // halqa = tempSelected;
                               });
                               Navigator.pop(context);
                             },
@@ -708,8 +703,8 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                         buildInfoRow(
                           icon: Icons.person,
                           label: "المعلم الحالي:",
-                         value: "أ. خالد",
-                         // value: halqa.teacher,
+                          value: "أ. خالد",
+                          // value: halqa.teacher,
                           onEdit: _changeTeacherDialog,
                         ),
                         const SizedBox(height: 16),

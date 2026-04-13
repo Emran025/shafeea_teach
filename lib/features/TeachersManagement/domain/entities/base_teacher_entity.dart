@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
 
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/core/models/active_status.dart';
+import 'package:shafeea/core/models/active_status.dart';
 
 import '../../../../core/models/gender.dart';
 
@@ -34,5 +34,3 @@ abstract class BaseTeacherEntity extends Equatable {
   @override
   List<Object?> get props => [id, name, avatar, status];
 }
-
-

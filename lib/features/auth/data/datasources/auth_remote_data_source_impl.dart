@@ -1,6 +1,6 @@
 // features/auth/data/datasources/auth_remote_data_source_impl.dart
 
-import 'package:tajalwaqaracademy/core/error/failures.dart';
+import 'package:shafeea/core/error/failures.dart';
 
 import '../../../../core/api/api_consumer.dart';
 import '../../../../core/api/end_ponits.dart';

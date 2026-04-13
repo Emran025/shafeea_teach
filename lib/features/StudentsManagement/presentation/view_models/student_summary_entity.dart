@@ -1,11 +1,9 @@
-
-import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/view_models/student_performance_metrics_entity.dart';
-
+import 'package:shafeea/features/StudentsManagement/presentation/view_models/student_performance_metrics_entity.dart';
 
 // من الأفضل استخدام enum للحالات المحددة
 enum PerformanceStatus { ahead, onTrack, behind }
 
-class StudentSummaryEntity  {
+class StudentSummaryEntity {
   final int totalPendingReports;
   final double totalDeviation;
   final PerformanceStatus status;
@@ -17,6 +15,4 @@ class StudentSummaryEntity  {
     required this.status,
     required this.studentPerformance,
   });
-
 }
-

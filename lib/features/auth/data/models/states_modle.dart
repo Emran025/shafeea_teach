@@ -1,8 +1,8 @@
 // ignore_for_file: file_names, unnecessary_new, non_constant_identifier_names
 
-import 'package:tajalwaqaracademy/features/auth/domain/entities/states_entity.dart';
+import 'package:shafeea/features/auth/domain/entities/states_entity.dart';
 
-class StatesModel extends StatesEntity{
+class StatesModel extends StatesEntity {
   StatesModel({
     required super.id,
     required super.name,

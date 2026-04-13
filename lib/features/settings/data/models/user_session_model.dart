@@ -40,24 +40,24 @@ class UserSessionModel {
     // A nested function to parse device info, keeping the main factory clean.
     DeviceInfoModel parseDeviceInfo(Map<String, dynamic> deviceJson) {
       return DeviceInfoModel(
-        deviceId: deviceJson['device_id'] ?? 'Unknown',
-        deviceModel: deviceJson['device_model'] ?? 'Unknown',
+        deviceId: deviceJson['deviceId'] ?? 'Unknown',
+        deviceModel: deviceJson['deviceModel'] ?? 'Unknown',
         manufacturer: deviceJson['manufacturer'] ?? 'Unknown',
-        osVersion: deviceJson['os_version'] ?? 'Unknown',
-        appVersion: deviceJson['app_version'] ?? 'Unknown',
+        osVersion: deviceJson['osVersion'] ?? 'Unknown',
+        appVersion: deviceJson['appVersion'] ?? 'Unknown',
         timezone: deviceJson['timezone'] ?? 'UTC',
         locale: deviceJson['locale'] ?? 'en_US',
-        pushNotificationToken: deviceJson['push_notification_token'] ?? '',
+        pushNotificationToken: deviceJson['pushNotificationToken'] ?? '',
       );
     }
 
     return UserSessionModel(
-      id: json['id'],
-      isCurrentDevice: json['is_current_device'],
+      id: json['id']?.toString() ?? '',
+      isCurrentDevice: json['isCurrentDevice'] as bool? ?? false,
       // Safely parse the timestamp string into a DateTime object.
-      lastAccessedAt: DateTime.parse(json['last_accessed_at']),
-      // The API is expected to provide a nested 'device_info' object.
-      deviceInfo: parseDeviceInfo(json['device_info']),
+      lastAccessedAt: DateTime.tryParse(json['lastAccessedAt'] ?? '') ?? DateTime.now(),
+      // The API is expected to provide a nested 'deviceInfo' object.
+      deviceInfo: parseDeviceInfo(json['deviceInfo'] ?? {}),
     );
   }
 
@@ -66,9 +66,9 @@ class UserSessionModel {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'is_current_device': isCurrentDevice,
-      'last_accessed_at': lastAccessedAt.toIso8601String(),
-      'device_info': deviceInfo.toJson(),
+      'isCurrentDevice': isCurrentDevice,
+      'lastAccessedAt': lastAccessedAt.toIso8601String(),
+      'deviceInfo': deviceInfo.toJson(),
     };
   }
 

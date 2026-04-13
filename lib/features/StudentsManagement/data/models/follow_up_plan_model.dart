@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../../features/StudentsManagement/data/models/plan_detail_model.dart';
 import '../../../../../features/StudentsManagement/domain/entities/follow_up_plan_entity.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../../core/models/report_frequency.dart';
 
@@ -25,25 +24,13 @@ final class FollowUpPlanModel {
 
   factory FollowUpPlanModel.fromJson(Map<String, dynamic> json) {
     final detailsListJson = json['details'] as List<dynamic>? ?? [];
-    if (detailsListJson.isEmpty) {
-      return FollowUpPlanModel(
-        planId: const Uuid().v4(),
-        serverPlanId: json['PlanId'].toString(),
-        frequency: Frequency.fromLabel(json['frequency'] as String? ?? 'daily'),
-        updatedAt:
-            json['updatedAt'] as String? ?? DateTime.now().toIso8601String(),
-        createdAt:
-            json['createdAt'] as String? ?? DateTime.now().toIso8601String(),
-        details: [],
-      );
-    }
     final details = detailsListJson
         .map((dJson) => PlanDetailModel.fromJson(dJson as Map<String, dynamic>))
         .toList();
 
     return FollowUpPlanModel(
-      planId: const Uuid().v4(),
-      serverPlanId: json['PlanId'].toString(),
+      planId: json['planId']?.toString() ?? '0',
+      serverPlanId: json['planId']?.toString() ?? '0',
       frequency: Frequency.fromLabel(json['frequency'] as String? ?? 'daily'),
       updatedAt: json['updatedAt'] as String?,
       createdAt: json['createdAt'] as String?,
@@ -73,6 +60,7 @@ final class FollowUpPlanModel {
   // toMap for the main plan table (_kFollowUpPlansTable)
   Map<String, dynamic> toPlanDbMap(int enrollmentId) {
     return {
+      'id': int.tryParse(planId) ?? 0,
       'uuid': planId,
       'server_plan_id': serverPlanId,
       'enrollmentId': enrollmentId,

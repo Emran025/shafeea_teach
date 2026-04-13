@@ -2,12 +2,12 @@
 import '../../../../core/utils/data_status.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/core/utils/app_strings.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/presentation/bloc/quran_reader_bloc.dart';
+import 'package:shafeea/core/utils/app_strings.dart';
+import 'package:shafeea/features/daily_tracking/presentation/bloc/quran_reader_bloc.dart';
 // import 'package:shimmer/shimmer.dart';
 // We will need to create these list item widgets next.
-// import 'package:tajalwaqaracademy/features/quran_reader/presentation/widgets/surah_list_item.dart';
-// import 'package:tajalwaqaracademy/features/quran_reader/presentation/widgets/juz_list_item.dart';
+// import 'package:shafeea/features/quran_reader/presentation/widgets/surah_list_item.dart';
+// import 'package:shafeea/features/quran_reader/presentation/widgets/juz_list_item.dart';
 
 /// A widget that displays a tabbed view for browsing Surahs and Juz'.
 ///

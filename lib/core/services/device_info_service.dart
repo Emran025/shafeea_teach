@@ -4,7 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:injectable/injectable.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:tajalwaqaracademy/features/auth/domain/entities/device_info_entity.dart';
+import 'package:shafeea/features/auth/domain/entities/device_info_entity.dart';
 import 'push_notification_service.dart'; // Import the new abstraction
 
 /// An abstract contract for a service that provides device and application metadata.
@@ -44,7 +44,9 @@ final class DeviceInfoServiceImpl implements DeviceInfoService {
 
     // Safely cast the results.
     final packageInfo = results[0] as PackageInfo;
-    final timeZone = results[1] as String;
+    final timeZone = results[1] is String
+        ? results[1] as String
+        : (results[1] as dynamic).identifier.toString();
     final pushToken = results[2] as String;
     final baseDeviceInfo = results[3];
 

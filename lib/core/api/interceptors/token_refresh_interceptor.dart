@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:tajalwaqaracademy/core/api/end_ponits.dart';
+import 'package:shafeea/core/api/end_ponits.dart';
 
 /// A Dio [QueuedInterceptorsWrapper] that handles automated token refreshing
 /// logic for API requests.

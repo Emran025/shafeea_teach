@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/features/auth/presentation/ui/screens/forget_password_screen.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/features/auth/presentation/ui/screens/forget_password_screen.dart';
 
 import '../../../../../shared/widgets/custom_button.dart';
 import '../../bloc/auth_bloc.dart';
 // تأكد من مسار الكائن UserEntity
-import 'package:tajalwaqaracademy/features/auth/domain/entities/user_entity.dart';
+import 'package:shafeea/features/auth/domain/entities/user_entity.dart';
 
 // import '../../../../../core/constants/app_colors.dart';
 

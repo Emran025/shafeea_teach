@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/chart_data_point.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/chart_data_point.dart';
 
 /// نموذج بيانات لمخطط الخطوط (Line Chart)
 class LineChartDatas extends Equatable {

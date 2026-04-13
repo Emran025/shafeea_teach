@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:shafeea/core/models/user_role.dart';
 
 import '../../../../../config/di/injection.dart';
 import '../../../../supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';

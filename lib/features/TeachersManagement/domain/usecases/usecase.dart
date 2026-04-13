@@ -1,6 +1,6 @@
 // lib/core/usecases/usecase.dart
 import 'package:dartz/dartz.dart';
-import 'package:tajalwaqaracademy/core/error/failures.dart';
+import 'package:shafeea/core/error/failures.dart';
 
 /// A generic use case with parameters.
 /// [Type] is the return type on success.

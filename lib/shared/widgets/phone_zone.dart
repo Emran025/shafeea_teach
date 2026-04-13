@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/core/constants/countries_names.dart';
-import 'package:tajalwaqaracademy/core/models/countery_model.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/core/constants/countries_names.dart';
+import 'package:shafeea/core/models/countery_model.dart';
 
-import 'package:tajalwaqaracademy/shared/widgets/country_picker_dialog.dart';
+import 'package:shafeea/shared/widgets/country_picker_dialog.dart';
 
 class PhoneZoneForm extends StatefulWidget {
   final TextEditingController zoneController;

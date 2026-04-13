@@ -1,4 +1,4 @@
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
 
 class ApplicantProfileModel extends ApplicantProfileEntity {
   const ApplicantProfileModel({
@@ -9,7 +9,6 @@ class ApplicantProfileModel extends ApplicantProfileEntity {
     required super.status,
     required super.bio,
     required super.qualifications,
-    required super.intentStatement,
     required super.rejectionReason,
     required super.submittedAt,
     required super.createdAt,
@@ -20,17 +19,16 @@ class ApplicantProfileModel extends ApplicantProfileEntity {
   factory ApplicantProfileModel.fromJson(Map<String, dynamic> json) {
     return ApplicantProfileModel(
       id: json['id'],
-      userId: json['user_id'],
-      schoolId: json['school_id'],
-      applicationType: json['application_type'],
+      userId: json['userId'],
+      schoolId: json['schoolId'],
+      applicationType: json['applicationType'],
       status: json['status'],
       bio: json['bio'],
       qualifications: json['qualifications'],
-      intentStatement: json['intent_statement'],
-      rejectionReason: json['rejection_reason'],
-      submittedAt: json['submitted_at'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
+      rejectionReason: json['rejectionReason'],
+      submittedAt: json['submittedAt'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
       user: UserModel.fromJson(json['user']),
     );
   }
@@ -64,22 +62,22 @@ class UserModel extends UserEntity {
       id: json['id'],
       name: json['name'],
       email: json['email'],
-      emailVerifiedAt: json['email_verified_at'],
+      emailVerifiedAt: json['emailVerifiedAt'],
       avatar: json['avatar'],
       phone: json['phone'],
-      phoneZone: json['phone_zone'],
+      phoneZone: json['phoneZone'],
       whatsapp: json['whatsapp'],
-      whatsappZone: json['whatsapp_zone'],
+      whatsappZone: json['whatsappZone'],
       gender: json['gender'],
-      birthDate: json['birth_date'],
+      birthDate: json['birthDate'],
       country: json['country'],
       city: json['city'],
       residence: json['residence'],
       status: json['status'],
-      schoolId: json['school_id'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      deletedAt: json['deleted_at'],
+      schoolId: json['schoolId'],
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      deletedAt: json['deletedAt'],
     );
   }
 }

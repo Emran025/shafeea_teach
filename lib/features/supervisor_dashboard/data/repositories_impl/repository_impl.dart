@@ -3,7 +3,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/counts_delta_entity.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/counts_delta_entity.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/user_role.dart';
@@ -106,7 +106,8 @@ class SupervisorRepositoryImpl implements SupervisorRepository {
 
   @override
   Future<Either<Failure, ApplicantProfileEntity>> getApplicantProfile(
-      int applicantId) async {
+    int applicantId,
+  ) async {
     try {
       final result = await remoteDataSource.getApplicantProfile(applicantId);
       return Right(result);

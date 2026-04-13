@@ -1,7 +1,7 @@
 // data/models/user_model.dart
 
-import 'package:tajalwaqaracademy/features/auth/data/models/user_model.dart';
-import 'package:tajalwaqaracademy/features/auth/domain/entities/auth_response_entity.dart';
+import 'package:shafeea/features/auth/data/models/user_model.dart';
+import 'package:shafeea/features/auth/domain/entities/auth_response_entity.dart';
 
 import '../../../../core/models/user_role.dart';
 

@@ -1,8 +1,8 @@
-import 'package:tajalwaqaracademy/core/models/sync_queue_model.dart';
-import 'package:tajalwaqaracademy/core/models/tracking_type.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/data/models/tracking_detail_model.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/domain/entities/chart_filter.dart';
+import 'package:shafeea/core/models/sync_queue_model.dart';
+import 'package:shafeea/core/models/tracking_type.dart';
+import 'package:shafeea/features/StudentsManagement/data/models/tracking_detail_model.dart';
+import 'package:shafeea/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
+import 'package:shafeea/features/supervisor_dashboard/domain/entities/chart_filter.dart';
 
 import '../models/mistake_model.dart';
 
@@ -24,7 +24,7 @@ abstract class TrackingLocalDataSource {
   /// Returns a map where the key is the `TrackingType` and the value is the
   /// fully assembled `TrackingDetailModel` (including mistakes).
   Future<Map<TrackingType, TrackingDetailModel>>
-  getOrCreateTodayDraftTrackingDetails({required int enrollmentId});
+  getOrCreateTodayDraftTrackingDetails({required String enrollmentId});
 
   /// Persists the current state of a list of tracking details to the database.
   ///
@@ -51,20 +51,17 @@ abstract class TrackingLocalDataSource {
 
   // ... other methods
 
-
   Future<List<MistakeModel>> getAllMistakes({
-    required int enrollmentId,
+    required String enrollmentId,
     TrackingType? type, // <-- NOW OPTIONAL
     int? fromPage,
     int? toPage,
   });
 
   Future<List<BarChartDatas>> getErrorAnalysisChartData({
-    required int enrollmentId,
+    required String enrollmentId,
     required ChartFilter filter,
   });
-
-
 
   // =========================================================================
   //                       Synchronization Methods

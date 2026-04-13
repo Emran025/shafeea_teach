@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:injectable/injectable.dart';
-import 'package:tajalwaqaracademy/core/models/user_role.dart';
+import 'package:shafeea/core/models/user_role.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../datasources/supervisor_local_data_source.dart';

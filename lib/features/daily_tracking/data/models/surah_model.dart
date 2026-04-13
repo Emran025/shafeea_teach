@@ -1,6 +1,6 @@
 // lib/features/quran_reader/data/models/surah_model.dart
 import 'package:equatable/equatable.dart';
-import 'package:tajalwaqaracademy/features/daily_tracking/domain/entities/surah.dart';
+import 'package:shafeea/features/daily_tracking/domain/entities/surah.dart';
 
 class SurahModel extends Equatable {
   final int number; // Corresponds to Id

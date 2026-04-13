@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/features/StudentsManagement/presentation/ui/screens/students_management_screen.dart';
-import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/ui/screens/teachers_management_screen.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/modern_dashboard_screen.dart';
-import 'package:tajalwaqaracademy/features/supervisor_dashboard/presentation/ui/screens/supervisor_monitoring_screen.dart';
-import 'package:tajalwaqaracademy/shared/widgets/avatar.dart';
-import 'package:tajalwaqaracademy/shared/widgets/recitation_mode_sidebar.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/features/StudentsManagement/presentation/ui/screens/students_management_screen.dart';
+import 'package:shafeea/features/TeachersManagement/presentation/ui/screens/teachers_management_screen.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/ui/screens/modern_dashboard_screen.dart';
+import 'package:shafeea/features/supervisor_dashboard/presentation/ui/screens/supervisor_monitoring_screen.dart';
+import 'package:shafeea/shared/widgets/avatar.dart';
+import 'package:shafeea/shared/widgets/recitation_mode_sidebar.dart';
 
 import '../../../../../core/models/user_role.dart';
 import '../../../../HalaqasManagement/presentation/ui/screens/halaqas_management_screen.dart';
@@ -27,7 +27,7 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
   int _currentIndex = 0;
   final List<Widget> _tabs = [
     ModernDashboardScreen(role: UserRole.supervisor),
-    
+
     TeachersManagementScreen(),
     StudentsManagementScreen(),
     HalaqaManagementScreen(),

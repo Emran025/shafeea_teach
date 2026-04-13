@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tajalwaqaracademy/config/di/injection.dart';
-import 'package:tajalwaqaracademy/shared/themes/app_theme.dart';
-import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/bloc/teacher_bloc.dart';
-import 'package:tajalwaqaracademy/features/TeachersManagement/presentation/ui/screens/teacher_management_screen.dart';
+import 'package:shafeea/config/di/injection.dart';
+import 'package:shafeea/shared/themes/app_theme.dart';
+import 'package:shafeea/features/TeachersManagement/presentation/bloc/teacher_bloc.dart';
+import 'package:shafeea/features/TeachersManagement/presentation/ui/screens/teacher_management_screen.dart';
 
 import '../../../../../core/models/user_role.dart';
 import '../../../../supervisor_dashboard/presentation/ui/screens/requests_screen.dart';
