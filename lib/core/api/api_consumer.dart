@@ -51,6 +51,19 @@ abstract interface class ApiConsumer {
     bool isFormData = false,
   });
 
+  /// Executes a PUT request to the given [path].
+  ///
+  /// - [path]: The path of the resource to be updated.
+  ///
+  /// Returns a [Future] which completes with the decoded response body, which
+  /// might be empty or contain a confirmation message.
+  Future<dynamic> put(
+    String path, {
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+    bool isFormData = false,
+  });
+
   /// Executes a DELETE request to the given [path].
   ///
   /// - [path]: The path of the resource to be deleted.

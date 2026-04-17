@@ -95,12 +95,15 @@ final class HalaqaRemoteDataSourceImpl implements HalaqaRemoteDataSource {
 
   @override
   Future<HalaqaModel> upsertHalaqa(Map<String, dynamic> halaqaData) async {
-    // The API should handle both create (if no ID) and update (if ID exists)
-    // with a single endpoint for simplicity.
-    final responseJson = await _apiConsumer.post(
-      EndPoint.halaqasUpsert, // Example: '/halaqas/upsert'
-      data: halaqaData,
-    );
+    // The API should handle both create (if no ID or ID is 0) and update (if ID exists).
+    final int id = int.tryParse(halaqaData['id']?.toString() ?? '0') ?? 0;
+    final bool isUpdate = id > 0;
+    
+    final path = isUpdate ? '${EndPoint.halaqas}/$id' : EndPoint.halaqas;
+
+    final responseJson = await (isUpdate 
+        ? _apiConsumer.put(path, data: halaqaData)
+        : _apiConsumer.post(path, data: halaqaData));
 
     if (responseJson is! Map<String, dynamic>) {
       throw const FormatException(

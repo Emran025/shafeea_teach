@@ -120,6 +120,8 @@ final class HalaqaSyncServiceImpl implements HalaqaSyncService {
         page: currentPage,
       );
 
+      print('[SyncService-Pull] Received ${syncResult.updated.length} updated and ${syncResult.deleted.length} deleted halaqas. New sync timestamp: ${syncResult.newSyncTimestamp}');
+
       if (syncResult.updated.isNotEmpty || syncResult.deleted.isNotEmpty) {
         await _localDataSource.applySyncBatch(
           updatedHalaqas: syncResult.updated,

@@ -120,6 +120,8 @@ final class TeacherSyncServiceImpl implements TeacherSyncService {
         page: currentPage,
       );
 
+      print('[SyncService-Pull] Received ${syncResult.updated.length} updated and ${syncResult.deleted.length} deleted teachers. New sync timestamp: ${syncResult.newSyncTimestamp}');
+
       if (syncResult.updated.isNotEmpty || syncResult.deleted.isNotEmpty) {
         await _localDataSource.applySyncBatch(
           updatedTeachers: syncResult.updated,

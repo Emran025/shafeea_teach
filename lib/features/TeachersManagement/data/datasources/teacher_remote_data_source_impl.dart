@@ -95,12 +95,15 @@ final class TeacherRemoteDataSourceImpl implements TeacherRemoteDataSource {
 
   @override
   Future<TeacherModel> upsertTeacher(Map<String, dynamic> teacherData) async {
-    // The API should handle both create (if no ID) and update (if ID exists)
-    // with a single endpoint for simplicity.
-    final responseJson = await _apiConsumer.post(
-      EndPoint.teachersUpsert, // Example: '/teachers/upsert'
-      data: teacherData,
-    );
+    // The API should handle both create (if no ID or ID is 0) and update (if ID exists).
+    final int id = int.tryParse(teacherData['id']?.toString() ?? '0') ?? 0;
+    final bool isUpdate = id > 0;
+    
+    final path = isUpdate ? '${EndPoint.teachers}/$id' : EndPoint.teachers;
+
+    final responseJson = await (isUpdate 
+        ? _apiConsumer.put(path, data: teacherData)
+        : _apiConsumer.post(path, data: teacherData));
 
     if (responseJson is! Map<String, dynamic>) {
       throw const FormatException(
