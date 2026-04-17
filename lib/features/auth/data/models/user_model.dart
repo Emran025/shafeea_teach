@@ -20,10 +20,10 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> json, UserRole role) {
     return UserModel(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      phone: json['phone'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? 'Unknown',
+      email: json['email'] ?? '',
+      phone: json['phone'] ?? '',
       avatar: json['avatar'],
       role: role,
     );
@@ -32,13 +32,12 @@ class UserModel {
   /// Factory constructor لإنشاء نسخة UserModel من Map قادم من قاعدة البيانات المحلية
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      // لاحظ أن أسماء الأعمدة في قاعدة البيانات المحلية تختلف (camelCase)
-      id: map['id'],
-      name: map['name'],
-      email: map['email'],
+      id: map['id'] ?? 0,
+      name: map['name'] ?? 'Unknown',
+      email: map['email'] ?? '',
       avatar: map['avatar'],
-      phone: map['phone'],
-      role: UserRole.fromId(map['roleId']),
+      phone: map['phone'] ?? '',
+      role: UserRole.fromId(map['roleId'] ?? 0),
     );
   }
 

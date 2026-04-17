@@ -1,4 +1,5 @@
 import 'package:injectable/injectable.dart';
+import 'package:shafeea/core/error/exceptions.dart';
 
 import '../../../../core/network/network_info.dart';
 import '../datasources/teacher_local_data_source.dart';
@@ -31,9 +32,13 @@ final class TeacherSyncServiceImpl implements TeacherSyncService {
 
   @override
   Future<void> performSync({int initialPage = 1}) async {
-    // if (_isSyncing || !await _networkInfo.isConnected) {
     if (_isSyncing) {
-      print('[SyncService] Sync skipped: already in progress or offline.');
+      print('[SyncService] Sync skipped: already in progress.');
+      return;
+    }
+
+    if (!await _networkInfo.isConnected) {
+      print('[SyncService] Sync skipped: offline.');
       return;
     }
 
@@ -43,8 +48,14 @@ final class TeacherSyncServiceImpl implements TeacherSyncService {
       await _pushLocalChanges();
       await _pullRemoteChanges(initialPage: initialPage);
       print('[SyncService] Sync completed successfully.');
+    } on CacheException catch (e) {
+      print('[SyncService] Cache Error: ${e.message}');
+    } on ServerException catch (e) {
+      print(
+        '[SyncService] Server Error: ${e.message} (Code: ${e.statusCode})',
+      );
     } catch (e) {
-      print('[SyncService] Sync process failed: $e');
+      print('[SyncService] An unexpected error occurred: $e');
     } finally {
       _isSyncing = false;
     }

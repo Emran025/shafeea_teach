@@ -48,10 +48,11 @@ final class HalaqaModel {
 
   // /// Creates a [HalaqaModel] from a JSON map received from an API.
   factory HalaqaModel.fromJson(Map<String, dynamic> json) {
-    // Safely parse the nested list of halqas.
+    // Print for debugging to identify exactly what values are causing issues
+    debugPrint('[HalaqaModel] Parsing json ID: ${json['id']}, isActive: ${json['isActive']} (${json['isActive']?.runtimeType}), isDeleted: ${json['isDeleted']} (${json['isDeleted']?.runtimeType})');
 
     return HalaqaModel(
-      id: (json['id'] as int? ?? 0).toString(),
+      id: (json['uuid'] as String?) ?? (json['id'] as int? ?? 0).toString(),
       name: json['name'] as String? ?? 'Unknown Name',
       gender: Gender.fromLabel(
         json['gender'] as String? ?? Gender.male.labelAr.toLowerCase(),
@@ -61,11 +62,15 @@ final class HalaqaModel {
       residence: json['residence'] as String? ?? '',
 
       availableTime: json['availableTime'] as String?,
-      status: ActiveStatus.fromId(json['isActive'] as int? ?? 2),
+      status: json['isActive'] is bool 
+          ? (json['isActive'] as bool ? ActiveStatus.active : ActiveStatus.inactive)
+          : ActiveStatus.fromId(json['isActive'] as int? ?? 2),
       avatar: json['avatar'] as String?,
       createdAt: json['createdAt'] as String?,
       updatedAt: json['updatedAt'] as String?,
-      isDeleted: (json['isDeleted'] as int) == 1,
+      isDeleted: json['isDeleted'] is bool 
+          ? (json['isDeleted'] as bool)
+          : (json['isDeleted'] as int? ?? 0) == 1,
       teacherId: json['teacherId'] as int? ?? 0,
       sumOfStudents: json['sumOfStudents'] as int? ?? 0,
       maxOfStudents: json['maxOfStudents'] as int? ?? 0,

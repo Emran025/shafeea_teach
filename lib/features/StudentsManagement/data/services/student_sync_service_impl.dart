@@ -50,45 +50,47 @@ final class StudentSyncServiceImpl implements StudentSyncService {
   Future<void> performTrackingsSync({required String studentId}) async {
     final syncKey = 'trackings-$studentId';
 
-    // -->> تعديل رئيسي: استخدام قفل دقيق <<--
-    if (_isGlobalSyncInProgress || _syncingEntityIds.contains(syncKey)) {
-      print(
-        '[SyncService][Trackings] Skipped: Sync for $syncKey is already in progress or a global sync is active.',
-      );
-      return;
-    }
-
-    try {
-      _syncingEntityIds.add(syncKey);
-      print(
-        '[SyncService][Trackings] Starting sync for student trackings: $studentId',
-      );
-
-      // The core logic is now wrapped in a safe, intelligent check.
-      final bool isStudentReady = await _ensureStudentIsSynced(studentId);
-
-      if (isStudentReady) {
-        await _pullRemoteFollowUpTrackingsChanges(studentId: studentId);
+    if (_isGlobalSyncInProgress || !await _networkInfo.isConnected) {
+      // -->> تعديل رئيسي: استخدام قفل دقيق <<--
+      if (_isGlobalSyncInProgress || _syncingEntityIds.contains(syncKey)) {
         print(
-          '[SyncService][Trackings] Sync completed successfully for student: $studentId',
+          '[SyncService][Trackings] Skipped: Sync for $syncKey is already in progress or a global sync is active.',
         );
-      } else {
-        print(
-          '[SyncService][Trackings] Sync aborted: The parent student with UUID $studentId could not be found or synced.',
-        );
+        return;
       }
-    } on CacheException catch (e) {
-      print('[SyncService][Trackings] Cache Error: ${e.message}');
-    } on DioException catch (e) {
-      print(
-        '[SyncService][Trackings] Network Error: Could not complete sync. ${e.message}',
-      );
-    } catch (e) {
-      print(
-        '[SyncService][Trackings] An unexpected error occurred: $e. Aborting.',
-      );
-    } finally {
-      _syncingEntityIds.remove(syncKey);
+
+      try {
+        _syncingEntityIds.add(syncKey);
+        print(
+          '[SyncService][Trackings] Starting sync for student trackings: $studentId',
+        );
+
+        // The core logic is now wrapped in a safe, intelligent check.
+        final bool isStudentReady = await _ensureStudentIsSynced(studentId);
+
+        if (isStudentReady) {
+          await _pullRemoteFollowUpTrackingsChanges(studentId: studentId);
+          print(
+            '[SyncService][Trackings] Sync completed successfully for student: $studentId',
+          );
+        } else {
+          print(
+            '[SyncService][Trackings] Sync aborted: The parent student with UUID $studentId could not be found or synced.',
+          );
+        }
+      } on CacheException catch (e) {
+        print('[SyncService][Trackings] Cache Error: ${e.message}');
+      } on ServerException catch (e) {
+        print(
+          '[SyncService][Trackings] Server Error: ${e.message} (Code: ${e.statusCode})',
+        );
+      } catch (e) {
+        print(
+          '[SyncService][Trackings] An unexpected error occurred: $e. Aborting.',
+        );
+      } finally {
+        _syncingEntityIds.remove(syncKey);
+      }
     }
   }
 

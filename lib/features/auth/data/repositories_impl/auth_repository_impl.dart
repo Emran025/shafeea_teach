@@ -53,6 +53,10 @@ final class AuthRepositoryImpl implements AuthRepository {
   }) async {
     // This is the "wrapper" function that handles exceptions and network state.
     // It takes a function `body` which contains the core logic.
+    if (!await _networkInfo.isConnected) {
+      print('[SyncService][Tracking] Skipped: No internet connection.');
+      return Left(DataFailure(message: 'No internet connection available.'));
+    }
     return await _executeAuthOperation(() async {
       // 1. Gather all necessary device information.
       final deviceInfo = await _deviceInfoService.getDeviceInfo();
@@ -162,15 +166,25 @@ final class AuthRepositoryImpl implements AuthRepository {
   /// - Returns: The cached [UserModel] if available.
   @override
   Future<Either<Failure, UserEntity>> getUserProfile() async {
-    bool isLoggedin = await isLoggedIn() == "home";
-    if (!isLoggedin) {
-      return Left(CacheFailure(message: 'Failed to get User Profile.'));
+    try {
+      bool isLoggedin = await isLoggedIn() == "home";
+      if (!isLoggedin) {
+        return Left(CacheFailure(message: 'User is not logged in.'));
+      }
+      final user = await _localDataSource.getUser();
+      if (user == null) {
+        return Left(
+          CacheFailure(message: 'Failed to find cached user profile.'),
+        );
+      }
+      return Right(user.toUserEntity());
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    } catch (e) {
+      return Left(
+        CacheFailure(message: 'Unexpected error getting user profile: $e'),
+      );
     }
-    final user = await _localDataSource.getUser();
-    if (user == null) {
-      throw CacheException(message: 'Failed to get User Profile.');
-    }
-    return Right(user.toUserEntity());
   }
 
   @override

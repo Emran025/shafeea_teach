@@ -58,15 +58,11 @@ final class TrackingSyncServiceImpl implements TrackingSyncService {
       await _pushLocalChanges();
       print('[SyncService][Tracking] Push-sync completed successfully.');
     } on CacheException catch (e) {
-      print('[SyncService][Tracking] A cache exception occurred: ${e.message}');
+      print('[SyncService][Tracking] Cache Error: ${e.message}');
     } on ServerException catch (e) {
-      print(
-        '[SyncService][Tracking] A server exception occurred: ${e.message}',
-      );
+      print('[SyncService][Tracking] Server Error: ${e.message} (Code: ${e.statusCode})');
     } catch (e) {
-      print(
-        '[SyncService][Tracking] Sync process failed with an unexpected error: $e',
-      );
+      print('[SyncService][Tracking] An unexpected error occurred: $e');
     } finally {
       _isSyncInProgress = false;
     }
