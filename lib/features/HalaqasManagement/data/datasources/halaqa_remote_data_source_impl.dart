@@ -123,4 +123,12 @@ final class HalaqaRemoteDataSourceImpl implements HalaqaRemoteDataSource {
     );
     // On a successful 2xx response, we expect no content, so the method returns void.
   }
+
+  @override
+  Future<void> assignStudents(String halaqaId, List<int> studentUserIds) async {
+    await _apiConsumer.post(
+      '${EndPoint.halaqas}/$halaqaId/assign-students',
+      data: {'studentUserIds': studentUserIds},
+    );
+  }
 }

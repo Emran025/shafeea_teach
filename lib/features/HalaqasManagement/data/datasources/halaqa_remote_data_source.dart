@@ -48,4 +48,7 @@ abstract interface class HalaqaRemoteDataSource {
   /// - [halaqaId]: The ID of the halaqa to delete.
   /// Returns a [Future] that completes when the deletion is successful.
   Future<void> deleteHalaqa(String halaqaId);
+
+  /// Assigns multiple students to a halaqa.
+  Future<void> assignStudents(String halaqaId, List<int> studentUserIds);
 }

@@ -132,26 +132,15 @@ final class HalaqaModel {
   /// Converts the [HalaqaModel] to a database map.
   Map<String, dynamic> toJson() {
     return {
-      'teacherId': teacherId,
-      // 'memorizationLevel': null,
-      'uuid': id,
+      'id': int.tryParse(id) ?? 0,
       'name': name,
-      'gender': gender.id,
+      'gender': gender == Gender.male ? 'Male' : (gender == Gender.female ? 'Female' : 'Both'),
       'country': country,
       'residence': residence,
-      'availableTime': availableTime,
-      'status': status.labelAr,
-      'avatar': avatar,
-      'createdAt':
-          DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
-          DateTime.now().toIso8601String(),
-
-      'lastModified':
-          DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
-          DateTime.now().toIso8601String(),
-      'isDeleted': isDeleted,
-      'sumOfStudents': sumOfStudents,
-      'maxOfStudents': maxOfStudents,
+      'max_students': maxOfStudents > 0 ? maxOfStudents : 10,
+      'is_active': status == ActiveStatus.active,
+      'teacher_id': teacherId > 0 ? teacherId : null,
+      'school_id': 1, // Default required by the server
     };
   }
 
