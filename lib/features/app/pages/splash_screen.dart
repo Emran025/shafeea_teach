@@ -101,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const SizedBox(height: 32),
               const Text(
-                'أكاديمية تاج الوقار',
+                'أكاديمية شفيع',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 26,

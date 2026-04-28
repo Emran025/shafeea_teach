@@ -6,6 +6,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/models/user_role.dart';
 import '../../../../core/network/network_info.dart';
+import '../models/student_info_model.dart';
 import '../datasources/student_local_data_source.dart';
 import '../datasources/student_remote_data_source.dart';
 import 'student_sync_service.dart';
@@ -106,8 +107,8 @@ final class StudentSyncServiceImpl implements StudentSyncService {
         '[SyncService][Pre-flight] Prerequisite MISSING: Student $studentId not found locally. Fetching from remote...',
       );
 
-      final studentModel = await _remoteDataSource.getStudent(studentId);
-      await _localDataSource.upsertStudent(studentModel);
+      final studentInfoModel = await _remoteDataSource.getStudent(studentId);
+      await _localDataSource.upsertStudentInfo(studentInfoModel);
 
       print(
         '[SyncService][Pre-flight] Successfully synced prerequisite student data for $studentId.',

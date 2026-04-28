@@ -1,4 +1,5 @@
 import '../../domain/entities/paginated_result.dart';
+import '../models/student_info_model.dart';
 import '../models/student_model.dart';
 import '../models/student_sync_response_model.dart';
 import '../models/tracking_model.dart';
@@ -37,9 +38,9 @@ abstract interface class StudentRemoteDataSource {
   });
 
   /// Fetches a single student by their unique identifier (UUID).
-  /// - [studentData]: A map containing the student's UUID and other identifying information.
-  /// Returns the [StudentModel] for the specified student.
-  Future<StudentModel> getStudent(String studentData);
+  /// - [studentId]: The student's UUID.
+  /// Returns the [StudentInfoModel] (including plan and halaqas) for the specified student.
+  Future<StudentInfoModel> getStudent(String studentId);
 
   /// Pushes a create or update operation for a single student to the server.
   ///

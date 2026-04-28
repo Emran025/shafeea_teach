@@ -47,7 +47,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 32),
                       const Text(
-                        'مرحبًا بك في \nأكاديمية تاج الوقار',
+                        'مرحبًا بك في \nأكاديمية شفيع',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 26,

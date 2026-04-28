@@ -176,6 +176,8 @@ final class StudentRepositoryImpl implements StudentRepository {
       return Right(planModel.toEntity());
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
     }
   }
 
@@ -193,6 +195,8 @@ final class StudentRepositoryImpl implements StudentRepository {
       return Right(trackingEntities);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
     }
   }
 

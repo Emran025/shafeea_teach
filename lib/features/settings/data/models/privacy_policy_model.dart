@@ -65,7 +65,7 @@ class PrivacyPolicyModel {
     final summaryRaw = json['summary'] ?? [];
     final parsedSummary = _parseJsonField(summaryRaw);
     final summaryList = parsedSummary is List
-        ? List<String>.from(parsedSummary)
+        ? parsedSummary.map((e) => e.toString()).toList()
         : <String>[];
 
     // Parse sections field - could be List or JSON string
@@ -73,7 +73,10 @@ class PrivacyPolicyModel {
     final parsedSections = _parseJsonField(sectionsRaw);
     final sectionsList = parsedSections is List
         ? parsedSections
-              .map((sectionJson) => SectionModel.fromMap(sectionJson))
+              .map(
+                (sectionJson) =>
+                    SectionModel.fromMap(sectionJson as Map<String, dynamic>),
+              )
               .toList()
         : <SectionModel>[];
 
@@ -169,7 +172,19 @@ class SectionModel {
   /// This factory is typically used after decoding a JSON object that represents
   /// a single section.
   factory SectionModel.fromMap(Map<String, dynamic> map) {
-    return SectionModel(title: map['title'], content: map['content']);
+    final rawContent = map['content'];
+    String contentStr = '';
+
+    if (rawContent is String) {
+      contentStr = rawContent;
+    } else if (rawContent is List) {
+      contentStr = rawContent.map((e) => e.toString()).join('\n\n');
+    }
+
+    return SectionModel(
+      title: map['title'] as String? ?? '',
+      content: contentStr,
+    );
   }
 
   /// Converts the [SectionModel] instance into a map.

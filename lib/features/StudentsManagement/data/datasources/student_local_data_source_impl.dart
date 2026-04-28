@@ -642,12 +642,12 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   Future<void> upsertStudentInfo(StudentInfoModel studentInfo) async {
     try {
       await upsertStudent(studentInfo.studentModel);
-      await upsertFollowUpPlans(
-        studentInfo.followUpPlan,
-        studentInfo.studentModel.id,
-      );
       await upsertHalqaStudent(
         studentInfo.assignedHalaqa,
+        studentInfo.studentModel.id,
+      );
+      await upsertFollowUpPlans(
+        studentInfo.followUpPlan,
         studentInfo.studentModel.id,
       );
     } on DatabaseException catch (e) {

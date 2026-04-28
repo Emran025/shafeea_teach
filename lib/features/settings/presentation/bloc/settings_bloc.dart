@@ -330,7 +330,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
         final zipFile = File(
           '${tempDir.path}/export-${DateTime.now().toIso8601String()}.zip',
         );
-        await zipFile.writeAsBytes(zipData!);
+        await zipFile.writeAsBytes(zipData);
         emit(
           currentState.copyWith(
             exportStatus: DataExportStatus.success,

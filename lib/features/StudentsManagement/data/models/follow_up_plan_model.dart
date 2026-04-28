@@ -28,9 +28,10 @@ final class FollowUpPlanModel {
         .map((dJson) => PlanDetailModel.fromJson(dJson as Map<String, dynamic>))
         .toList();
 
+    final id = (json['planId'] ?? json['id'])?.toString() ?? '0';
     return FollowUpPlanModel(
-      planId: json['planId']?.toString() ?? '0',
-      serverPlanId: json['planId']?.toString() ?? '0',
+      planId: id,
+      serverPlanId: id,
       frequency: Frequency.fromLabel(json['frequency'] as String? ?? 'daily'),
       updatedAt: json['updatedAt'] as String?,
       createdAt: json['createdAt'] as String?,

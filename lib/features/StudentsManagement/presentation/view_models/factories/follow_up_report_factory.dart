@@ -110,10 +110,10 @@ class FollowUpReportFactory {
               amount: planDetail.amount,
             ),
             actual: ActualProgressEntity(
-              unit: TrackingUnitTyps
-                  .page, // يجب أن تكون الوحدة ديناميكية إذا كانت تتغير
+              unit: planDetail.unit,
               fromTrackingUnitId: trackingDetail.fromTrackingUnitId,
               toTrackingUnitId: trackingDetail.toTrackingUnitId,
+              actualAmount: actualAmount,
             ),
             gap: gap,
             performanceScore: trackingDetail.score.toDouble(),
@@ -160,24 +160,12 @@ class FollowUpReportFactory {
 
     double totalAchievementRate = 0;
     for (var detail in allDetails) {
-      final plannedAmount = _normalizeToCommonUnit(
-        detail.plannedDetail.amount,
-        detail.plannedDetail.unit,
-      );
-      final actualAmount =
-          _normalizeToCommonUnit(
-            detail.actual.fromTrackingUnitId.toPage -
-                detail.actual.fromTrackingUnitId.fromPage,
-            TrackingUnitTyps.fromId(detail.actual.fromTrackingUnitId.unitId),
-          ) +
-          _normalizeToCommonUnit(
-            detail.actual.toTrackingUnitId.toPage -
-                detail.actual.toTrackingUnitId.fromPage,
-            TrackingUnitTyps.fromId(detail.actual.toTrackingUnitId.unitId),
-          ); // افتراض
-      if (plannedAmount > 0) {
-        totalAchievementRate += (actualAmount / plannedAmount) * 100;
-      } else if (actualAmount > 0) {
+      // نستخدم القيم المُعالَجة المخزَّنة في الكيان مباشرةً — لا إعادة حساب.
+      final plannedNum = detail.plannedDetail.amount.toDouble();
+      final actualNum = detail.actual.actualAmount;
+      if (plannedNum > 0) {
+        totalAchievementRate += (actualNum / plannedNum) * 100;
+      } else if (actualNum > 0) {
         totalAchievementRate += 100.0;
       }
     }

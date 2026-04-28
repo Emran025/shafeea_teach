@@ -53,10 +53,10 @@ final class AuthRepositoryImpl implements AuthRepository {
   }) async {
     // This is the "wrapper" function that handles exceptions and network state.
     // It takes a function `body` which contains the core logic.
-    if (!await _networkInfo.isConnected) {
-      print('[SyncService][Tracking] Skipped: No internet connection.');
-      return Left(DataFailure(message: 'No internet connection available.'));
-    }
+    // if (!await _networkInfo.isConnected) {
+    //   print('[SyncService][Tracking] Skipped: No internet connection.');
+    //   return Left(DataFailure(message: 'No internet connection available.'));
+    // }
     return await _executeAuthOperation(() async {
       // 1. Gather all necessary device information.
       final deviceInfo = await _deviceInfoService.getDeviceInfo();

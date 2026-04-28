@@ -2,6 +2,7 @@ import 'package:injectable/injectable.dart';
 import 'package:shafeea/core/api/api_consumer.dart';
 import 'package:shafeea/core/api/end_ponits.dart';
 
+import 'package:shafeea/features/StudentsManagement/data/models/student_info_model.dart';
 import 'package:shafeea/features/StudentsManagement/data/models/student_model.dart';
 import 'package:shafeea/features/StudentsManagement/data/models/student_sync_response_model.dart';
 import '../../domain/entities/paginated_result.dart';
@@ -96,7 +97,7 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
   }
 
   @override
-  Future<StudentModel> getStudent(String studentId) async {
+  Future<StudentInfoModel> getStudent(String studentId) async {
     // The studentData is expected to be a UUID or similar identifier.
     final responseJson = await _apiConsumer.get(
       '${EndPoint.students}/$studentId', // Example: '/students/some-uuid'
@@ -109,8 +110,13 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
       );
     }
 
-    // Parse and return the StudentModel.
-    return StudentModel.fromMap(responseJson);
+    final studentData = responseJson['data'] as Map<String, dynamic>?;
+    if (studentData == null) {
+      throw const FormatException('Student data is missing in the response.');
+    }
+
+    // Parse and return the StudentInfoModel (which includes plan and halaqas).
+    return StudentInfoModel.fromJson(studentData);
   }
 
   @override

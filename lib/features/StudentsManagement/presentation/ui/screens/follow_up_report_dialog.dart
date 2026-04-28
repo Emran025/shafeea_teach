@@ -221,51 +221,83 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
 
   /// Builds the table with performance details for a single day.
   Widget _buildDetailsTable(FollowUpReportEntity report) {
-    return Table(
-      defaultColumnWidth: const FlexColumnWidth(),
-      border: TableBorder.all(
-        color: AppColors.accent70,
-        width: 0.5,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: const {
-        0: FlexColumnWidth(2.2),
-        1: FlexColumnWidth(1.8),
-        2: FlexColumnWidth(1.5),
-        3: FlexColumnWidth(1.5),
-        4: FlexColumnWidth(1.5),
-      },
-      children: [
-        TableRow(
-          decoration: const BoxDecoration(
-            color: AppColors.accent26,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-          ),
+    // عرض ثابت لكل عمود بالـ px — يضمن أن لا عمود يُضغط
+    const double colType = 72;
+    const double colPlan = 68;
+    const double colActual = 68;
+    const double colPct = 52;
+    const double colGap = 52;
+    const double colScore = 48;
+    const double totalWidth =
+        colType + colPlan + colActual + colPct + colGap + colScore;
+
+    Widget buildRow(List<Widget> cells) => Row(
           children: [
-            _buildTableHeader("النوع"),
-            _buildTableHeader("المخطط"),
-            _buildTableHeader("الفعلي"),
-            _buildTableHeader("الفجوة"),
-            _buildTableHeader("الجودة"),
+            SizedBox(width: colType, child: cells[0]),
+            SizedBox(width: colPlan, child: cells[1]),
+            SizedBox(width: colActual, child: cells[2]),
+            SizedBox(width: colPct, child: cells[3]),
+            SizedBox(width: colGap, child: cells[4]),
+            SizedBox(width: colScore, child: cells[5]),
           ],
-        ),
-        ...report.details.map((detail) {
-          // The actual amount can be derived from the plan and the gap
-          final actualAmount = detail.plannedDetail.amount + detail.gap;
-          return TableRow(
+        );
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          width: totalWidth + 1, // +1 لتعويض عرض الإطار (0.5 من كل جانب)
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.accent70, width: 0.5),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
             children: [
-              _buildTableCell(detail.type.labelAr),
-              _buildTableCell(
-                "${detail.plannedDetail.amount} ${detail.plannedDetail.unit.labelAr}",
+              // ─── رأس الجدول ───
+              Container(
+                color: AppColors.accent26,
+                child: buildRow([
+                  _buildTableHeader("النوع"),
+                  _buildTableHeader("المخطط"),
+                  _buildTableHeader("الفعلي"),
+                  _buildRotatedHeader("التقدم"),
+                  _buildRotatedHeader("الفجوة"),
+                  _buildRotatedHeader("الجودة"),
+                ]),
               ),
-              _buildTableCell(actualAmount.toStringAsFixed(1)),
-              _buildGapCell(detail.gap), // Special cell for the gap
-              _buildTableCell(detail.performanceScore.toStringAsFixed(1)),
+              const Divider(height: 0.5, color: AppColors.accent70),
+              // ─── صفوف البيانات ───
+              ...report.details.map((detail) {
+                final plannedNum = detail.plannedDetail.amount.toDouble();
+                final actualNum = detail.actual.actualAmount;
+                final progressPct = plannedNum > 0
+                    ? (actualNum / plannedNum * 100).clamp(0.0, 999.9)
+                    : (actualNum > 0 ? 100.0 : 0.0);
+                return Column(
+                  children: [
+                    buildRow([
+                      _buildTableCell(detail.type.labelAr),
+                      _buildTableCell(
+                        "${detail.plannedDetail.amount}\n${detail.plannedDetail.unit.labelAr}",
+                      ),
+                      _buildTableCell(
+                        "${actualNum.toStringAsFixed(1)}\n${detail.plannedDetail.unit.labelAr}",
+                      ),
+                      _buildProgressCell(progressPct),
+                      _buildGapCell(detail.gap),
+                      _buildTableCell(
+                        detail.performanceScore.toStringAsFixed(1),
+                      ),
+                    ]),
+                    const Divider(height: 0.5, color: AppColors.accent26),
+                  ],
+                );
+              }),
             ],
-          );
-        }),
-      ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -291,6 +323,26 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
 
   // --- Helper Widgets & Functions ---
 
+  Widget _buildRotatedHeader(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Center(
+        child: RotatedBox(
+          quarterTurns: 3, // تدوير 270 درجة ليظهر النص من الأسفل للأعلى
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.cairo(
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: AppColors.lightCream70,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildTableHeader(String text) {
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -313,6 +365,30 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
         text,
         textAlign: TextAlign.center,
         style: GoogleFonts.cairo(fontSize: 12, color: AppColors.lightCream),
+      ),
+    );
+  }
+
+  /// خلية ملوَّنة تعرض نسبة التقدم مقارنةً بالخطة.
+  Widget _buildProgressCell(double pct) {
+    final Color color;
+    if (pct >= 100) {
+      color = Colors.greenAccent;
+    } else if (pct >= 70) {
+      color = Colors.orangeAccent;
+    } else {
+      color = Colors.redAccent;
+    }
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Text(
+        "${pct.toStringAsFixed(0)}٪",
+        textAlign: TextAlign.center,
+        style: GoogleFonts.cairo(
+          fontSize: 12,
+          color: color,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     );
   }

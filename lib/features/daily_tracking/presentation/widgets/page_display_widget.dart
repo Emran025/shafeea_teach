@@ -1,6 +1,5 @@
 // lib/features/quran_reader/presentation/widgets/page_display_widget.dart
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -95,33 +94,30 @@ class _PageDisplayWidgetState extends State<PageDisplayWidget> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 5),
                       alignment: Alignment.bottomCenter,
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
                           SizedBox(
-                            height: 50,
-                            width: 50,
+                            height: 40,
+                            width: 40,
                             child: SvgPicture.asset(
                               SvgAssets().soraNum,
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
-                          Transform.translate(
-                            offset: const Offset(0, 1),
-                            child: Text(
-                              (widget.pageNumber).toString(),
-                              style: TextStyle(
-                                fontSize:
-                                    (MediaQuery.of(context).orientation) ==
-                                        Orientation.portrait
-                                    ? 12.0
-                                    : 14.0,
-                                fontWeight: FontWeight.bold,
-                                height: 2,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
+                          Text(
+                            (widget.pageNumber).toString(),
+                            style: TextStyle(
+                              fontSize:
+                                  (MediaQuery.of(context).orientation) ==
+                                      Orientation.portrait
+                                  ? 11.0
+                                  : 13.0,
+                              fontWeight: FontWeight.bold,
+                              height: 1,
+                              color: Theme.of(context).colorScheme.primary,
                             ),
                           ),
                         ],

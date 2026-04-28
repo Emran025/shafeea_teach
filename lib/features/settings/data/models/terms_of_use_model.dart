@@ -36,14 +36,14 @@ class TermsOfUseModel {
     final summaryRaw = json['summary'] ?? [];
     final parsedSummary = _parseJsonField(summaryRaw);
     final summaryList = parsedSummary is List
-        ? List<String>.from(parsedSummary)
+        ? parsedSummary.map((e) => e.toString()).toList()
         : <String>[];
 
     final sectionsRaw = json['sections'] ?? [];
     final parsedSections = _parseJsonField(sectionsRaw);
     final sectionsList = parsedSections is List
         ? parsedSections
-            .map((sectionJson) => SectionModel.fromMap(sectionJson))
+            .map((sectionJson) => SectionModel.fromMap(sectionJson as Map<String, dynamic>))
             .toList()
         : <SectionModel>[];
 

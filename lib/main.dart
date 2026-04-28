@@ -56,7 +56,7 @@ class TajAlWaqarApp extends StatelessWidget {
         final themeData = AppThemes.getTheme(themeType);
         return MaterialApp.router(
           scrollBehavior: ScrollBehavior(),
-          title: 'أكاديمية تاج الوقار',
+          title: 'أكاديمية شفيع',
           debugShowCheckedModeBanner: false,
           // --- Localization Setup (Cleaned Up) ---
           // Use the centralized configuration from L10nConfig.

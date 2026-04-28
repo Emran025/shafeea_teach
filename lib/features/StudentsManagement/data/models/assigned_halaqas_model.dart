@@ -26,7 +26,8 @@ final class AssignedHalaqasModel {
     return json != null
         ? AssignedHalaqasModel(
             // Use server's enrollmentId as our local ID
-            id: json['enrollmentId']?.toString() ?? '0',
+            // Use server's enrollmentId as our local ID, fallback to 'id' if missing
+            id: (json['enrollmentId'] ?? json['id'])?.toString() ?? '0',
             name: json['name'] as String? ?? 'Unnamed Halqa',
             avatar: json['avatar'] as String? ?? 'assets/images/logo2.png',
             enrolledAt:
