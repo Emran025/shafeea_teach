@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/di/injection.dart';
 import '../../../../../core/models/active_status.dart';
+import '../../../../../core/models/monitoring_filter.dart';
 import '../../../../../core/models/report_frequency.dart';
 import '../../../../../shared/themes/app_theme.dart';
 import '../../../../../shared/widgets/avatar.dart';
@@ -17,15 +18,21 @@ import 'show_student_reports_dialog.dart';
 
 class StudentListCardWithOptions extends StatefulWidget {
   final ActiveStatus? status;
-  final int? halaqaId;
+  final String? halaqaUuid;
   final DateTime? trackDate;
   final Frequency? frequencyCode;
+  final MonitoringFilter monitoringFilter;
+
+  /// استدعاء اختياري يُنفَّذ عند تحديث عدد الطلاب في هذا التبويب.
+  final void Function(int count)? onCountUpdated;
   const StudentListCardWithOptions({
     super.key,
     this.status,
-    this.halaqaId,
+    this.halaqaUuid,
     this.trackDate,
     this.frequencyCode,
+    this.monitoringFilter = MonitoringFilter.all,
+    this.onCountUpdated,
   });
 
   @override
@@ -50,46 +57,51 @@ class _StudentListCardWithOptionsState
         ..add(
           FilteredStudents(
             status: widget.status,
-            halaqaId: widget.halaqaId,
+            halaqaUuid: widget.halaqaUuid,
             trackDate: widget.trackDate,
             frequencyCode: widget.frequencyCode,
+            monitoringFilter: widget.monitoringFilter,
           ),
         ),
 
-      child: BlocBuilder<StudentBloc, StudentState>(
+      child: BlocConsumer<StudentBloc, StudentState>(
+        listenWhen: (prev, curr) =>
+            prev.filteredStudentsStatus != curr.filteredStudentsStatus &&
+            curr.filteredStudentsStatus == StudentStatus.success,
+        listener: (context, state) {
+          final count = state.filteredStudents?.length ?? 0;
+          widget.onCountUpdated?.call(count);
+        },
         builder: (context, state) {
-          if (state.status == StudentStatus.loading && state.students.isEmpty) {
+          if (state.filteredStudentsStatus == StudentStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (state.status == StudentStatus.failure && state.students.isEmpty) {
+          if (state.filteredStudentsStatus == StudentStatus.failure) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Error: state.failure?.message'),
+                  Text(state.filteredStudentsFailure?.message ?? 'حدث خطأ'),
                   ElevatedButton(
                     onPressed: () => context.read<StudentBloc>().add(
-                      const StudentsRefreshed(),
+                      FilteredStudents(
+                        status: widget.status,
+                        halaqaUuid: widget.halaqaUuid,
+                        trackDate: widget.trackDate,
+                        frequencyCode: widget.frequencyCode,
+                        monitoringFilter: widget.monitoringFilter,
+                      ),
                     ),
-                    child: const Text('Try Again'),
+                    child: const Text('إعادة المحاولة'),
                   ),
                 ],
               ),
             );
           }
-          if (state.status == StudentStatus.success && state.students.isEmpty) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                if (state.status == StudentStatus.success &&
-                    state.hasMorePages &&
-                    !state.isLoadingMore) {
-                  context.read<StudentBloc>().add(const StudentsRefreshed());
-                }
-              },
-              child: const Center(child: Text('No students found.')),
-            );
+          final filteredStudents = state.filteredStudents ?? [];
+          if (filteredStudents.isEmpty) {
+            return const Center(child: Text('لا يوجد طلاب في هذه الفئة.'));
           }
-          final filteredStudents = state.students;
           // .where(
           //   (t) => (status == ActiveStatus.unknown
           //       ? t.status == t.status

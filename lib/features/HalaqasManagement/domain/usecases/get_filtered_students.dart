@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/monitoring_filter.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../entities/halaqa_list_item_entity.dart';
@@ -23,8 +24,9 @@ class FetchFilteredHalaqasUseCase extends UseCase<List<HalaqaListItemEntity>, Ge
   ) async {
     return await repository.getHalaqasByStudentCriteria(
       studentStatus: params.status,
-      trackDate: params.trackDate, // Can be null
+      trackDate: params.trackDate,
       frequencyCode: params.frequencyCode,
+      monitoringFilter: params.monitoringFilter,
     );
   }
 }
@@ -34,13 +36,15 @@ class GetFilteredHalaqasParams extends Equatable {
  final ActiveStatus? status;
  final DateTime? trackDate;
  final Frequency? frequencyCode;
+ final MonitoringFilter monitoringFilter;
 
   const GetFilteredHalaqasParams({
     this.status,
     this.trackDate,
     this.frequencyCode,
+    this.monitoringFilter = MonitoringFilter.all,
   });
 
   @override
-  List<Object?> get props => [status, trackDate, frequencyCode];
+  List<Object?> get props => [status, trackDate, frequencyCode, monitoringFilter];
 }

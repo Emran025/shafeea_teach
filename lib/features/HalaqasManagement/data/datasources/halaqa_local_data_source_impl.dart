@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:injectable/injectable.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:shafeea/core/error/exceptions.dart';
+import 'package:shafeea/core/models/monitoring_filter.dart';
 import 'package:shafeea/core/models/user_role.dart';
 import 'package:shafeea/features/auth/data/datasources/auth_local_data_source.dart';
 import '../../../../core/models/active_status.dart';
@@ -331,71 +332,183 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
   //                       NEW: Filtered Query Methods
   // =========================================================================
 
+  /// Formats a [DateTime] as 'YYYY-MM-DD' for SQLite date comparisons.
+  String _fmt(DateTime d) =>
+      '${d.year.toString().padLeft(4, '0')}-'
+      '${d.month.toString().padLeft(2, '0')}-'
+      '${d.day.toString().padLeft(2, '0')}';
+
+  /// Maps a [Frequency] value to its expected reporting interval in days.
+  ///
+  /// Used in the SQLite expression:
+  ///   `CAST(ROUND(JULIANDAY(date) - JULIANDAY(FP.createdAt)) AS INTEGER) % interval = 0`
+  static int _intervalDays(Frequency freq) {
+    switch (freq) {
+      case Frequency.daily:
+        return 1;
+      case Frequency.onceAWeek:
+        return 7;
+      case Frequency.twiceAWeek:
+        return 3;
+      case Frequency.thriceAWeek:
+        return 2;
+    }
+  }
+
   @override
   Future<List<HalaqaModel>> getHalaqasByStudentCriteria({
     ActiveStatus? studentStatus,
     DateTime? trackDate,
     Frequency? frequencyCode,
+    MonitoringFilter monitoringFilter = MonitoringFilter.all,
   }) async {
     final user = await _authLocalDataSource.getUser();
-    final tenantId = "${user!.id}";
-    final query = StringBuffer('SELECT DISTINCT H.* FROM $_kHalqasTable H');
+    final tenantId = '${user!.id}';
 
-    final joins = <String>{
-      'JOIN $_kHalqaStudentsTable HS ON H.id = HS.halqaId',
-      'JOIN $_kUsersTable U ON HS.studentId = U.id',
-    };
-
-    final whereClauses = <String>[
-      'H.isDeleted = 0',
-      'U.roleId = ?',
-      'U.isDeleted = 0',
-      'H.tenant_id = ?',
-      'U.tenant_id = ?',
-    ];
-    final whereArgs = <Object?>[UserRole.student.id, tenantId, tenantId];
+    // ── Base WHERE fragment applied to every query ──
+    // Always restrict to non-deleted halaqas/students belonging to this tenant.
+    final baseWhere = StringBuffer(
+      'H.isDeleted = 0 AND H.tenant_id = ? '
+      'AND U.roleId = ? AND U.isDeleted = 0 AND U.tenant_id = ?',
+    );
+    final baseArgs = <Object?>[tenantId, UserRole.student.id, tenantId];
 
     if (studentStatus != null) {
-      whereClauses.add('U.status = ?');
-      whereArgs.add(studentStatus.label);
+      baseWhere.write(' AND U.status = ?');
+      baseArgs.add(studentStatus.label);
     }
 
-    if (trackDate != null) {
-      joins.add('JOIN $_kDailyTrackingTable DT ON HS.id = DT.enrollmentId');
+    // ── Build the mode-specific SQL ──
+    String sql;
+    final whereArgs = <Object?>[...baseArgs];
 
-      final formattedDate =
-          "${trackDate.year.toString().padLeft(4, '0')}-${trackDate.month.toString().padLeft(2, '0')}-${trackDate.day.toString().padLeft(2, '0')}";
-      whereClauses.add('DT.trackDate = ?');
-      whereArgs.add(formattedDate);
-    }
+    if (trackDate != null && frequencyCode != null) {
+      final formattedDate = _fmt(trackDate);
+      final interval = _intervalDays(frequencyCode);
 
-    if (frequencyCode != null) {
-      if (trackDate == null) {
-        throw ArgumentError(
-          'يجب توفير trackDate عند التصفية باستخدام frequencyCode.',
-        );
+      switch (monitoringFilter) {
+        // ── المتوقع: حلقات تحتوي على طالب واحد على الأقل مجدول تقريره اليوم ──
+        case MonitoringFilter.expected:
+          sql = '''
+            SELECT DISTINCT H.*
+            FROM $_kHalqasTable H
+            JOIN $_kHalqaStudentsTable HS
+              ON H.id = HS.halqaId AND HS.isDeleted = 0 AND HS.tenant_id = H.tenant_id
+            JOIN $_kUsersTable U
+              ON HS.studentId = U.id
+            JOIN $_kFollowUpPlansTable FP
+              ON HS.id = FP.enrollmentId AND FP.isDeleted = 0 AND FP.tenant_id = H.tenant_id
+            WHERE $baseWhere
+              AND FP.frequency = ?
+              AND CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % ? = 0
+            ORDER BY H.name ASC
+          ''';
+          whereArgs
+            ..add(frequencyCode.id)
+            ..add(formattedDate)
+            ..add(interval);
+
+        // ── المرسل: حلقات فيها طالب رفع تقريره فعلاً بالتاريخ ──
+        case MonitoringFilter.sent:
+          sql = '''
+            SELECT DISTINCT H.*
+            FROM $_kHalqasTable H
+            JOIN $_kHalqaStudentsTable HS
+              ON H.id = HS.halqaId AND HS.isDeleted = 0 AND HS.tenant_id = H.tenant_id
+            JOIN $_kUsersTable U
+              ON HS.studentId = U.id
+            JOIN $_kFollowUpPlansTable FP
+              ON HS.id = FP.enrollmentId AND FP.isDeleted = 0 AND FP.tenant_id = H.tenant_id
+            JOIN $_kDailyTrackingTable DT
+              ON HS.id = DT.enrollmentId AND DT.tenant_id = H.tenant_id
+            WHERE $baseWhere
+              AND FP.frequency = ?
+              AND CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % ? = 0
+              AND DT.trackDate = ?
+            ORDER BY H.name ASC
+          ''';
+          whereArgs
+            ..add(frequencyCode.id)
+            ..add(formattedDate)
+            ..add(interval)
+            ..add(formattedDate);
+
+        // ── المتبقي: حلقات فيها طالب مجدول ولم يرفع تقريره بعد ──
+        case MonitoringFilter.remaining:
+          // A halaqa appears here when it has AT LEAST ONE student whose
+          // report is due today but has NOT submitted yet.
+          sql = '''
+            SELECT DISTINCT H.*
+            FROM $_kHalqasTable H
+            JOIN $_kHalqaStudentsTable HS
+              ON H.id = HS.halqaId AND HS.isDeleted = 0 AND HS.tenant_id = H.tenant_id
+            JOIN $_kUsersTable U
+              ON HS.studentId = U.id
+            JOIN $_kFollowUpPlansTable FP
+              ON HS.id = FP.enrollmentId AND FP.isDeleted = 0 AND FP.tenant_id = H.tenant_id
+            WHERE $baseWhere
+              AND FP.frequency = ?
+              AND CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % ? = 0
+              AND U.id NOT IN (
+                SELECT DISTINCT HS2.studentId
+                FROM $_kDailyTrackingTable DT2
+                JOIN $_kHalqaStudentsTable HS2 ON DT2.enrollmentId = HS2.id
+                WHERE DT2.trackDate = ? AND DT2.tenant_id = ?
+              )
+            ORDER BY H.name ASC
+          ''';
+          whereArgs
+            ..add(frequencyCode.id)
+            ..add(formattedDate)
+            ..add(interval)
+            ..add(formattedDate)
+            ..add(tenantId);
+
+        // ── all: تجميع الحلقات بمعيار التكرار فقط ──
+        case MonitoringFilter.all:
+          sql = '''
+            SELECT DISTINCT H.*
+            FROM $_kHalqasTable H
+            JOIN $_kHalqaStudentsTable HS
+              ON H.id = HS.halqaId AND HS.isDeleted = 0 AND HS.tenant_id = H.tenant_id
+            JOIN $_kUsersTable U
+              ON HS.studentId = U.id
+            JOIN $_kFollowUpPlansTable FP
+              ON HS.id = FP.enrollmentId AND FP.isDeleted = 0 AND FP.tenant_id = H.tenant_id
+            WHERE $baseWhere
+              AND FP.frequency = ?
+              AND CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % ? = 0
+            ORDER BY H.name ASC
+          ''';
+          whereArgs
+            ..add(frequencyCode.id)
+            ..add(formattedDate)
+            ..add(interval);
+      }
+    } else {
+      // ── Fallback: no schedule logic, filter by status / trackDate only ──
+      String joins =
+          'JOIN $_kHalqaStudentsTable HS ON H.id = HS.halqaId AND HS.isDeleted = 0 '
+          'JOIN $_kUsersTable U ON HS.studentId = U.id ';
+
+      if (trackDate != null) {
+        joins +=
+            'JOIN $_kDailyTrackingTable DT ON HS.id = DT.enrollmentId AND DT.tenant_id = H.tenant_id ';
+        baseWhere.write(' AND DT.trackDate = ?');
+        whereArgs.add(_fmt(trackDate));
       }
 
-      joins.add('JOIN $_kFollowUpPlansTable FP ON HS.id = FP.enrollmentId');
-      joins.add('JOIN $_kFrequenciesTable F ON FP.frequency = F.id');
-
-      whereClauses.add('F.code = ?');
-      whereArgs.add(frequencyCode.id);
-
-      final formattedDate =
-          "${trackDate.year.toString().padLeft(4, '0')}-${trackDate.month.toString().padLeft(2, '0')}-${trackDate.day.toString().padLeft(2, '0')}";
-      whereClauses.add(
-        "CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % F.daysCount = 0",
-      );
-      whereArgs.add(formattedDate);
+      sql = '''
+        SELECT DISTINCT H.*
+        FROM $_kHalqasTable H
+        $joins
+        WHERE $baseWhere
+        ORDER BY H.name ASC
+      ''';
     }
 
-    query.write(' ${joins.join(' ')}');
-    query.write(' WHERE ${whereClauses.join(' AND ')}');
-    query.write(' ORDER BY H.name ASC');
-
     try {
-      final maps = await _db.rawQuery(query.toString(), whereArgs);
+      final maps = await _db.rawQuery(sql, whereArgs);
       return maps.map((map) => HalaqaModel.fromMap(map)).toList();
     } on DatabaseException catch (e) {
       throw CacheException(

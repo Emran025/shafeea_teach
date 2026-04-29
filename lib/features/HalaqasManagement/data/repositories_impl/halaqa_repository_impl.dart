@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/monitoring_filter.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../domain/entities/halaqa_entity.dart';
 import '../../domain/entities/halaqa_list_item_entity.dart';
@@ -65,20 +66,19 @@ final class HalaqaRepositoryImpl implements HalaqaRepository {
   }
 
   @override
-  @override
   Future<Either<Failure, List<HalaqaListItemEntity>>>
   getHalaqasByStudentCriteria({
     ActiveStatus? studentStatus,
     DateTime? trackDate,
     Frequency? frequencyCode,
+    MonitoringFilter monitoringFilter = MonitoringFilter.all,
   }) async {
-    // This method would typically fetch from the local data source first,
-    // then potentially trigger a targeted remote fetch if needed.
     try {
       final model = await _localDataSource.getHalaqasByStudentCriteria(
         studentStatus: studentStatus,
         trackDate: trackDate,
         frequencyCode: frequencyCode,
+        monitoringFilter: monitoringFilter,
       );
 
       return Right(

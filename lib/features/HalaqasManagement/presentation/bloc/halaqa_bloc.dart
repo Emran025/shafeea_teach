@@ -3,6 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
+import 'package:shafeea/core/models/monitoring_filter.dart';
 // import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/failures.dart';
@@ -142,6 +143,7 @@ class HalaqaBloc extends Bloc<HalaqaEvent, HalaqaState> {
         status: event.status,
         trackDate: event.trackDate,
         frequencyCode: event.frequencyCode,
+        monitoringFilter: event.monitoringFilter,
       ),
     );
 

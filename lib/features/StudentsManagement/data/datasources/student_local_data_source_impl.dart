@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:shafeea/core/error/exceptions.dart';
 import 'package:shafeea/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:shafeea/core/models/active_status.dart';
+import 'package:shafeea/core/models/monitoring_filter.dart';
 import 'package:shafeea/core/models/user_role.dart';
 // import '../../../../core/models/user_role.dart';
 import '../../../../core/models/report_frequency.dart';
@@ -31,6 +32,7 @@ import 'student_local_data_source.dart';
 
 /// Table and column name constants to prevent typos.
 const String _kUsersTable = 'users';
+const String _kHalqasTable = 'halqas';
 const String _kHalqaStudentsTable = 'halqa_students';
 const String _kFollowUpPlansTable = 'follow_up_plans';
 const String _kPlanDetailsTable = 'plan_details';
@@ -410,7 +412,9 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
           final halqaBatch = txn.batch();
           for (final studentInfo in updatedStudents) {
             final studentIdInt = int.tryParse(studentInfo.studentModel.id) ?? 0;
-            final assignedHalaqaMap = studentInfo.assignedHalaqa.toMap(studentIdInt);
+            final assignedHalaqaMap = studentInfo.assignedHalaqa.toMap(
+              studentIdInt,
+            );
             assignedHalaqaMap['tenant_id'] = tenantId;
             halqaBatch.insert(
               _kHalqaStudentsTable,
@@ -424,8 +428,9 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
           for (final studentInfo in updatedStudents) {
             final followUpPlan = studentInfo.followUpPlan;
             // The enrollment ID is now stored in assignedHalaqa.id (as a string)
-            final enrollmentId = int.tryParse(studentInfo.assignedHalaqa.id) ?? 0;
-            
+            final enrollmentId =
+                int.tryParse(studentInfo.assignedHalaqa.id) ?? 0;
+
             final followUpPlanMap = followUpPlan.toPlanDbMap(enrollmentId);
             followUpPlanMap['tenant_id'] = tenantId;
             planBatch.insert(
@@ -433,7 +438,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
               followUpPlanMap,
               conflictAlgorithm: ConflictAlgorithm.replace,
             );
-            
+
             planBatch.delete(
               _kPlanDetailsTable,
               where: 'planUuid = ? AND tenant_id = ?',
@@ -457,8 +462,9 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
           final deleteBatch = txn.batch();
           for (final studentInfo in deletedStudents) {
             final studentIdInt = int.tryParse(studentInfo.studentModel.id) ?? 0;
-            final enrollmentIdInt = int.tryParse(studentInfo.assignedHalaqa.id) ?? 0;
-            
+            final enrollmentIdInt =
+                int.tryParse(studentInfo.assignedHalaqa.id) ?? 0;
+
             _softDeleteStudentData(
               deleteBatch,
               studentInfo,
@@ -602,7 +608,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
         if (enrollmentIdMaps.isEmpty) {
           throw CacheException(
-            message: 'Cannot save plan. No active enrollment found locally for student $studentId',
+            message:
+                'Cannot save plan. No active enrollment found locally for student $studentId',
           );
         }
         final enrollmentId = enrollmentIdMaps.first['id'] as int;
@@ -614,7 +621,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
           followUpPlanMap,
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
-        
+
         await txn.delete(
           _kPlanDetailsTable,
           where: 'planUuid = ? AND tenant_id = ?',
@@ -633,7 +640,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
       });
     } on DatabaseException catch (e) {
       throw CacheException(
-        message: 'Failed to save student followUpPlan ($studentId): ${e.toString()}',
+        message:
+            'Failed to save student followUpPlan ($studentId): ${e.toString()}',
       );
     }
   }
@@ -973,7 +981,8 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
 
     if (enrollmentMaps.isEmpty) {
       throw CacheException(
-        message: 'Cannot cache trackings. Parent enrollment for student ID $studentId not found.',
+        message:
+            'Cannot cache trackings. Parent enrollment for student ID $studentId not found.',
       );
     }
     final enrollmentId = enrollmentMaps.first['id'] as int;
@@ -991,7 +1000,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
         for (final trackingModel in trackings) {
           final trackingMap = trackingModel.toMap(enrollmentId);
           trackingMap['tenant_id'] = tenantId;
-          
+
           await txn.insert(
             _kDailyTrackingTable,
             trackingMap,
@@ -1004,7 +1013,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
             for (final detailModel in trackingModel.details) {
               final detailMap = detailModel.toMap(trackingModel.id);
               detailMap['tenant_id'] = tenantId;
-              
+
               await txn.insert(
                 _kDailyTrackingDetailTable,
                 detailMap,
@@ -1016,7 +1025,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
                   final mistakeMap = mistakeModel.toMap(detailModel.id);
                   mistakeMap['tenant_id'] = tenantId;
                   mistakesBatch.insert(
-                    _kMistakesTable, 
+                    _kMistakesTable,
                     mistakeMap,
                     conflictAlgorithm: ConflictAlgorithm.replace,
                   );
@@ -1108,88 +1117,204 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   //                       NEW: Filtered Query Methods
   // =========================================================================
 
+  /// Helper to format a [DateTime] as 'YYYY-MM-DD' for SQLite comparisons.
+  String _formatDateForDb(DateTime date) {
+    return '${date.year.toString().padLeft(4, '0')}-'
+        '${date.month.toString().padLeft(2, '0')}-'
+        '${date.day.toString().padLeft(2, '0')}';
+  }
+
+  /// Builds the base query fragment that identifies students whose plan
+  /// schedule falls on [trackDate] based on their [frequency].
+  ///
+  /// Logic: a report is due on a given date when
+  ///   `ROUND(julianday(trackDate) - julianday(plan.startDate)) % daysInterval == 0`
+  ///
+  /// Where daysInterval per frequency:
+  ///   daily        (1) → every 1 day  → interval = 1
+  ///   onceAWeek    (2) → every 7 days → interval = 7
+  ///   twiceAWeek   (3) → every 3-4 days (≈ 7/2) → interval = 3
+  ///   thriceAWeek  (4) → every 2-3 days (≈ 7/3) → interval = 2
+  static int _frequencyIntervalDays(Frequency freq) {
+    switch (freq) {
+      case Frequency.daily:
+        return 1;
+      case Frequency.onceAWeek:
+        return 7;
+      case Frequency.twiceAWeek:
+        return 3;
+      case Frequency.thriceAWeek:
+        return 2;
+    }
+  }
+
   @override
   Future<List<StudentModel>> getFilteredStudents({
     ActiveStatus? status,
-    int? halaqaId,
+    String? halaqaUuid,
     DateTime? trackDate,
     Frequency? frequencyCode,
+    MonitoringFilter monitoringFilter = MonitoringFilter.all,
   }) async {
     final user = await _authLocalDataSource.getUser();
-    final tenantId = "${user!.id}";
+    final tenantId = '${user!.id}';
+
+    // If no filter criteria at all → return every student.
     if (status == null &&
-        halaqaId == null &&
+        halaqaUuid == null &&
         trackDate == null &&
         frequencyCode == null) {
       return _fetchCachedStudents();
     }
 
-    final query = StringBuffer('SELECT DISTINCT U.* FROM $_kUsersTable U');
-    final joins = <String>{};
-    final whereClauses = <String>[
-      'U.roleId = ?',
-      'U.isDeleted = ?',
-      'U.tenant_id = ?',
-    ];
     final whereArgs = <Object?>[UserRole.student.id, 0, tenantId];
 
+    // ── Common base conditions ────────────────────────────────────────────
+    final baseWhere = StringBuffer(
+      'U.roleId = ? AND U.isDeleted = ? AND U.tenant_id = ?',
+    );
+
     if (status != null) {
-      whereClauses.add('U.status = ?');
+      baseWhere.write(' AND U.status = ?');
       whereArgs.add(status.label);
     }
 
-    if (halaqaId != null) {
-      joins.add('JOIN $_kHalqaStudentsTable HS ON U.id = HS.studentId');
-      // joins.add('JOIN $_kHalqasTable H ON HS.halqaId = H.id');
-      // whereClauses.add('H.uuid = ?');
-      whereClauses.add('HS.halqaId = ?');
-      whereArgs.add(halaqaId);
+    // فلترة إضافية: تقييد بالحلقة عبر uuid — يتم استخدامها في كل فرع من خلال JOIN halqas
+    if (halaqaUuid != null) {
+      baseWhere.write(' AND H.uuid = ?');
+      whereArgs.add(halaqaUuid);
     }
 
-    if (trackDate != null) {
-      joins.add('JOIN $_kHalqaStudentsTable HS ON U.id = HS.studentId');
-      joins.add('JOIN $_kDailyTrackingTable DT ON HS.id = DT.enrollmentId');
+    // ── Build query depending on monitoringFilter ─────────────────────────
+    String sql;
 
-      final formattedDate =
-          "${trackDate.year.toString().padLeft(4, '0')}-${trackDate.month.toString().padLeft(2, '0')}-${trackDate.day.toString().padLeft(2, '0')}";
-      whereClauses.add('DT.trackDate = ?');
-      whereArgs.add(formattedDate);
-    }
+    if (trackDate != null && frequencyCode != null) {
+      final formattedDate = _formatDateForDb(trackDate);
+      final intervalDays = _frequencyIntervalDays(frequencyCode);
 
-    if (frequencyCode != null) {
-      if (trackDate == null) {
-        throw ArgumentError(
-          'يجب توفير trackDate عند التصفية باستخدام frequencyCode.',
-        );
+      switch (monitoringFilter) {
+        // ── المتوقع: طلاب لديهم خطة تتوافق مع التاريخ المحدد ──────────────
+        case MonitoringFilter.expected:
+          sql =
+              '''
+            SELECT DISTINCT U.*
+            FROM $_kUsersTable U
+            JOIN $_kHalqaStudentsTable HS
+              ON U.id = HS.studentId AND HS.isDeleted = 0 AND HS.tenant_id = U.tenant_id
+            JOIN $_kHalqasTable H ON HS.halqaId = H.id
+            JOIN $_kFollowUpPlansTable FP
+              ON HS.id = FP.enrollmentId AND FP.isDeleted = 0 AND FP.tenant_id = U.tenant_id
+            WHERE $baseWhere
+              AND FP.frequency = ?
+              AND CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % ? = 0
+            ORDER BY U.name ASC
+          ''';
+          whereArgs
+            ..add(frequencyCode.id)
+            ..add(formattedDate)
+            ..add(intervalDays);
+
+        // ── المرسل: طلاب لهم تتبع فعلي بالتاريخ المحدد + الخطة متوافقة ──
+        case MonitoringFilter.sent:
+          sql =
+              '''
+            SELECT DISTINCT U.*
+            FROM $_kUsersTable U
+            JOIN $_kHalqaStudentsTable HS
+              ON U.id = HS.studentId AND HS.isDeleted = 0 AND HS.tenant_id = U.tenant_id
+            JOIN $_kHalqasTable H ON HS.halqaId = H.id
+            JOIN $_kFollowUpPlansTable FP
+              ON HS.id = FP.enrollmentId AND FP.isDeleted = 0 AND FP.tenant_id = U.tenant_id
+            JOIN $_kDailyTrackingTable DT
+              ON HS.id = DT.enrollmentId AND DT.tenant_id = U.tenant_id
+            WHERE $baseWhere
+              AND FP.frequency = ?
+              AND CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % ? = 0
+              AND DT.trackDate = ?
+            ORDER BY U.name ASC
+          ''';
+          whereArgs
+            ..add(frequencyCode.id)
+            ..add(formattedDate)
+            ..add(intervalDays)
+            ..add(formattedDate);
+
+        // ── المتبقي: متوقع ولكن لا يوجد تتبع بالتاريخ ────────────────────
+        case MonitoringFilter.remaining:
+          sql =
+              '''
+            SELECT DISTINCT U.*
+            FROM $_kUsersTable U
+            JOIN $_kHalqaStudentsTable HS
+              ON U.id = HS.studentId AND HS.isDeleted = 0 AND HS.tenant_id = U.tenant_id
+            JOIN $_kHalqasTable H ON HS.halqaId = H.id
+            JOIN $_kFollowUpPlansTable FP
+              ON HS.id = FP.enrollmentId AND FP.isDeleted = 0 AND FP.tenant_id = U.tenant_id
+            WHERE $baseWhere
+              AND FP.frequency = ?
+              AND CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % ? = 0
+              AND U.id NOT IN (
+                SELECT DISTINCT HS2.studentId
+                FROM $_kDailyTrackingTable DT2
+                JOIN $_kHalqaStudentsTable HS2 ON DT2.enrollmentId = HS2.id
+                WHERE DT2.trackDate = ? AND DT2.tenant_id = ?
+              )
+            ORDER BY U.name ASC
+          ''';
+          whereArgs
+            ..add(frequencyCode.id)
+            ..add(formattedDate)
+            ..add(intervalDays)
+            ..add(formattedDate)
+            ..add(tenantId);
+
+        // ── all: no monitoring filter, respect only the other params ───────
+        case MonitoringFilter.all:
+          sql =
+              '''
+            SELECT DISTINCT U.*
+            FROM $_kUsersTable U
+            JOIN $_kHalqaStudentsTable HS
+              ON U.id = HS.studentId AND HS.isDeleted = 0 AND HS.tenant_id = U.tenant_id
+            JOIN $_kHalqasTable H ON HS.halqaId = H.id
+            JOIN $_kFollowUpPlansTable FP
+              ON HS.id = FP.enrollmentId AND FP.isDeleted = 0 AND FP.tenant_id = U.tenant_id
+            WHERE $baseWhere
+              AND FP.frequency = ?
+              AND CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % ? = 0
+            ORDER BY U.name ASC
+          ''';
+          whereArgs
+            ..add(frequencyCode.id)
+            ..add(formattedDate)
+            ..add(intervalDays);
       }
-
-      joins.add('JOIN $_kHalqaStudentsTable HS ON U.id = HS.studentId');
-      joins.add('JOIN $_kFollowUpPlansTable FP ON HS.id = FP.enrollmentId');
-      joins.add('JOIN $_kFrequenciesTable F ON FP.frequency = F.id');
-
-      whereClauses.add('F.code = ?');
-      whereArgs.add(frequencyCode.id);
-
-      final formattedDate =
-          "${trackDate.year.toString().padLeft(4, '0')}-${trackDate.month.toString().padLeft(2, '0')}-${trackDate.day.toString().padLeft(2, '0')}";
-      whereClauses.add(
-        "CAST(ROUND(JULIANDAY(?) - JULIANDAY(FP.createdAt)) AS INTEGER) % F.daysCount = 0",
+    } else {
+      // Fallback: simple filter without plan-schedule logic
+      final fallbackJoins = StringBuffer(
+        'JOIN $_kHalqaStudentsTable HS ON U.id = HS.studentId AND HS.isDeleted = 0 '
+        'JOIN $_kHalqasTable H ON HS.halqaId = H.id ',
       );
-      whereArgs.add(formattedDate);
+      if (trackDate != null) {
+        final formattedDate = _formatDateForDb(trackDate);
+        fallbackJoins.write(
+          'JOIN $_kDailyTrackingTable DT ON HS.id = DT.enrollmentId ',
+        );
+        baseWhere.write(' AND DT.trackDate = ?');
+        whereArgs.add(formattedDate);
+      }
+      sql =
+          '''
+        SELECT DISTINCT U.*
+        FROM $_kUsersTable U
+        $fallbackJoins
+        WHERE $baseWhere
+        ORDER BY U.name ASC
+      ''';
     }
-
-    if (joins.isNotEmpty) {
-      query.write(' ${joins.join(' ')}');
-    }
-
-    if (whereClauses.isNotEmpty) {
-      query.write(' WHERE ${whereClauses.join(' AND ')}');
-    }
-
-    query.write(' ORDER BY U.name ASC');
 
     try {
-      final maps = await _db.rawQuery(query.toString(), whereArgs);
+      final maps = await _db.rawQuery(sql, whereArgs);
       return maps
           .map((map) => StudentModel.fromMap(map, fromDb: true))
           .toList();

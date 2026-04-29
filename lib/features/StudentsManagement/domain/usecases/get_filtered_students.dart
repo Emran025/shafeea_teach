@@ -5,6 +5,7 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/monitoring_filter.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../entities/student_list_item_entity.dart';
 import '../repositories/student_repository.dart';
@@ -22,9 +23,10 @@ class FetchFilteredStudentsUseCase extends UseCase<List<StudentListItemEntity>, 
   ) async {
     return await repository.getFilteredStudents(
       status: params.status,
-      halaqaId: params.halaqaId,
-      trackDate: params.trackDate, // Can be null
+      halaqaUuid: params.halaqaUuid,
+      trackDate: params.trackDate,
       frequencyCode: params.frequencyCode,
+      monitoringFilter: params.monitoringFilter,
     );
   }
 }
@@ -32,17 +34,19 @@ class FetchFilteredStudentsUseCase extends UseCase<List<StudentListItemEntity>, 
 
 class GetFilteredStudentsParams extends Equatable {
  final ActiveStatus? status;
- final int? halaqaId;
+ final String? halaqaUuid;
  final DateTime? trackDate;
  final Frequency? frequencyCode;
+ final MonitoringFilter monitoringFilter;
 
   const GetFilteredStudentsParams({
     this.status,
-    this.halaqaId,
+    this.halaqaUuid,
     this.trackDate,
     this.frequencyCode,
+    this.monitoringFilter = MonitoringFilter.all,
   });
 
   @override
-  List<Object?> get props => [status, halaqaId, trackDate, frequencyCode];
+  List<Object?> get props => [status, halaqaUuid, trackDate, frequencyCode, monitoringFilter];
 }

@@ -39,14 +39,16 @@ final class _HalaqasStreamUpdated extends HalaqaEvent {
 }
 
 final class FilteredHalaqas extends HalaqaEvent {
-   final ActiveStatus? status;
- final DateTime? trackDate;
- final Frequency? frequencyCode;
+  final ActiveStatus? status;
+  final DateTime? trackDate;
+  final Frequency? frequencyCode;
+  final MonitoringFilter monitoringFilter;
 
   const FilteredHalaqas({
     this.status,
     this.trackDate,
     this.frequencyCode,
+    this.monitoringFilter = MonitoringFilter.all,
   });
 }
 

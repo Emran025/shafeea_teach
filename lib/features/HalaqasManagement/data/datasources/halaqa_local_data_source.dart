@@ -1,4 +1,5 @@
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/monitoring_filter.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/models/sync_queue_model.dart';
 import '../models/halaqa_model.dart';
@@ -75,5 +76,6 @@ abstract interface class HalaqaLocalDataSource {
     ActiveStatus? studentStatus,
     DateTime? trackDate,
     Frequency? frequencyCode,
+    MonitoringFilter monitoringFilter = MonitoringFilter.all,
   });
 }

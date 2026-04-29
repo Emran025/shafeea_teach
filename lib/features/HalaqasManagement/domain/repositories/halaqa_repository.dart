@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/monitoring_filter.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../entities/halaqa_entity.dart';
 import '../entities/halaqa_list_item_entity.dart';
@@ -69,5 +70,6 @@ abstract interface class HalaqaRepository {
     ActiveStatus? studentStatus,
     DateTime? trackDate,
     Frequency? frequencyCode,
+    MonitoringFilter monitoringFilter = MonitoringFilter.all,
   });
 }

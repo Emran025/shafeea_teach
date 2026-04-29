@@ -7,15 +7,17 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../../../config/di/injection.dart';
 import '../../../../../core/constants/data.dart';
 import '../../../../../core/models/active_status.dart';
+import '../../../../../core/models/monitoring_filter.dart';
 import '../../../../../core/models/report_frequency.dart';
 import '../../../../../shared/themes/app_theme.dart';
 import '../../../../../shared/widgets/avatar.dart';
 import '../../../../../shared/widgets/caerd_tile.dart';
 import '../../../../../shared/widgets/taj.dart';
-import '../../../../StudentsManagement/domain/entities/student_entity.dart';
 import '../../../../StudentsManagement/presentation/ui/screens/follow_up_report_dialog.dart';
 import '../../../../StudentsManagement/presentation/view_models/factories/follow_up_report_factory.dart';
 import '../../../../StudentsManagement/presentation/view_models/follow_up_report_bundle_entity.dart';
+import '../../../../StudentsManagement/presentation/ui/screens/student_profile_screen.dart';
+import '../../../../StudentsManagement/presentation/bloc/student_bloc.dart';
 import '../../../domain/entities/halaqa_list_item_entity.dart';
 import '../../bloc/halaqa_bloc.dart';
 import '../screens/halaqa_profile_screen.dart';
@@ -25,12 +27,19 @@ class HalaqaListCardWithOptions extends StatefulWidget {
   final int? halaqaId;
   final DateTime? trackDate;
   final Frequency? frequencyCode;
+  final MonitoringFilter monitoringFilter;
+
+  /// استدعاء اختياري يُنفَّذ عند تحديث عدد الحلقات في هذا التبويب.
+  final void Function(int count)? onCountUpdated;
+
   const HalaqaListCardWithOptions({
     super.key,
     this.status,
     this.halaqaId,
     this.trackDate,
     this.frequencyCode,
+    this.monitoringFilter = MonitoringFilter.all,
+    this.onCountUpdated,
   });
 
   @override
@@ -38,8 +47,7 @@ class HalaqaListCardWithOptions extends StatefulWidget {
       _HalaqaListCardWithOptionsState();
 }
 
-class _HalaqaListCardWithOptionsState
-    extends State<HalaqaListCardWithOptions> {
+class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -57,43 +65,47 @@ class _HalaqaListCardWithOptionsState
             status: widget.status,
             trackDate: widget.trackDate,
             frequencyCode: widget.frequencyCode,
+            monitoringFilter: widget.monitoringFilter,
           ),
         ),
 
-      child: BlocBuilder<HalaqaBloc, HalaqaState>(
+      child: BlocConsumer<HalaqaBloc, HalaqaState>(
+        listenWhen: (prev, curr) =>
+            prev.filteredHalaqasStatus != curr.filteredHalaqasStatus &&
+            curr.filteredHalaqasStatus == HalaqaStatus.success,
+        listener: (context, state) {
+          final count = state.filteredHalaqas?.length ?? 0;
+          widget.onCountUpdated?.call(count);
+        },
         builder: (context, state) {
-          if (state.status == HalaqaStatus.loading && state.halaqas.isEmpty) {
+          if (state.filteredHalaqasStatus == HalaqaStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (state.status == HalaqaStatus.failure && state.halaqas.isEmpty) {
+          if (state.filteredHalaqasStatus == HalaqaStatus.failure) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Error: state.failure?.message'),
+                  Text(state.filteredHalaqasFailure?.message ?? 'حدث خطأ'),
                   ElevatedButton(
                     onPressed: () => context.read<HalaqaBloc>().add(
-                      const HalaqasRefreshed(),
+                      FilteredHalaqas(
+                        status: widget.status,
+                        trackDate: widget.trackDate,
+                        frequencyCode: widget.frequencyCode,
+                        monitoringFilter: widget.monitoringFilter,
+                      ),
                     ),
-                    child: const Text('Try Again'),
+                    child: const Text('إعادة المحاولة'),
                   ),
                 ],
               ),
             );
           }
-          if (state.status == HalaqaStatus.success && state.halaqas.isEmpty) {
-            return RefreshIndicator(
-              onRefresh: () async {
-                if (state.status == HalaqaStatus.success &&
-                    state.hasMorePages &&
-                    !state.isLoadingMore) {
-                  context.read<HalaqaBloc>().add(const HalaqasRefreshed());
-                }
-              },
-              child: const Center(child: Text('No students found.')),
-            );
+          final filteredHalaqas = state.filteredHalaqas ?? [];
+          if (filteredHalaqas.isEmpty) {
+            return const Center(child: Text('لا يوجد حلقات في هذه الفئة.'));
           }
-          final filteredHalaqas = state.halaqas;
           // .where(
           //   (t) => (status == ActiveStatus.unknown
           //       ? t.status == t.status
@@ -108,8 +120,7 @@ class _HalaqaListCardWithOptionsState
             child: ListView.separated(
               separatorBuilder: (_, __) => const SizedBox(height: 5),
               controller: _scrollController, // Controller for "load more"
-              itemCount:
-                  filteredHalaqas.length + (state.isLoadingMore ? 1 : 0),
+              itemCount: filteredHalaqas.length + (state.isLoadingMore ? 1 : 0),
               itemBuilder: (ctx, i) {
                 if (i >= filteredHalaqas.length) {
                   // "Load More" indicator
@@ -139,10 +150,7 @@ class _HalaqaListCardWithOptionsState
                   },
                   onTajPressed: () {
                     filteredHalaqas[i].status == ActiveStatus.active
-                        ? _showHalaqaReports(
-                           
-                            filteredHalaqas[i],
-                          )
+                        ? _showHalaqaReports(filteredHalaqas[i])
                         : _showPreviousReason(filteredHalaqas[i]);
                   },
                 );
@@ -154,81 +162,233 @@ class _HalaqaListCardWithOptionsState
     );
   }
 
-
-
-    void _showHalaqaReports(HalaqaListItemEntity halqa) {
-    List<StudentDetailEntity> students = [
-      ...fakeStudents1,
-      ...fakeStudents1,
-      ...fakeStudents1,
-      ...fakeStudents1,
-    ];
-    // List<StudentDetailEntity> students = [
-    //   ...fakeStudents.where((element) => halqa.halqaID == element.halaqaId),
-    // ];
+  void _showHalaqaReports(HalaqaListItemEntity halqa) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) {
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-            padding: const EdgeInsets.all(10),
-            constraints: const BoxConstraints(maxHeight: 600),
-            decoration: BoxDecoration(
-              color: AppColors.accent12,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.accent70, width: 0.7),
+        return BlocProvider(
+          create: (context) => sl<StudentBloc>()
+            ..add(
+              FilteredStudents(
+                status: widget.status,
+                halaqaUuid: halqa.id,
+                trackDate: widget.trackDate,
+                frequencyCode: widget.frequencyCode,
+                monitoringFilter: widget.monitoringFilter,
+              ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+          child: BlocBuilder<StudentBloc, StudentState>(
+            builder: (context, state) {
+              final students = state.filteredStudents ?? [];
+              final isLoading =
+                  state.filteredStudentsStatus == StudentStatus.loading;
+
+              return BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  padding: const EdgeInsets.all(10),
+                  constraints: const BoxConstraints(maxHeight: 600),
+                  decoration: BoxDecoration(
+                    color: AppColors.accent12,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: AppColors.accent70, width: 0.7),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            halqa.name,
-                            style: GoogleFonts.cairo(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.lightCream,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  halqa.name,
+                                  style: GoogleFonts.cairo(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.lightCream,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "عدد الطلاب: ${students.length}",
+                                  style: GoogleFonts.cairo(
+                                    fontSize: 14,
+                                    color: AppColors.lightCream70,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "عدد الطلاب: ${students.length}",
-                            style: GoogleFonts.cairo(
-                              fontSize: 14,
-                              color: AppColors.lightCream70,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "إجمالي التقارير: ${students.length}",
+                                  style: GoogleFonts.cairo(
+                                    fontSize: 14,
+                                    color: AppColors.lightCream70,
+                                  ),
+                                ),
+                                Text(
+                                  "آخر تقرير: ",
+                                  style: GoogleFonts.cairo(
+                                    fontSize: 14,
+                                    color: AppColors.lightCream70,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "إجمالي التقارير: ${students.length}",
-                            style: GoogleFonts.cairo(
-                              fontSize: 14,
-                              color: AppColors.lightCream70,
-                            ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: const Divider(
+                          height: 2,
+                          color: AppColors.accent70,
+                        ),
+                      ),
+
+                      const SizedBox(height: 10),
+                      if (isLoading)
+                        const Expanded(
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      else if (students.isEmpty)
+                        const Expanded(
+                          child: Center(
+                            child: Text('لا يوجد طلاب معنيين في هذه الحلقة.'),
                           ),
-                          Text(
-                            "آخر تقرير: ",
-                            style: GoogleFonts.cairo(
-                              fontSize: 14,
-                              color: AppColors.lightCream70,
+                        )
+                      else
+                        Expanded(
+                          child: ListView.separated(
+                            itemCount: students.length,
+                            shrinkWrap: true,
+                            separatorBuilder: (_, __) =>
+                                const SizedBox(height: 2),
+                            // physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (_, index) {
+                              final planEntity = studentPlan.toEntity();
+                              final trackingEntities = studentTrackings
+                                  .map((model) => model.toEntity())
+                                  .toList();
+                              final factory = FollowUpReportFactory();
+                              final FollowUpReportBundleEntity reportBundle =
+                                  factory.create(
+                                    plan: planEntity,
+                                    trackings: trackingEntities,
+                                    totalPendingReports: 2,
+                                  );
+
+                              return Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  // color: AppColors.accent26,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: AppColors.accent70,
+                                    width: 0.5,
+                                  ),
+                                ),
+                                child: ListTile(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => StudentProfileScreen(
+                                          studentID: students[index].id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      TextButton(
+                                        onPressed: () {
+                                          _showStudentReports(
+                                            students[index].name,
+                                            reportBundle,
+                                          );
+                                        },
+                                        child: StatusTag(lable: "تقرير"),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.more_vert,
+                                          color: AppColors.lightCream,
+                                        ),
+                                        onPressed: () => {},
+                                      ),
+                                    ],
+                                  ),
+
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 0,
+                                    vertical: 0,
+                                  ),
+                                  leading: Avatar(
+                                    gender: students[index].gender,
+                                  ),
+                                  title: Text(
+                                    students[index].name,
+                                    style: GoogleFonts.cairo(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.lightCream,
+                                    ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "عدد الأيام المسجلة: ${reportBundle.followUpReports.length}",
+                                        style: GoogleFonts.cairo(
+                                          fontSize: 13,
+                                          color: AppColors.lightCream70,
+                                        ),
+                                      ),
+                                      Text(
+                                        "متوسط الإنجاز: ${(reportBundle.followUpReports.map((e) => e.behaviourAssessment).reduce((a, b) => a + b) / reportBundle.followUpReports.length).toStringAsFixed(1)}٪",
+                                        style: GoogleFonts.cairo(
+                                          fontSize: 13,
+                                          color: AppColors.lightCream70,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => Navigator.pop(context),
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(color: AppColors.accent70),
+                              ),
+                              child: Text(
+                                "إغلاق",
+                                style: GoogleFonts.cairo(
+                                  color: AppColors.lightCream,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -236,135 +396,13 @@ class _HalaqaListCardWithOptionsState
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: const Divider(height: 2, color: AppColors.accent70),
-                ),
-
-                const SizedBox(height: 10),
-                if (students.isNotEmpty)
-                  Expanded(
-                    child: ListView.separated(
-                      itemCount: students.length,
-                      shrinkWrap: true,
-                      separatorBuilder: (_, __) => const SizedBox(height: 2),
-                      // physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (_, index) {
-                        final planEntity = studentPlan.toEntity();
-                        final trackingEntities = studentTrackings
-                            .map((model) => model.toEntity())
-                            .toList();
-                        final factory = FollowUpReportFactory();
-                        final FollowUpReportBundleEntity reportBundle = factory
-                            .create(
-                              plan: planEntity,
-                              trackings: trackingEntities,
-                              totalPendingReports: 2,
-                            );
-
-                        return Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            // color: AppColors.accent26,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: AppColors.accent70,
-                              width: 0.5,
-                            ),
-                          ),
-                          child: ListTile(
-                            onTap: () => {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => HalaqaProfileScreen(
-                                    halaqaId: students[index].id,
-                                  ),
-                                ),
-                              ),
-                            },
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    _showStudentReports(
-                                      students[index].name,
-                                      reportBundle,
-                                    );
-                                  },
-                                  child: StatusTag(lable: "تقرير"),
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.more_vert,
-                                    color: AppColors.lightCream,
-                                  ),
-                                  onPressed: () => {},
-                                ),
-                              ],
-                            ),
-
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 0,
-                              vertical: 0,
-                            ),
-                            leading: Avatar(gender: students[index].gender),
-                            title: Text(
-                              students[index].name,
-                              style: GoogleFonts.cairo(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.lightCream,
-                              ),
-                            ),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "عدد الأيام المسجلة: ${reportBundle.followUpReports.length}",
-                                  style: GoogleFonts.cairo(
-                                    fontSize: 13,
-                                    color: AppColors.lightCream70,
-                                  ),
-                                ),
-                                Text(
-                                  "متوسط الإنجاز: ${(reportBundle.followUpReports.map((e) => e.behaviourAssessment).reduce((a, b) => a + b) / reportBundle.followUpReports.length).toStringAsFixed(1)}٪",
-                                  style: GoogleFonts.cairo(
-                                    fontSize: 13,
-                                    color: AppColors.lightCream70,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () => Navigator.pop(context),
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: AppColors.accent70),
-                        ),
-                        child: Text(
-                          "إغلاق",
-                          style: GoogleFonts.cairo(color: AppColors.lightCream),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              );
+            },
           ),
         );
       },
     );
   }
-
 
   void _openHalaqaMenu(HalaqaListItemEntity student) {
     showModalBottomSheet(
@@ -636,7 +674,7 @@ class _HalaqaListCardWithOptionsState
                               ),
                               SizedBox(height: 6),
                               Text(
-                                 "لا توجد تفاصيل.",
+                                "لا توجد تفاصيل.",
                                 style: GoogleFonts.cairo(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -694,6 +732,7 @@ class _HalaqaListCardWithOptionsState
       onTap: () => onTap(),
     );
   }
+
   void _showStudentReports(
     String name,
     FollowUpReportBundleEntity reportBundle,
@@ -704,5 +743,4 @@ class _HalaqaListCardWithOptionsState
           FollowUpReportDialog(studentName: name, bundle: reportBundle),
     );
   }
-
 }

@@ -5,6 +5,7 @@ import 'package:csv/csv.dart';
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shafeea/core/models/monitoring_filter.dart';
 import 'package:shafeea/core/models/report_frequency.dart';
 import 'package:shafeea/features/StudentsManagement/domain/entities/student_info_entity.dart';
 
@@ -144,18 +145,18 @@ final class StudentRepositoryImpl implements StudentRepository {
   @override
   Future<Either<Failure, List<StudentListItemEntity>>> getFilteredStudents({
     ActiveStatus? status,
-    int? halaqaId,
+    String? halaqaUuid,
     DateTime? trackDate,
     Frequency? frequencyCode,
+    MonitoringFilter monitoringFilter = MonitoringFilter.all,
   }) async {
-    // This method would typically fetch from the local data source first,
-    // then potentially trigger a targeted remote fetch if needed.
     try {
       final model = await _localDataSource.getFilteredStudents(
         status: status,
-        halaqaId: halaqaId,
+        halaqaUuid: halaqaUuid,
         trackDate: trackDate,
         frequencyCode: frequencyCode,
+        monitoringFilter: monitoringFilter,
       );
 
       return Right(

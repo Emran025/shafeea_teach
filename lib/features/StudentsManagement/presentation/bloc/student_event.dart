@@ -33,15 +33,17 @@ final class StudentUpserted extends StudentEvent {
 /// Dispatched when the user performs an action to add or update a student.
 final class FilteredStudents extends StudentEvent {
   final ActiveStatus? status;
-  final int? halaqaId;
+  final String? halaqaUuid;
   final DateTime? trackDate;
   final Frequency? frequencyCode;
+  final MonitoringFilter monitoringFilter;
 
   const FilteredStudents({
     this.status,
-    this.halaqaId,
+    this.halaqaUuid,
     this.trackDate,
     this.frequencyCode,
+    this.monitoringFilter = MonitoringFilter.all,
   });
 }
 

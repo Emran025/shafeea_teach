@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/monitoring_filter.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../settings/domain/entities/export_config.dart';
 import '../../../settings/domain/entities/import_config.dart';
@@ -77,9 +78,10 @@ abstract interface class StudentRepository {
 
   Future<Either<Failure, List<StudentListItemEntity>>> getFilteredStudents({
     ActiveStatus? status,
-    int? halaqaId,
+    String? halaqaUuid,
     DateTime? trackDate,
     Frequency? frequencyCode,
+    MonitoringFilter monitoringFilter = MonitoringFilter.all,
   });
   Future<Either<Failure, String>> exportFollowUpReports({
     required ExportConfig config,

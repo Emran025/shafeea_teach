@@ -1,6 +1,7 @@
 import 'package:shafeea/features/StudentsManagement/data/models/student_model.dart';
 
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/monitoring_filter.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../../../core/models/sync_queue_model.dart';
 import '../../../settings/domain/entities/import_export.dart';
@@ -137,9 +138,10 @@ abstract interface class StudentLocalDataSource {
 
   Future<List<StudentModel>> getFilteredStudents({
     ActiveStatus? status,
-    int? halaqaId,
+    String? halaqaUuid,
     DateTime? trackDate,
     Frequency? frequencyCode,
+    MonitoringFilter monitoringFilter = MonitoringFilter.all,
   });
 
   /// Fetches all follow-up tracking records for all students.

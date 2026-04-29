@@ -8,6 +8,7 @@ import 'package:equatable/equatable.dart';
 import '../../../../core/entities/list_item_entity.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/models/active_status.dart';
+import '../../../../core/models/monitoring_filter.dart';
 import '../../../../core/models/report_frequency.dart';
 import '../../domain/entities/student_entity.dart';
 import '../../domain/entities/student_info_entity.dart';
@@ -184,9 +185,10 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     final result = await _fetchFilteredStudentsUC(
       GetFilteredStudentsParams(
         status: event.status,
-        halaqaId: event.halaqaId,
+        halaqaUuid: event.halaqaUuid,
         trackDate: event.trackDate,
         frequencyCode: event.frequencyCode,
+        monitoringFilter: event.monitoringFilter,
       ),
     );
 
