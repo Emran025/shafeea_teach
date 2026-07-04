@@ -16,6 +16,11 @@ jobs:
     name: Build APK
     runs-on: ubuntu-latest
 
+    env:
+      CI: true
+      GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+      DART_VM_OPTIONS: "--disable-dart-dev"
+
     steps:
       # 1️⃣  Checkout
       - uses: actions/checkout@v4
@@ -85,7 +90,10 @@ jobs:
         run: |
           flutter build apk --release \
             --build-name="${{ steps.version.outputs.build_name }}" \
-            --build-number="${{ steps.version.outputs.build_number }}"
+            --build-number="${{ steps.version.outputs.build_number }}" \
+            --dart-define=SHAFEEATEACH_API_URL=${{ secrets.SHAFEEATEACH_API_URL }} \
+            --obfuscate \
+            --split-debug-info=debug-info
 
       # 9️⃣  Rename output for clarity
       - name: Rename APK

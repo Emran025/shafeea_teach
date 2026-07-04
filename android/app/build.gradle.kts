@@ -71,6 +71,8 @@ android {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+    compileOnly("com.google.errorprone:error_prone_annotations:2.18.0")
+    compileOnly("javax.annotation:javax.annotation-api:1.3.2")
 }
 
 flutter {
