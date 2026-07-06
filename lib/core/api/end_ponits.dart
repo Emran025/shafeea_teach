@@ -1,36 +1,42 @@
 class EndPoint {
-  static const String baseUrl =
-      "https://shafeea-platform-8e43.onrender.com/api/v1/"; //192.168.32.92
+  // ── Server base URL ───────────────────────────────────────────────────────
+  /// Resolved at compile-time from the `SHAFEEA_TEACH_API_URL` env variable.
+  /// Pass with: `--dart-define=SHAFEEA_TEACH_API_URL=https://api.shafeeaTeach.app`
+  /// Falls back to the Android emulator loopback address in development.
+  static const String baseUrl = String.fromEnvironment('SHAFEEA_TEACH_API_URL');
+
+  // ── Base prefix ───────────────────────────────────────────────────────────
+  static const String v1 = '/api/v1';
 
   /// Endpoint for fetching a specific student's follow-up tracking records.
   /// The `{id}` placeholder will be replaced by the student's actual ID.
-  static const String studentTrackings = '/students/{id}/trackings';
-  static const String logIn = "auth/login";
-  static const String forgetPassword = "auth/forgot-password";
-  static const String logOut = "auth/logout";
-  static const String refreshToken = "refreshToken";
-  static const String userProfile = "account/profile";
-  static const String changePassword = "account/change-password";
-  static const String sessions = "account/sessions";
+  static const String studentTrackings = '$v1/students/{id}/trackings';
+  static const String logIn = "$v1/auth/login";
+  static const String forgetPassword = "$v1/auth/forgot-password";
+  static const String logOut = "$v1/auth/logout";
+  static const String refreshToken = "$v1/refreshToken";
+  static const String userProfile = "$v1/account/profile";
+  static const String changePassword = "$v1/account/change-password";
+  static const String sessions = "$v1/account/sessions";
   static const String studentApplicants =
-      "admin/applicants?application_type={application_type}";
-  static const String applicantProfile = "admin/applicants/{id}";
-  static const String approveApplicant = "admin/applicants/{id}/approve";
-  static const String rejectApplicant = "admin/applicants/{id}/reject";
-  static const String privacyPolicy = "help/privacy-policy";
-  static const String faqs = "help/faqs";
-  static const String tickets = "help/tickets";
-  static const String termsOfUse = "help/terms-of-use";
-  static const String teachers = "teachers";
-  static const String students = "students";
-  static const String halaqas = "halaqas";
-  static const String teachersSync = "sync/teachers";
-  static const String studentsSync = "sync/students";
-  static const String halaqasSync = "sync/halaqas";
-  static const String trackingsSync = "sync/trackings";
-  static const String teachersUpsert = "teachers/{id}";
-  static const String studentsUpsert = "students/{id}";
-  static const String halaqasUpsert = "halaqas/{id}";
+      "$v1/admin/applicants?application_type={application_type}";
+  static const String applicantProfile = "$v1/admin/applicants/{id}";
+  static const String approveApplicant = "$v1/admin/applicants/{id}/approve";
+  static const String rejectApplicant = "$v1/admin/applicants/{id}/reject";
+  static const String privacyPolicy = "$v1/help/privacy-policy";
+  static const String faqs = "$v1/help/faqs";
+  static const String tickets = "$v1/help/tickets";
+  static const String termsOfUse = "$v1/help/terms-of-use";
+  static const String teachers = "$v1/teachers";
+  static const String students = "$v1/students";
+  static const String halaqas = "$v1/halaqas";
+  static const String teachersSync = "$v1/sync/teachers";
+  static const String studentsSync = "$v1/sync/students";
+  static const String halaqasSync = "$v1/sync/halaqas";
+  static const String trackingsSync = "$v1/sync/trackings";
+  static const String teachersUpsert = "$v1/teachers/{id}";
+  static const String studentsUpsert = "$v1/students/{id}";
+  static const String halaqasUpsert = "$v1/halaqas/{id}";
 
   static String getUserDataEndPoint(id) {
     return "user/get-user/$id";

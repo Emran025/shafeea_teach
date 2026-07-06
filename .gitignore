@@ -43,3 +43,20 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Environment configurations
+config_dev.json
+config_prod.json
+
+# ── Keystore / Signing credentials – MUST NEVER be committed ─────
+*.jks
+*.keystore
+*.p12
+*.pfx
+key.properties
+keystore.properties
+android/key.properties
+android/keystore.properties
+
+# ── Build-time generated debug symbols (large binaries) ──────────
+debug-info/

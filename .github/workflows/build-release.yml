@@ -1,0 +1,168 @@
+name: Build & Release — Teacher App
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Triggered exclusively by Git version tags. No branch-push builds.
+#
+# Tag formats supported:
+#   v1.2.3      → versionName=1.2.3, versionCode=<github.run_number>
+#   v1.2.3+45   → versionName=1.2.3, versionCode=45
+#
+# Design principles:
+#   • No Flutter/Java/Android SDK installed on the runner — Docker handles all of it
+#   • Signing secrets injected at runtime only — never in source files
+#   • Produces two APK outputs:
+#       shafeea-teach-v1.2.3.apk  (versioned — listed in release assets)
+#       shafeea-teach.apk          (canonical — used by /releases/latest/download/)
+# ──────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - 'v[0-9]+.[0-9]+.[0-9]+\+[0-9]+'
+
+permissions:
+  contents: write # required for gh release create and asset upload
+  packages: read # required to pull Docker image from ghcr.io
+
+jobs:
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 1 — Build signed APK inside the pinned Docker container
+  # ────────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    # ── Pinned Docker image — identical environment to local dev ──────────────
+    container:
+      image: ghcr.io/emran025/flutter-android-builder:3.41.7
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      # 1️⃣  Checkout source at the exact tag commit
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2️⃣  Parse semantic version from Git tag
+      #     v1.2.3     →  build_name=1.2.3   build_number=<run_number>
+      #     v1.2.3+45  →  build_name=1.2.3   build_number=45
+      - name: Extract version from tag
+        id: version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="${TAG#v}"
+
+          if [[ "$VERSION" == *"+"* ]]; then
+            BUILD_NAME="${VERSION%%+*}"
+            BUILD_NUMBER="${VERSION##*+}"
+          else
+            BUILD_NAME="$VERSION"
+            BUILD_NUMBER="${{ github.run_number }}"
+          fi
+
+          echo "build_name=${BUILD_NAME}"                      >> "$GITHUB_OUTPUT"
+          echo "build_number=${BUILD_NUMBER}"                  >> "$GITHUB_OUTPUT"
+          echo "tag=${TAG}"                                    >> "$GITHUB_OUTPUT"
+          echo "apk_versioned=shafeea-teach-${TAG}.apk"        >> "$GITHUB_OUTPUT"
+          echo "apk_canonical=shafeea-teach.apk"               >> "$GITHUB_OUTPUT"
+
+      # 3️⃣  Build signed APK via the container's entrypoint script.
+      #     Signing secrets reach Gradle as -P project properties,
+      #     NOT as System.getenv() calls inside build.gradle.kts.
+      - name: Build signed release APK
+        env:
+          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          SHAFEEA_TEACH_API_URL: ${{ secrets.SHAFEEA_TEACH_API_URL }}
+        run: |
+          build-apk.sh \
+            teach \
+            "${{ steps.version.outputs.build_name }}" \
+            "${{ steps.version.outputs.build_number }}"
+
+      # 4️⃣  Upload versioned APK for the release job
+      - name: Upload versioned APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: teach-apk-versioned
+          path: build/app/outputs/flutter-apk/${{ steps.version.outputs.apk_versioned }}
+          retention-days: 30
+          if-no-files-found: error
+
+      # 5️⃣  Upload canonical APK (enables /releases/latest/download/ URL)
+      - name: Upload canonical APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: teach-apk-canonical
+          path: build/app/outputs/flutter-apk/${{ steps.version.outputs.apk_canonical }}
+          retention-days: 30
+          if-no-files-found: error
+
+      # 6️⃣  Upload debug symbols (for crash reporting / Play Console)
+      - name: Upload debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: teach-debug-symbols
+          path: debug-info/
+          retention-days: 90
+
+    outputs:
+      build_name: ${{ steps.version.outputs.build_name }}
+      build_number: ${{ steps.version.outputs.build_number }}
+      tag: ${{ steps.version.outputs.tag }}
+      apk_versioned: ${{ steps.version.outputs.apk_versioned }}
+      apk_canonical: ${{ steps.version.outputs.apk_canonical }}
+
+  # ────────────────────────────────────────────────────────────────────────────
+  # JOB 2 — Publish GitHub Release with both APK files attached
+  # ────────────────────────────────────────────────────────────────────────────
+  release:
+    name: Publish Release
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download versioned APK
+        uses: actions/download-artifact@v4
+        with:
+          name: teach-apk-versioned
+          path: dist/
+
+      - name: Download canonical APK
+        uses: actions/download-artifact@v4
+        with:
+          name: teach-apk-canonical
+          path: dist/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build.outputs.tag }}
+          name: "Teacher & Admin App ${{ needs.build.outputs.build_name }}"
+          body: |
+            ## تطبيق المعلم والإدارة – الإصدار ${{ needs.build.outputs.build_name }}
+
+            ### التحميل
+            انقر على الملف أدناه لتحميل التطبيق مباشرة على جهاز أندرويد.
+
+            | الملف | الوصف |
+            |---|---|
+            | `shafeea-teach-${{ needs.build.outputs.tag }}.apk` | إصدار محدد بالرقم |
+            | `shafeea-teach.apk` | رابط دائم (يُستخدم بواسطة منصة التحميل) |
+
+            ### متطلبات التشغيل
+            - أندرويد 7.0 (Nougat) أو أحدث
+            - تفعيل "مصادر غير معروفة" في إعدادات الأمان
+
+            ---
+            **Build:** `${{ needs.build.outputs.build_name }}+${{ needs.build.outputs.build_number }}`
+            **Environment:** `ghcr.io/emran025/flutter-android-builder:3.32.4`
+          files: |
+            dist/${{ needs.build.outputs.apk_versioned }}
+            dist/${{ needs.build.outputs.apk_canonical }}
+          fail_on_unmatched_files: true
+          make_latest: true
