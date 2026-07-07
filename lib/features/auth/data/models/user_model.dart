@@ -9,6 +9,8 @@ class UserModel {
   final String? avatar;
   final UserRole role;
 
+  final bool isEmailVerified;
+
   const UserModel({
     required this.id,
     required this.name,
@@ -16,6 +18,7 @@ class UserModel {
     required this.phone,
     required this.role,
     this.avatar,
+    this.isEmailVerified = false,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json, UserRole role) {
@@ -26,6 +29,7 @@ class UserModel {
       phone: json['phone'] ?? '',
       avatar: json['avatar'],
       role: role,
+      isEmailVerified: json['is_email_verified'] ?? false,
     );
   }
 
@@ -38,6 +42,7 @@ class UserModel {
       avatar: map['avatar'],
       phone: map['phone'] ?? '',
       role: UserRole.fromId(map['roleId'] ?? 0),
+      isEmailVerified: (map['is_email_verified'] ?? 0) == 1,
     );
   }
 
@@ -48,6 +53,7 @@ class UserModel {
       'email': email,
       'phone': phone,
       'avatar': avatar,
+      'is_email_verified': isEmailVerified,
     };
   }
 
@@ -59,6 +65,7 @@ class UserModel {
       'phone': phone,
       'avatar': avatar,
       'roleId': role.id,
+      'is_email_verified': isEmailVerified ? 1 : 0,
     };
   }
 
@@ -70,6 +77,7 @@ class UserModel {
       phone: phone,
       avatar: avatar,
       role: role,
+      isEmailVerified: isEmailVerified,
     );
   }
 }

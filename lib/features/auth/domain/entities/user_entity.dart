@@ -7,6 +7,7 @@ class UserEntity {
   final String phone;
   final String? avatar;
   final UserRole role;
+  final bool isEmailVerified;
 
   const UserEntity({
     required this.id,
@@ -15,5 +16,6 @@ class UserEntity {
     required this.phone,
     required this.role,
     this.avatar,
+    this.isEmailVerified = false,
   });
 }

@@ -1,6 +1,7 @@
 // features/auth/data/datasources/auth_remote_data_source_impl.dart
 
 import 'package:shafeea/core/error/failures.dart';
+import 'package:shafeea/core/models/user_role.dart';
 
 import '../../../../core/api/api_consumer.dart';
 import '../../../../core/api/end_ponits.dart';
@@ -8,6 +9,7 @@ import '../../../../core/error/exceptions.dart';
 import '../../../../core/models/success_model.dart';
 import '../models/auth_response_model.dart';
 import '../models/login_request_model.dart';
+import '../models/user_model.dart';
 import 'auth_remote_data_source.dart';
 import 'package:injectable/injectable.dart';
 
@@ -80,6 +82,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       json,
       (map) => SuccessModel.fromJson(map),
       'Invalid forget-pass response format',
+    );
+  }
+
+  @override
+  Future<SuccessModel> resendEmailVerification() async {
+    final json = await api.post(EndPoint.resendEmailVerification);
+    return _validateAndParse<SuccessModel>(
+      json,
+      (map) => SuccessModel.fromJson(map),
+      'Invalid resend-verification response format',
+    );
+  }
+
+  @override
+  Future<UserModel> getProfile() async {
+    final json = await api.get(EndPoint.me);
+    final data = json['data'] ?? {};
+    return _validateAndParse<UserModel>(
+      data['user'] ?? {},
+      (map) => UserModel.fromJson(map, UserRole.teacher), // Teacher app defaults to teacher role
+      'Invalid profile response format',
     );
   }
 

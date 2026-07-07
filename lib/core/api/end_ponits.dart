@@ -14,6 +14,8 @@ class EndPoint {
   static const String logIn = "$v1/auth/login";
   static const String forgetPassword = "$v1/auth/forgot-password";
   static const String logOut = "$v1/auth/logout";
+  static const String resendEmailVerification = "$v1/auth/email/resend";
+  static const String me = "$v1/auth/me";
   static const String refreshToken = "$v1/refreshToken";
   static const String userProfile = "$v1/account/profile";
   static const String changePassword = "$v1/account/change-password";

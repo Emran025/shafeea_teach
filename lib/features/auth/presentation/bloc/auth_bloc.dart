@@ -12,6 +12,7 @@ import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/check_login_usecase.dart';
 import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/switch_user_usecase.dart';
+import '../../domain/usecases/resend_verification_usecase.dart';
 
 part 'auth_state.dart';
 part 'auth_event.dart';
@@ -23,6 +24,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final ForgetPasswordUseCase forgetPasswordUC;
 
   final ChangePasswordUseCase changePasswordUC;
+  final ResendVerificationEmailUseCase resendVerificationEmailUC;
 // Dependency Injection
   final GetAllUsersUseCase getAllUsersUC;
 final SwitchUserUseCase switchUserUC;
@@ -35,6 +37,7 @@ final SwitchUserUseCase switchUserUC;
     this.changePasswordUC,
     this.switchUserUC, // Add this
     this.getAllUsersUC,
+    this.resendVerificationEmailUC,
   ) : super(AuthState()) {
     on<LogInRequested>(_onLogIn);
 
@@ -47,6 +50,8 @@ final SwitchUserUseCase switchUserUC;
     on<GetAllUsersRequested>(_onGetAllUsers);
     on<SwitchUserRequested>(_onSwitchUser); // Register handler
 
+    on<ResendVerificationEmailRequested>(_onResendVerificationEmail);
+    on<CheckVerificationStatusRequested>(_onCheckVerificationStatus);
   }
   void _appStarted(AppStarted event, Emitter<AuthState> emit) async {
     final loggedIn = await checkLogInUC();
@@ -240,6 +245,43 @@ final SwitchUserUseCase switchUserUC;
           status: LogInStatus.success,
         ),
       ),
+    );
+  }
+
+  Future<void> _onResendVerificationEmail(
+    ResendVerificationEmailRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(state.copyWith(verificationStatus: VerificationStatus.loading));
+    final result = await resendVerificationEmailUC();
+    result.fold(
+      (failure) => emit(state.copyWith(
+        verificationStatus: VerificationStatus.failure,
+        verificationFailure: failure,
+      )),
+      (success) => emit(state.copyWith(
+        verificationStatus: VerificationStatus.success,
+        successEntity: success,
+      )),
+    );
+  }
+
+  Future<void> _onCheckVerificationStatus(
+    CheckVerificationStatusRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(state.copyWith(verificationStatus: VerificationStatus.loading));
+    final result = await logInUC.repository.getProfileFromServer();
+    result.fold(
+      (failure) => emit(state.copyWith(
+        verificationStatus: VerificationStatus.failure,
+        verificationFailure: failure,
+      )),
+      (user) => emit(state.copyWith(
+        verificationStatus: VerificationStatus.initial,
+        user: user,
+        selectedUser: user,
+      )),
     );
   }
 }

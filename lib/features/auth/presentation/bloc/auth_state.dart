@@ -16,6 +16,8 @@ enum GetUserStatus { initial, loading, success, failure }
 
 enum ForgetPasswordStatus { initial, submitting, success, failure }
 
+enum VerificationStatus { initial, loading, success, failure }
+
 final class AuthState extends Equatable {
   final AuthStatus authStatus;
 
@@ -48,6 +50,11 @@ final class AuthState extends Equatable {
 
   /// Holds the failure details if retrieving the [usersList] fails.
   final Failure? usersListFailure;
+
+  // --- Verification State ---
+  final VerificationStatus verificationStatus;
+  final Failure? verificationFailure;
+
   const AuthState({
     this.authStatus = AuthStatus.initializing,
     this.status = LogInStatus.initial,
@@ -74,6 +81,10 @@ final class AuthState extends Equatable {
     this.usersList = const [],
     this.usersListStatus = GetUserStatus.initial,
     this.usersListFailure,
+
+    // Verification
+    this.verificationStatus = VerificationStatus.initial,
+    this.verificationFailure,
   });
 
   AuthState copyWith({
@@ -102,6 +113,9 @@ final class AuthState extends Equatable {
     List<UserEntity>? usersList,
     GetUserStatus? usersListStatus,
     Failure? usersListFailure,
+
+    VerificationStatus? verificationStatus,
+    Failure? verificationFailure,
   }) {
     return AuthState(
       authStatus: authStatus ?? this.authStatus,
@@ -128,6 +142,9 @@ final class AuthState extends Equatable {
       usersList: usersList ?? this.usersList,
       usersListStatus: usersListStatus ?? this.usersListStatus,
       usersListFailure: usersListFailure ?? this.usersListFailure,
+
+      verificationStatus: verificationStatus ?? this.verificationStatus,
+      verificationFailure: verificationFailure ?? this.verificationFailure,
     );
   }
 
@@ -151,5 +168,8 @@ final class AuthState extends Equatable {
     usersList,
     usersListStatus,
     usersListFailure,
+
+    verificationStatus,
+    verificationFailure,
   ];
 }
