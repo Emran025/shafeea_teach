@@ -30,11 +30,15 @@ class TaskTypeChanged extends TrackingSessionEvent {
 class WordTappedForMistake extends TrackingSessionEvent {
   final int ayahId;
   final int wordIndex;
-    final MistakeType newMistakeType;
+  final MistakeType newMistakeType;
 
-  const WordTappedForMistake({required this.ayahId, required this.wordIndex ,required this.newMistakeType,});
+  const WordTappedForMistake({
+    required this.ayahId,
+    required this.wordIndex,
+    required this.newMistakeType,
+  });
   @override
-  List<Object> get props => [ayahId, wordIndex,newMistakeType];
+  List<Object> get props => [ayahId, wordIndex, newMistakeType];
 }
 
 /// Dispatched from the Task Report Dialog when a teacher categorizes a mistake.
@@ -111,11 +115,11 @@ class RecitationRangeEnded extends TrackingSessionEvent {
 
 // NEW: Event to fetch the historical mistakes for a specific type.
 class HistoricalMistakesRequested extends TrackingSessionEvent {
-    final int? fromPage;
+  final int? fromPage;
   final int? toPage;
 
-  const HistoricalMistakesRequested({ this.fromPage , this.toPage});
+  const HistoricalMistakesRequested({this.fromPage, this.toPage});
 
   @override
-  List<Object> get props => [fromPage ??0 , toPage ?? 0];
+  List<Object> get props => [fromPage ?? 0, toPage ?? 0];
 }

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../../config/di/injection.dart';
-import '../../../../../core/constants/data.dart';
 import '../../../../../core/models/active_status.dart';
 import '../../../../../core/models/monitoring_filter.dart';
 import '../../../../../core/models/report_frequency.dart';
@@ -307,9 +306,10 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) => StudentProfileScreen(
-                                          studentID: students[index].id,
-                                        ),
+                                        builder: (context) =>
+                                            StudentProfileScreen(
+                                              studentID: students[index].id,
+                                            ),
                                       ),
                                     );
                                   },

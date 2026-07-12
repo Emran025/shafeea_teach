@@ -64,7 +64,11 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     final tenantId = "${user!.id}";
     try {
       // Resolve UUID to Local ID
-      final int localEnrollmentId = await _resolveEnrollmentId(db, enrollmentId, tenantId);
+      final int localEnrollmentId = await _resolveEnrollmentId(
+        db,
+        enrollmentId,
+        tenantId,
+      );
 
       final trackingRecord = await _findOrCreateParentDraftTracking(
         db,
@@ -341,7 +345,11 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     final tenantId = "${user!.id}";
     try {
       // Resolve UUID to Local ID
-      final int localEnrollmentId = await _resolveEnrollmentId(db, enrollmentId, tenantId);
+      final int localEnrollmentId = await _resolveEnrollmentId(
+        db,
+        enrollmentId,
+        tenantId,
+      );
 
       String baseQuery =
           '''
@@ -398,7 +406,11 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     final tenantId = "${user!.id}";
     try {
       // Resolve UUID to Local ID
-      final int localEnrollmentId = await _resolveEnrollmentId(db, enrollmentId, tenantId);
+      final int localEnrollmentId = await _resolveEnrollmentId(
+        db,
+        enrollmentId,
+        tenantId,
+      );
 
       if (filter.dimension == FilterDimension.time) {
         return _fetchDataByTime(db, localEnrollmentId, tenantId, filter);
@@ -734,7 +746,11 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
   //                             Private Helper Methods
   // =========================================================================
 
-  Future<int> _resolveEnrollmentId(Database db, String uuidOrId, String tenantId) async {
+  Future<int> _resolveEnrollmentId(
+    Database db,
+    String uuidOrId,
+    String tenantId,
+  ) async {
     final int? numericId = int.tryParse(uuidOrId);
     final result = await db.query(
       'halqa_students',
@@ -745,7 +761,9 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
     );
 
     if (result.isEmpty) {
-      throw CacheException(message: 'Enrollment with ID $uuidOrId not found locally.');
+      throw CacheException(
+        message: 'Enrollment with ID $uuidOrId not found locally.',
+      );
     }
 
     return result.first['id'] as int;

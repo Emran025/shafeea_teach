@@ -130,7 +130,7 @@ class DailyDetailsDialog extends StatelessWidget {
             color: AppColors.lightCream70,
           ),
         ),
-        _buildDetailRow("السورة:", detail.fromSurah),
+        _buildDetailRow("السورة:", detail.fromSurahName),
         _buildDetailRow("الصفحة:", detail.fromPage.toString()),
         _buildDetailRow("الآية:", detail.fromAyah.toString()),
       ],

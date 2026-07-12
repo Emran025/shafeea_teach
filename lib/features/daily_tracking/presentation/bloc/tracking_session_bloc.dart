@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:collection/collection.dart'; // Import collection package for firstWhereOrNull
 import 'package:uuid/uuid.dart';
-import '../../../../core/constants/tracking_unit_detail.dart';
+import '../../../../core/constants/tracking_unit_cache.dart';
 import '../../../../core/models/mistake_type.dart';
 import '../../../../core/utils/data_status.dart';
 
@@ -383,22 +383,17 @@ class TrackingSessionBloc
     int addedNumber = 0;
 
     while (gapPageCount > currentDetail.toTrackingUnitId.toPage &&
-        trackingUnitDetail[(currentDetail.toTrackingUnitId.id - 1) +
-                    addedNumber]
+        TrackingUnitCache.instance
+                .byIndex((currentDetail.toTrackingUnitId.id - 1) + addedNumber)
                 .unitId ==
             currentDetail.toTrackingUnitId.unitId) {
-      gapPageCount -=
-          (trackingUnitDetail[(currentDetail.toTrackingUnitId.id - 1) +
-                  addedNumber]
-              .toAyah -
-          trackingUnitDetail[(currentDetail.toTrackingUnitId.id - 1) +
-                  addedNumber]
-              .fromAyah);
+      final row = TrackingUnitCache.instance
+          .byIndex((currentDetail.toTrackingUnitId.id - 1) + addedNumber);
+      gapPageCount -= (row.toAyah - row.fromAyah);
       ++addedNumber;
     }
-    final newToTrackingUnitId =
-        trackingUnitDetail[(currentDetail.toTrackingUnitId.id - 1) +
-            addedNumber];
+    final newToTrackingUnitId = TrackingUnitCache.instance
+        .byIndex((currentDetail.toTrackingUnitId.id - 1) + addedNumber);
     final gap = double.parse("$gapPageCount.${event.ayah}");
 
     // Manually rebuild the entity with the new `toTrackingUnitId`

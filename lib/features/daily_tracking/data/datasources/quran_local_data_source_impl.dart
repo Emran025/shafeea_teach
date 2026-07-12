@@ -11,6 +11,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../../../core/error/exceptions.dart';
+import '../../../../core/models/tracking_unit_model.dart';
 
 /// The implementation of [QuranLocalDataSource] that uses SQLite.
 ///
@@ -178,6 +179,43 @@ class QuranLocalDataSourceImpl implements QuranLocalDataSource {
     } catch (e) {
       throw CacheException(
         message: 'Failed to load surahs list: ${e.toString()}',
+      );
+    }
+  }
+
+  /// Fetches [Tracking_Unit] rows for the given [unitId], joining [Sora] to
+  /// resolve both [from_surah_number] and [to_surah_number] into Arabic names.
+  ///
+  /// Unit IDs: 1 = juz, 2 = hizb, 3 = half-hizb, 4 = quarter-hizb, 5 = page.
+  @override
+  Future<List<TrackingUnitDetailModel>> getTrackingUnitsByType(int unitId) async {
+    try {
+      final db = await database;
+      final List<Map<String, dynamic>> maps = await db.rawQuery(
+        '''
+        SELECT
+          tu.id,
+          tu.unit_id,
+          tu.from_page,
+          tu.from_ayah,
+          tu.to_page,
+          tu.to_ayah,
+          s1.Name_ar AS from_surah_name,
+          s2.Name_ar AS to_surah_name
+        FROM Tracking_Unit tu
+        JOIN Sora s1 ON tu.from_surah_number = s1.Id
+        JOIN Sora s2 ON tu.to_surah_number   = s2.Id
+        WHERE tu.unit_id = ?
+        ORDER BY tu.id ASC
+        ''',
+        [unitId],
+      );
+
+      return maps.map(TrackingUnitDetailModel.fromMap).toList();
+    } catch (e) {
+      throw CacheException(
+        message:
+            'Failed to load Tracking_Unit rows for unit_id=$unitId: ${e.toString()}',
       );
     }
   }

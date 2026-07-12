@@ -354,17 +354,17 @@ final class StudentRepositoryImpl implements StudentRepository {
               detail.comment,
               detail.status,
               detail.fromTrackingUnitId.unitId,
-              detail.fromTrackingUnitId.fromSurah,
+              detail.fromTrackingUnitId.fromSurahName,
               detail.fromTrackingUnitId.fromPage,
               detail.fromTrackingUnitId.fromAyah,
-              detail.fromTrackingUnitId.toSurah,
+              detail.fromTrackingUnitId.toSurahName,
               detail.fromTrackingUnitId.toPage,
               detail.fromTrackingUnitId.toAyah,
               detail.toTrackingUnitId.unitId,
-              detail.toTrackingUnitId.fromSurah,
+              detail.toTrackingUnitId.fromSurahName,
               detail.toTrackingUnitId.fromPage,
               detail.toTrackingUnitId.fromAyah,
-              detail.toTrackingUnitId.toSurah,
+              detail.toTrackingUnitId.toSurahName,
               detail.toTrackingUnitId.toPage,
               detail.toTrackingUnitId.toAyah,
               mistakesJson,
@@ -477,7 +477,7 @@ final class StudentRepositoryImpl implements StudentRepository {
   @override
   Future<Either<Failure, String>> suggestUsername(String name) async {
     try {
-      final suggestion = await _remoteDataSource.suggestUsername(name:name);
+      final suggestion = await _remoteDataSource.suggestUsername(name: name);
       return Right(suggestion);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
@@ -489,7 +489,9 @@ final class StudentRepositoryImpl implements StudentRepository {
   @override
   Future<Either<Failure, bool>> checkUsername(String username) async {
     try {
-      final checkion = await _remoteDataSource.checkUsernameAvailability(username:username);
+      final checkion = await _remoteDataSource.checkUsernameAvailability(
+        username: username,
+      );
       return Right(checkion);
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
@@ -497,5 +499,4 @@ final class StudentRepositoryImpl implements StudentRepository {
       return Left(NetworkFailure(message: e.toString()));
     }
   }
-  
 }

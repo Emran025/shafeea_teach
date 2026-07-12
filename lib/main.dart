@@ -2,16 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'config/localization/l10n_config.dart';
+import 'core/constants/tracking_unit_cache.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'config/di/injection.dart';
 import 'features/app/cubit/app_setup_cubit.dart';
 import 'features/settings/presentation/bloc/settings_bloc.dart';
+import 'features/daily_tracking/data/datasources/quran_local_data_source.dart';
 import 'features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
 import 'shared/themes/app_theme.dart';
 import 'routes/app_router.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
+  // Pre-load all Tracking_Unit rows from the Quran database into the
+  // in-memory cache so that synchronous lookups work throughout the app.
+  await TrackingUnitCache.instance.initialize(sl<QuranLocalDataSource>());
+
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
   // Initialize date formatting for Arabic locale.

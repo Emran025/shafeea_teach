@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shafeea/core/models/active_status.dart';
 import 'package:shafeea/core/models/gender.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
-import 'package:shafeea/core/constants/data.dart';
 import 'package:shafeea/shared/widgets/taj.dart';
 
 import '../../../../StudentsManagement/domain/entities/student_entity.dart';
