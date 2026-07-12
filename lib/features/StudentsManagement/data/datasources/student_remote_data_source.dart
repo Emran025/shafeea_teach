@@ -59,4 +59,13 @@ abstract interface class StudentRemoteDataSource {
   Future<void> deleteStudent(String studentId);
   Future<List<TrackingModel>> getFollowUpTrackings(String studentId);
 
+  /// Fetches a username suggestion derived from [name] via the public
+  /// `/username/suggest` web endpoint.
+  ///
+  /// The result is NOT uniqueness-checked — it is a fast, sanitized
+  /// transliteration intended only for pre-filling the username field.
+  Future<String> suggestUsername({required String name});
+
+  /// Checks whether a username is available.
+  Future<bool> checkUsernameAvailability({required String username});
 }

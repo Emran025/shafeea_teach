@@ -16,6 +16,7 @@ class EndPoint {
   static const String logOut = "$v1/auth/logout";
   static const String resendEmailVerification = "$v1/auth/email/resend";
   static const String me = "$v1/auth/me";
+  static const String checkUsername = "$v1/auth/check-username";
   static const String refreshToken = "$v1/refreshToken";
   static const String userProfile = "$v1/account/profile";
   static const String changePassword = "$v1/account/change-password";
@@ -39,6 +40,11 @@ class EndPoint {
   static const String teachersUpsert = "$v1/teachers/{id}";
   static const String studentsUpsert = "$v1/students/{id}";
   static const String halaqasUpsert = "$v1/halaqas/{id}";
+
+  /// Public endpoint that returns a sanitized username candidate derived from
+  /// a name string. No authentication required. No DB uniqueness check.
+  /// Query param: `name` (raw name, Arabic or Latin).
+  static const String usernameSuggest = "$v1/auth/username/suggest";
 
   static String getUserDataEndPoint(id) {
     return "user/get-user/$id";

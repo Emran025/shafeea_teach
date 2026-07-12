@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shafeea/core/models/gender.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
 import 'package:shafeea/core/constants/countries_names.dart';
 import 'package:shafeea/core/models/countery_model.dart';
@@ -11,6 +12,7 @@ import 'package:shafeea/shared/widgets/custom_text_field.dart';
 import 'package:shafeea/shared/widgets/phone_zone.dart';
 import 'package:shafeea/shared/widgets/pick_date.dart';
 
+import '../../../../../core/models/education_level.dart';
 import '../../../../../shared/widgets/pick_time.dart';
 
 class StudentForm extends StatefulWidget {
@@ -25,7 +27,9 @@ class StudentForm extends StatefulWidget {
   final TextEditingController phoneZoneController = TextEditingController();
   final TextEditingController whatsAppPhoneController = TextEditingController();
   final TextEditingController whatsAppZoneController = TextEditingController();
-  final TextEditingController qualificationController = TextEditingController();
+  final TextEditingController qualificationController = TextEditingController(
+    text: EducationLevel.noFormalEducation.labelAr,
+  );
   final TextEditingController memorizationLevelController =
       TextEditingController();
   final TextEditingController eneregyController = TextEditingController();
@@ -41,21 +45,6 @@ class StudentForm extends StatefulWidget {
 }
 
 class _StudentFormState extends State<StudentForm> {
-  // late TextEditingController name;
-  // late TextEditingController gender;
-  // late TextEditingController email;
-  // late TextEditingController birthDate;
-  // late TextEditingController phone;
-  // late TextEditingController phoneZone;
-  // late TextEditingController whatsAppPhone;
-  // late TextEditingController whatsAppZone;
-  // late TextEditingController qualification;
-  // late TextEditingController experienceYears;
-  // late TextEditingController eneregy;
-  // late TextEditingController country;
-  // late TextEditingController residence;
-  // late TextEditingController memorizationLevel;
-  // late TextEditingController availableTime;
   late CountryModel selectedPhoneZone;
   late CountryModel selectedwhatsAppZone;
   late CountryModel selectedCountry;
@@ -65,21 +54,6 @@ class _StudentFormState extends State<StudentForm> {
     selectedPhoneZone = countries[245];
     selectedwhatsAppZone = countries[245];
     selectedCountry = countries[245];
-    //   name = TextEditingController();
-    //   gender = TextEditingController(text: "Male");
-    //   email = TextEditingController();
-    //   birthDate = TextEditingController();
-    //   phone = TextEditingController();
-    //   phoneZone = TextEditingController();
-    //   whatsAppPhone = TextEditingController();
-    //   whatsAppZone = TextEditingController();
-    //   qualification = TextEditingController();
-    //   experienceYears = TextEditingController();
-    //   eneregy = TextEditingController();
-    //   country = TextEditingController();
-    //   residence = TextEditingController();
-    //   memorizationLevel = TextEditingController();
-    //   availableTime = TextEditingController();
     super.initState();
   }
 
@@ -103,8 +77,7 @@ class _StudentFormState extends State<StudentForm> {
               keyboardType: TextInputType.name,
             ),
             _buildDropdown(widget.genderController, "الجنس", [
-              "Male",
-              "Female",
+              ...(Gender.values.map((e) => e.label).toList()),
             ]),
             CustomTextField(
               controller: widget.emailController,
@@ -160,11 +133,12 @@ class _StudentFormState extends State<StudentForm> {
               label: "رقم الواتسآب",
             ),
 
-            CustomTextField(
-              controller: widget.qualificationController,
-              prefixIcon: Icons.school,
-              label: "المؤهل العلمي",
+            _buildDropdown(
+              widget.qualificationController,
+              "نوع التعليم(المهؤهل)",
+              [...(EducationLevel.values.map((e) => e.labelAr).toList())],
             ),
+
             CustomTextField(
               controller: widget.memorizationLevelController,
               prefixIcon: Icons.calendar_month,
@@ -236,7 +210,11 @@ class _StudentFormState extends State<StudentForm> {
               (e) => DropdownMenuItem(
                 value: e,
                 child: Text(
-                  e == "Male" ? "ذكر" : "أنثى",
+                  e == "Male"
+                      ? "ذكر"
+                      : e == "Female" || e == "female"
+                      ? "أنثى"
+                      : e,
                   style: GoogleFonts.cairo(
                     color: AppColors.lightCream70,
                     fontSize: 14,
@@ -246,8 +224,9 @@ class _StudentFormState extends State<StudentForm> {
               ),
             )
             .toList(),
-        onChanged: (val) => setState(() => controller.text = val ?? "Male"),
-        onSaved: (val) => controller.text = val ?? "Male",
+        onChanged: (val) =>
+            setState(() => controller.text = val ?? options.first),
+        onSaved: (val) => controller.text = val ?? options.first,
         decoration: InputDecoration(
           fillColor: AppColors.lightCream12,
           labelText: label,

@@ -116,11 +116,46 @@ final class TeacherRemoteDataSourceImpl implements TeacherRemoteDataSource {
   }
 
   @override
-  Future<void> deleteTeacher(String teacherId) async {
+  Future<void> deleteTeacher({required String teacherId}) async {
     // A DELETE request is sent to a URL that includes the teacher's ID.
     await _apiConsumer.delete(
       '${EndPoint.teachers}/$teacherId', // Example: DELETE /teachers/some-uuid
     );
     // On a successful 2xx response, we expect no content, so the method returns void.
+  }
+
+  @override
+  Future<String> suggestUsername({required String name}) async {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return '';
+
+    try {
+      final responseJson = await _apiConsumer.get(
+        EndPoint.usernameSuggest,
+        queryParameters: {'name': trimmed},
+      );
+
+      if (responseJson is Map<String, dynamic>) {
+        return (responseJson['username'] as String?) ?? '';
+      }
+      return '';
+    } catch (_) {
+      // Degrade gracefully — the suggestion is a UX hint, not a hard requirement.
+      return '';
+    }
+  }
+
+  @override
+  Future<bool> checkUsernameAvailability({required String username}) async {
+    final json = await await _apiConsumer.get(
+      EndPoint.checkUsername,
+      queryParameters: {'username': username},
+    );
+
+    final data = json is Map<String, dynamic> ? (json['data'] ?? json) : json;
+    if (data is Map<String, dynamic>) {
+      return data['available'] == true;
+    }
+    return false;
   }
 }

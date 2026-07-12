@@ -41,10 +41,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<SuccessModel> forgetPassword({required String email}) async {
+  Future<SuccessModel> forgetPassword({required String login}) async {
     final json = await api.post(
       EndPoint.forgetPassword,
-      data: {ApiKey.email: email},
+      data: {ApiKey.logIn: login},
     );
 
     return _validateAndParse<SuccessModel>(

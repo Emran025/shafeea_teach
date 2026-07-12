@@ -192,17 +192,27 @@ class _DashboardStateBuilder {
     List<_DashboardStat> stats,
     SupervisorLoaded state,
   ) {
-    final updatedStats = [
-      stats[0].copyWith(
-        suTitle: "${state.countsDeltaEntity!.studentCount.count}",
-      ),
-      stats[1].copyWith(
-        suTitle: "${state.countsDeltaEntity!.teacherCount.count}",
-      ),
-      stats[2].copyWith(
-        suTitle: "${state.countsDeltaEntity!.halaqaCount.count}",
-      ),
-    ];
+    final updatedStats = stats.map((stat) {
+      switch (stat.title) {
+        case 'الطلاب':
+          return stat.copyWith(
+            suTitle: "${state.countsDeltaEntity!.studentCount.count}",
+          );
+
+        case 'المعلمين':
+          return stat.copyWith(
+            suTitle: "${state.countsDeltaEntity!.teacherCount.count}",
+          );
+
+        case 'الحلقات':
+          return stat.copyWith(
+            suTitle: "${state.countsDeltaEntity!.halaqaCount.count}",
+          );
+
+        default:
+          return stat;
+      }
+    }).toList();
 
     return GridView.builder(
       physics: const BouncingScrollPhysics(),
@@ -513,22 +523,25 @@ class _NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(16),
       decoration: _buildNotificationDecoration(context),
-      child: ListTile(
-        leading: const Icon(
-          Icons.notifications_active,
-          color: AppColors.lightCream,
+      child: Material(
+        color: Colors.transparent,
+        child: ListTile(
+          contentPadding: const EdgeInsets.all(16),
+          leading: const Icon(
+            Icons.notifications_active,
+            color: AppColors.lightCream,
+          ),
+          title: Text(
+            title,
+            style: GoogleFonts.cairo(color: AppColors.lightCream),
+          ),
+          subtitle: Text(
+            timeAgo,
+            style: GoogleFonts.cairo(fontSize: 12, color: AppColors.accent70),
+          ),
+          onTap: () {},
         ),
-        title: Text(
-          title,
-          style: GoogleFonts.cairo(color: AppColors.lightCream),
-        ),
-        subtitle: Text(
-          timeAgo,
-          style: GoogleFonts.cairo(fontSize: 12, color: AppColors.accent70),
-        ),
-        onTap: () {},
       ),
     );
   }

@@ -33,13 +33,14 @@ import '../services/student_sync_service.dart';
 final class StudentRepositoryImpl implements StudentRepository {
   final StudentLocalDataSource _localDataSource;
   final StudentSyncService _syncService;
-  // NetworkInfo is not needed here anymore as SyncService handles it.
+  final StudentRemoteDataSource _remoteDataSource;
 
   StudentRepositoryImpl({
     required StudentLocalDataSource localDataSource,
     required StudentRemoteDataSource remoteDataSource,
     required StudentSyncService syncService,
   }) : _localDataSource = localDataSource,
+       _remoteDataSource = remoteDataSource,
        _syncService = syncService;
 
   @override
@@ -472,4 +473,29 @@ final class StudentRepositoryImpl implements StudentRepository {
       ),
     );
   }
+
+  @override
+  Future<Either<Failure, String>> suggestUsername(String name) async {
+    try {
+      final suggestion = await _remoteDataSource.suggestUsername(name:name);
+      return Right(suggestion);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> checkUsername(String username) async {
+    try {
+      final checkion = await _remoteDataSource.checkUsernameAvailability(username:username);
+      return Right(checkion);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
+  
 }

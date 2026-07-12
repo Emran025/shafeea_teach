@@ -290,16 +290,24 @@ class _LogInScreenState extends State<LogInScreen> {
                           // -------------------------------
                           TextFormField(
                             controller: emailController,
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType.text,
                             style: const TextStyle(color: AppColors.lightCream),
-                            validator: (val) =>
-                                val!.trim().contains('@') ||
-                                    val.trim().length >= 7
-                                ? null
-                                : 'بريد أو رقم هاتف غير صالح',
+                            validator: (val) {
+                              final value = val?.trim() ?? '';
+                              if (value.isEmpty) {
+                                return 'أدخل البريد الإلكتروني أو اسم المستخدم';
+                              }
+                              if (value.contains('@')) {
+                                return value.contains('.')
+                                    ? null
+                                    : 'بريد إلكتروني غير صالح';
+                              }
+                              if (value.length >= 3) return null;
+                              return 'بريد أو اسم مستخدم غير صالح';
+                            },
                             decoration: _inputDecoration(
-                              "رقم الهاتف أو البريد الإلكتروني",
-                              Icons.email,
+                              "البريد الإلكتروني أو اسم المستخدم",
+                              Icons.person_outline,
                             ),
                           ),
                           const SizedBox(height: 16),

@@ -73,3 +73,21 @@ final class TeacherStatusChanged extends TeacherEvent {
   @override
   List<Object> get props => [teacherId, newStatus];
 }
+
+/// Dispatched when the user types into the name field of the teacher creation
+/// form to request a backend username suggestion.
+final class TeacherUsernameRequested extends TeacherEvent {
+  final String name;
+  const TeacherUsernameRequested(this.name);
+  @override
+  List<Object> get props => [name];
+}
+
+/// Dispatched when the user types into the name field of the teacher creation
+/// form to request a backend username suggestion.
+final class TeacherUsernameCheckRequested extends TeacherEvent {
+  final String name;
+  const TeacherUsernameCheckRequested(this.name);
+  @override
+  List<Object> get props => [name];
+}

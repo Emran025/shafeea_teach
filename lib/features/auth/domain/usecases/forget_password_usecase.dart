@@ -10,7 +10,7 @@ class ForgetPasswordUseCase {
   final AuthRepository repository;
   ForgetPasswordUseCase(this.repository);
 
-  Future<Either<Failure, SuccessEntity>> call({required String email}) {
-    return repository.forgetPassword(email: email);
+  Future<Either<Failure, SuccessEntity>> call({required String login}) {
+    return repository.forgetPassword(login: login);
   }
 }

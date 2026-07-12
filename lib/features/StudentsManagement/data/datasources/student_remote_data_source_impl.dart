@@ -194,4 +194,39 @@ final class StudentRemoteDataSourceImpl implements StudentRemoteDataSource {
         .whereType<TrackingModel>()
         .toList();
   }
+
+  @override
+  Future<String> suggestUsername({required String name}) async {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) return '';
+
+    try {
+      final responseJson = await _apiConsumer.get(
+        EndPoint.usernameSuggest,
+        queryParameters: {'name': trimmed},
+      );
+
+      if (responseJson is Map<String, dynamic>) {
+        return (responseJson['username'] as String?) ?? '';
+      }
+      return '';
+    } catch (_) {
+      // Degrade gracefully — the suggestion is a UX hint, not a hard requirement.
+      return '';
+    }
+  }
+
+  @override
+  Future<bool> checkUsernameAvailability({required String username}) async {
+    final json = await await _apiConsumer.get(
+      EndPoint.checkUsername,
+      queryParameters: {'username': username},
+    );
+
+    final data = json is Map<String, dynamic> ? (json['data'] ?? json) : json;
+    if (data is Map<String, dynamic>) {
+      return data['available'] == true;
+    }
+    return false;
+  }
 }

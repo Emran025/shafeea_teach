@@ -51,9 +51,7 @@ final class TeacherSyncServiceImpl implements TeacherSyncService {
     } on CacheException catch (e) {
       print('[SyncService] Cache Error: ${e.message}');
     } on ServerException catch (e) {
-      print(
-        '[SyncService] Server Error: ${e.message} (Code: ${e.statusCode})',
-      );
+      print('[SyncService] Server Error: ${e.message} (Code: ${e.statusCode})');
     } catch (e) {
       print('[SyncService] An unexpected error occurred: $e');
     } finally {
@@ -76,7 +74,7 @@ final class TeacherSyncServiceImpl implements TeacherSyncService {
           );
           await _localDataSource.upsertTeacher(serverModel);
         } else if (op.operationType == 'delete') {
-          await _remoteDataSource.deleteTeacher(op.entityUuid);
+          await _remoteDataSource.deleteTeacher(teacherId: op.entityUuid);
         }
         await _localDataSource.deleteCompletedOperation(op.id);
       } catch (e) {
@@ -120,7 +118,9 @@ final class TeacherSyncServiceImpl implements TeacherSyncService {
         page: currentPage,
       );
 
-      print('[SyncService-Pull] Received ${syncResult.updated.length} updated and ${syncResult.deleted.length} deleted teachers. New sync timestamp: ${syncResult.newSyncTimestamp}');
+      print(
+        '[SyncService-Pull] Received ${syncResult.updated.length} updated and ${syncResult.deleted.length} deleted teachers. New sync timestamp: ${syncResult.newSyncTimestamp}',
+      );
 
       if (syncResult.updated.isNotEmpty || syncResult.deleted.isNotEmpty) {
         await _localDataSource.applySyncBatch(

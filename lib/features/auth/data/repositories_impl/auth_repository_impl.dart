@@ -111,10 +111,10 @@ final class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, SuccessEntity>> forgetPassword({
-    required String email,
+    required String login,
   }) async {
     final either = await _executeAuthOperation(
-      () => _remoteDataSource.forgetPassword(email: email),
+      () => _remoteDataSource.forgetPassword(login: login),
     );
     either.fold((failure) => null, (user) => null);
 

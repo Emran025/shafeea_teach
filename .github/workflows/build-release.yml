@@ -35,7 +35,7 @@ jobs:
 
     # ── Pinned Docker image — identical environment to local dev ──────────────
     container:
-      image: ghcr.io/emran025/flutter-android-builder:3.41.7
+      image: ghcr.io/emran025/flutter-android-builder:3.44.5
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -160,7 +160,7 @@ jobs:
 
             ---
             **Build:** `${{ needs.build.outputs.build_name }}+${{ needs.build.outputs.build_number }}`
-            **Environment:** `ghcr.io/emran025/flutter-android-builder:3.32.4`
+            **Environment:** `ghcr.io/emran025/flutter-android-builder:3.44.5`
           files: |
             dist/${{ needs.build.outputs.apk_versioned }}
             dist/${{ needs.build.outputs.apk_canonical }}

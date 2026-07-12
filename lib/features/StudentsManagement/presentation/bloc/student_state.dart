@@ -10,6 +10,9 @@ enum StudentUpsertStatus { initial, submitting, success, failure }
 
 enum FollowUpReportStatus { initial, loading, success, failure }
 
+enum StudentUsernameSuggestionStatus { initial, loading, loaded, failure }
+enum StudentUsernameCheckStatus { initial, loading, loaded, failure }
+
 final class StudentState extends Equatable {
   final StudentStatus status;
   final List<StudentListItemEntity> students;
@@ -39,6 +42,14 @@ final class StudentState extends Equatable {
   final List<StudentListItemEntity>? filteredStudents;
   final Failure? filteredStudentsFailure;
 
+  // --- Username Suggestion State ---
+  final StudentUsernameSuggestionStatus usernameSuggestionStatus;
+  final String usernameSuggestion;
+
+  // --- Username Check State ---
+  final StudentUsernameCheckStatus usernameCheckStatus;
+  final bool usernameCheck;
+
   const StudentState({
     this.status = StudentStatus.initial,
     this.students = const [],
@@ -67,6 +78,13 @@ final class StudentState extends Equatable {
     this.filteredStudents,
     this.filteredStudentsFailure,
 
+    // Username Suggestion
+    this.usernameSuggestionStatus = StudentUsernameSuggestionStatus.initial,
+    this.usernameSuggestion = '',
+
+    // Username Check
+    this.usernameCheckStatus = StudentUsernameCheckStatus.initial,
+    this.usernameCheck = false,
   });
 
   StudentState copyWith({
@@ -103,7 +121,15 @@ final class StudentState extends Equatable {
     List<StudentListItemEntity>? filteredStudents,
     Failure? filteredStudentsFailure,
     bool clearFilteredStudentsFailure = false,
-        List<ListItemEntity>? applicants,
+    List<ListItemEntity>? applicants,
+
+    // Username Suggestion
+    StudentUsernameSuggestionStatus? usernameSuggestionStatus,
+    String? usernameSuggestion,
+
+    // Username Check
+    StudentUsernameCheckStatus? usernameCheckStatus,
+    bool? usernameCheck,
   }) {
     return StudentState(
       status: status ?? this.status,
@@ -142,6 +168,15 @@ final class StudentState extends Equatable {
           ? null
           : filteredStudentsFailure ?? this.filteredStudentsFailure,
 
+      // Username Suggestion
+      usernameSuggestionStatus:
+          usernameSuggestionStatus ?? this.usernameSuggestionStatus,
+      usernameSuggestion: usernameSuggestion ?? this.usernameSuggestion,
+
+      // Username Check
+      usernameCheckStatus:
+          usernameCheckStatus ?? this.usernameCheckStatus,
+      usernameCheck: usernameCheck ?? this.usernameCheck,
     );
   }
 
@@ -161,6 +196,10 @@ final class StudentState extends Equatable {
     filteredStudentsStatus,
     filteredStudents,
     filteredStudentsFailure,
+    usernameSuggestionStatus,
+    usernameSuggestion,
+    usernameCheckStatus,
+    usernameCheck,
 
   ];
 }

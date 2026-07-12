@@ -13,6 +13,7 @@ import '../../../../core/models/report_frequency.dart';
 import '../../domain/entities/student_entity.dart';
 import '../../domain/entities/student_info_entity.dart';
 import '../../domain/entities/student_list_item_entity.dart';
+import '../../domain/usecases/check_student_username_usecase.dart';
 import '../../domain/usecases/delete_student_usecase.dart';
 import '../../domain/usecases/fetch_more_student_usecase.dart';
 import '../../domain/usecases/generate_follow_up_report_use_case.dart';
@@ -20,6 +21,7 @@ import '../../domain/usecases/get_filtered_students.dart';
 import '../../domain/usecases/get_student_by_id.dart';
 import '../../domain/usecases/get_students.dart';
 import '../../domain/usecases/set_student_status_params.dart';
+import '../../domain/usecases/suggest_student_username_usecase.dart';
 import '../../domain/usecases/upsert_student_usecase.dart';
 import '../view_models/follow_up_report_bundle_entity.dart';
 
@@ -36,6 +38,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
   final DeleteStudentUseCase _deleteStudentUC;
   final SetStudentStatusUseCase _setStudentStatusUC;
   final GenerateFollowUpReportUseCase _generateFollowUpReportUC;
+  final SuggestStudentUsernameUseCase _suggestUsernameUC;
+  final CheckStudentUsernameUseCase _checktUsername;
 
   StreamSubscription<Either<Failure, List<StudentListItemEntity>>>?
   _studentSubscription;
@@ -49,6 +53,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     required DeleteStudentUseCase deleteStudent,
     required SetStudentStatusUseCase setStudentStatus,
     required GenerateFollowUpReportUseCase generateFollowUpReportUC,
+    required SuggestStudentUsernameUseCase suggestUsernameUC,
+    required CheckStudentUsernameUseCase checktUsernameUC,
   }) : _watchStudentsUC = watchStudents,
        _fetchMoreStudentsUC = fetchMoreStudents,
        _fetchFilteredStudentsUC = fetchFilteredStudents,
@@ -57,6 +63,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
        _getStudentByIdUC = getStudentById,
        _setStudentStatusUC = setStudentStatus,
        _generateFollowUpReportUC = generateFollowUpReportUC,
+       _suggestUsernameUC = suggestUsernameUC,
+       _checktUsername = checktUsernameUC,
 
        super(const StudentState()) {
     // Register event handlers with concurrency transformers for robustness.
@@ -70,7 +78,14 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<FilteredStudents>(_onFetchFilteredStudents, transformer: restartable());
     on<StudentStatusChanged>(_onStatusChange, transformer: droppable());
     on<FollowUpReportFetched>(_onFetchReport, transformer: droppable());
-
+    on<StudentUsernameRequested>(
+      _onSuggestUsername,
+      transformer: restartable(),
+    );
+    on<StudentUsernameCheckRequested>(
+      _onCheckUsername,
+      transformer: restartable(),
+    );
   }
 
   @override
@@ -319,4 +334,77 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     );
   }
 
+  /// Fetches a username Check from the backend when the name field changes.
+  /// Uses [restartable()] so rapid typing cancels the previous in-flight request.
+  Future<void> _onCheckUsername(
+    StudentUsernameCheckRequested event,
+    Emitter<StudentState> emit,
+  ) async {
+    if (event.name.trim().isEmpty) {
+      emit(
+        state.copyWith(
+          usernameCheckStatus: StudentUsernameCheckStatus.initial,
+          usernameCheck: false,
+        ),
+      );
+      return;
+    }
+
+    emit(
+      state.copyWith(usernameCheckStatus: StudentUsernameCheckStatus.loading),
+    );
+
+    final result = await _checktUsername(event.name);
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(usernameCheckStatus: StudentUsernameCheckStatus.failure),
+      ),
+      (check) => emit(
+        state.copyWith(
+          usernameCheckStatus: StudentUsernameCheckStatus.loaded,
+          usernameCheck: check,
+        ),
+      ),
+    );
+  }
+
+  /// Fetches a username suggestion from the backend when the name field changes.
+  /// Uses [restartable()] so rapid typing cancels the previous in-flight request.
+  Future<void> _onSuggestUsername(
+    StudentUsernameRequested event,
+    Emitter<StudentState> emit,
+  ) async {
+    if (event.name.trim().isEmpty) {
+      emit(
+        state.copyWith(
+          usernameSuggestionStatus: StudentUsernameSuggestionStatus.initial,
+          usernameSuggestion: '',
+        ),
+      );
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        usernameSuggestionStatus: StudentUsernameSuggestionStatus.loading,
+      ),
+    );
+
+    final result = await _suggestUsernameUC(event.name);
+
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          usernameSuggestionStatus: StudentUsernameSuggestionStatus.failure,
+        ),
+      ),
+      (suggestion) => emit(
+        state.copyWith(
+          usernameSuggestionStatus: StudentUsernameSuggestionStatus.loaded,
+          usernameSuggestion: suggestion,
+        ),
+      ),
+    );
+  }
 }

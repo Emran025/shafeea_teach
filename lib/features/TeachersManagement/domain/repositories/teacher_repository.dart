@@ -58,8 +58,24 @@ abstract interface class TeacherRepository {
   Future<Either<Failure, Unit>> deleteTeacher(String teacherId);
 
   /// Returns [Right(unit)] on success, or a [Left(Failure)] on error.
-  Future<Either<Failure, Unit>>  setTeacherStatus({
+  Future<Either<Failure, Unit>> setTeacherStatus({
     required String teacherId,
     required ActiveStatus newStatus,
   });
+
+  /// Returns a sanitized username candidate derived from [name].
+  ///
+  /// Calls the public `/username/suggest` endpoint (no auth required).
+  /// Returns [Right(String)] with the suggested username, or [Left(Failure)]
+  /// on a network error. An empty name always returns [Right('')].
+  Future<Either<Failure, String>> suggestUsername(String name);
+
+
+  /// Returns a sanitized username candidate derived from [name].
+  ///
+  /// Calls the public `/username/check` endpoint (no auth required).
+  /// Returns [Right(String)] with the checked username, or [Left(Failure)]
+  /// on a network error. An empty name always returns [Right('')].
+  Future<Either<Failure, bool>> checkUsername(String username);
+
 }

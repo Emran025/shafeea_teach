@@ -11,7 +11,7 @@ abstract class AuthRepository {
   });
 
   Future<Either<Failure, SuccessEntity>> forgetPassword({
-    required String email,
+    required String login,
   });
 
   Future<Either<Failure, UserEntity>> getUserProfile();

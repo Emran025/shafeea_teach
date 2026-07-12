@@ -8,6 +8,7 @@ import 'package:shafeea/features/auth/domain/usecases/resend_verification_usecas
 import '../../features/HalaqasManagement/domain/usecases/fetch_more_halaqas_usecase.dart';
 import '../../features/HalaqasManagement/domain/usecases/get_filtered_students.dart';
 import '../../features/HalaqasManagement/domain/usecases/halaqa_halaqa_usecase.dart';
+import '../../features/StudentsManagement/domain/usecases/check_student_username_usecase.dart';
 import '../../features/StudentsManagement/domain/usecases/delete_student_usecase.dart';
 import '../../features/StudentsManagement/domain/usecases/fetch_more_student_usecase.dart';
 import '../../features/StudentsManagement/domain/usecases/generate_follow_up_report_use_case.dart';
@@ -15,6 +16,7 @@ import '../../features/StudentsManagement/domain/usecases/get_filtered_students.
 import '../../features/StudentsManagement/domain/usecases/get_student_by_id.dart';
 import '../../features/StudentsManagement/domain/usecases/get_students.dart';
 import '../../features/StudentsManagement/domain/usecases/set_student_status_params.dart';
+import '../../features/StudentsManagement/domain/usecases/suggest_student_username_usecase.dart';
 import '../../features/StudentsManagement/domain/usecases/upsert_student_usecase.dart';
 import '../../features/StudentsManagement/presentation/bloc/student_bloc.dart';
 
@@ -23,11 +25,13 @@ import '../../features/HalaqasManagement/domain/usecases/get_halaqas.dart';
 import '../../features/HalaqasManagement/domain/usecases/set_halaqa_status_params.dart';
 import '../../features/HalaqasManagement/domain/usecases/upsert_halaqa_usecase.dart';
 import '../../features/HalaqasManagement/presentation/bloc/halaqa_bloc.dart';
+import '../../features/TeachersManagement/domain/usecases/check_teacher_username_usecase.dart';
 import '../../features/TeachersManagement/domain/usecases/delete_teacher_usecase.dart';
 import '../../features/TeachersManagement/domain/usecases/fetch_more_teachers_usecase.dart';
 import '../../features/TeachersManagement/domain/usecases/get_teacher_by_id.dart';
 import '../../features/TeachersManagement/domain/usecases/get_teachers.dart';
 import '../../features/TeachersManagement/domain/usecases/set_teacher_status_params.dart';
+import '../../features/TeachersManagement/domain/usecases/suggest_teacher_username_usecase.dart';
 import '../../features/TeachersManagement/domain/usecases/upsert_teacher_usecase.dart';
 import '../../features/TeachersManagement/presentation/bloc/teacher_bloc.dart';
 import '../../features/app/cubit/app_setup_cubit.dart';
@@ -126,6 +130,8 @@ abstract class BlocModule {
     DeleteTeacherUseCase deleteTeacher,
     GetTeacherById getTeacherById,
     SetTeacherStatusUseCase setTeacherStatus,
+    SuggestTeacherUsernameUseCase suggestUsernameUC,
+    CheckTeacherUsernameUseCase checkUsernameUC,
   ) {
     return TeacherBloc(
       watchTeachers: watchTeachers,
@@ -134,6 +140,8 @@ abstract class BlocModule {
       deleteTeacher: deleteTeacher,
       getTeacherById: getTeacherById,
       setTeacherStatus: setTeacherStatus,
+      suggestUsernameUC: suggestUsernameUC,
+      checkUsernameUC: checkUsernameUC,
     )..add(const WatchTeachersStarted());
   }
 
@@ -149,6 +157,8 @@ abstract class BlocModule {
     GetStudentById getStudentById,
     SetStudentStatusUseCase setStudentStatus,
     GenerateFollowUpReportUseCase generateFollowUpReportUC,
+    SuggestStudentUsernameUseCase suggestUsernameUC,
+    CheckStudentUsernameUseCase checktUsernameUC,
   ) {
     return StudentBloc(
       watchStudents: watchStudents,
@@ -159,6 +169,8 @@ abstract class BlocModule {
       getStudentById: getStudentById,
       setStudentStatus: setStudentStatus,
       generateFollowUpReportUC: generateFollowUpReportUC,
+      suggestUsernameUC: suggestUsernameUC,
+      checktUsernameUC: checktUsernameUC,
     )..add(const WatchStudentsStarted());
   }
 

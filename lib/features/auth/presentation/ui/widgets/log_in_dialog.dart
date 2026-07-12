@@ -38,7 +38,7 @@ class _LoginDialogState extends State<LoginDialog> {
   void _handleForgetPassword() {
     final email = _loginController.text.trim();
     if (email.isNotEmpty) {
-      context.read<AuthBloc>().add(ForgetPasswordRequested(email: email));
+      context.read<AuthBloc>().add(ForgetPasswordRequested(login: email));
     } else {
       // Show email required message
       ScaffoldMessenger.of(context).showSnackBar(

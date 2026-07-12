@@ -9,6 +9,7 @@ import '../../domain/entities/teacher_entity.dart';
 import '../../domain/entities/teacher_list_item_entity.dart';
 import '../../domain/repositories/teacher_repository.dart';
 import '../datasources/teacher_local_data_source.dart';
+import '../datasources/teacher_remote_data_source.dart';
 import '../models/teacher_model.dart';
 import '../services/teacher_sync_service.dart';
 
@@ -16,13 +17,15 @@ import '../services/teacher_sync_service.dart';
 final class TeacherRepositoryImpl implements TeacherRepository {
   final TeacherLocalDataSource _localDataSource;
   final TeacherSyncService _syncService;
-  // NetworkInfo is not needed here anymore as SyncService handles it.
+  final TeacherRemoteDataSource _remoteDataSource;
 
   TeacherRepositoryImpl({
     required TeacherLocalDataSource localDataSource,
     required TeacherSyncService syncService,
+    required TeacherRemoteDataSource remoteDataSource,
   }) : _localDataSource = localDataSource,
-       _syncService = syncService;
+       _syncService = syncService,
+       _remoteDataSource = remoteDataSource;
 
   @override
   Stream<Either<Failure, List<TeacherListItemEntity>>> getTeachers({
@@ -135,5 +138,29 @@ final class TeacherRepositoryImpl implements TeacherRepository {
     required ActiveStatus newStatus,
   }) async {
     return const Right(unit);
+  }
+
+  @override
+  Future<Either<Failure, String>> suggestUsername(String name) async {
+    try {
+      final suggestion = await _remoteDataSource.suggestUsername(name:name);
+      return Right(suggestion);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> checkUsername(String username) async {
+    try {
+      final checkion = await _remoteDataSource.checkUsernameAvailability(username:username);
+      return Right(checkion);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return Left(NetworkFailure(message: e.toString()));
+    }
   }
 }

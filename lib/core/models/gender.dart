@@ -1,7 +1,7 @@
 enum Gender {
+  // both(3, 'الجنسين', 'Both'),
   male(1, 'ذكر', 'Male'),
-  female(2, 'أنثى', 'Female'),
-  both(3, 'الجنسين', 'Both');
+  female(2, 'أنثى', 'Female');
 
   final int id;
   final String labelAr;
@@ -19,6 +19,7 @@ enum Gender {
   static Gender fromLabel(String label) {
     switch (label.toLowerCase()) {
       case 'female':
+      case 'Female':
       case 'أنثى':
         return Gender.female;
       default:

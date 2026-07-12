@@ -1,4 +1,5 @@
 // android/app/build.gradle.kts  [shafeea_teach]
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 // ──────────────────────────────────────────────────────────────────────────────
 // Production-grade configuration.
 //   • No System.getenv() signing hacks
@@ -93,3 +94,10 @@ dependencies {
 flutter {
     source = "../.."
 }
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
+}
+

@@ -89,4 +89,17 @@ abstract interface class StudentRepository {
   Future<Either<Failure, ImportSummary>> importFollowUpReports({
     required ImportConfig config,
   });
+
+  /// Returns a sanitized username candidate derived from [name].
+  ///
+  /// Calls the public `/username/suggest` endpoint (no auth required).
+  /// Returns [Right(String)] on success or [Left(Failure)] on network error.
+  Future<Either<Failure, String>> suggestUsername(String name);
+
+  /// Returns a sanitized username candidate derived from [name].
+  ///
+  /// Calls the public `/username/check` endpoint (no auth required).
+  /// Returns [Right(String)] with the checked username, or [Left(Failure)]
+  /// on a network error. An empty name always returns [Right('')].
+  Future<Either<Failure, bool>> checkUsername(String username);
 }

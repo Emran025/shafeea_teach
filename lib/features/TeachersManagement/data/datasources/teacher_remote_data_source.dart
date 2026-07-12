@@ -33,7 +33,7 @@ abstract interface class TeacherRemoteDataSource {
   /// records, pagination info, and a new server timestamp.
   Future<TeacherSyncResponseModel> getUpdatedTeachers({
     required int since,
-    required int page, // <<< المعلمة الجديدة
+    required int page,
   });
 
   /// Pushes a create or update operation for a single teacher to the server.
@@ -50,5 +50,15 @@ abstract interface class TeacherRemoteDataSource {
   /// Deletes a teacher by their ID via the remote API.
   /// - [teacherId]: The ID of the teacher to delete.
   /// Returns a [Future] that completes when the deletion is successful.
-  Future<void> deleteTeacher(String teacherId); 
+  Future<void> deleteTeacher({required String teacherId});
+
+  /// Fetches a username suggestion derived from [name] via the public
+  /// `/username/suggest` web endpoint.
+  ///
+  /// The result is NOT uniqueness-checked — it is a fast, sanitized
+  /// transliteration intended only for pre-filling the username field.
+  Future<String> suggestUsername({required String name});
+
+  /// Checks whether a username is available.
+  Future<bool> checkUsernameAvailability({required String username});
 }

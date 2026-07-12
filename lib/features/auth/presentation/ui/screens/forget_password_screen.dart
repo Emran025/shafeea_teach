@@ -23,7 +23,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   void _submitForgetPassword(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
-        ForgetPasswordRequested(email: emailController.text.trim()),
+        ForgetPasswordRequested(login: emailController.text.trim()),
       );
     }
   }

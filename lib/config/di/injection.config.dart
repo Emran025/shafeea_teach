@@ -200,6 +200,8 @@ import 'package:shafeea/features/StudentsManagement/data/services/student_sync_s
     as _i691;
 import 'package:shafeea/features/StudentsManagement/domain/repositories/student_repository.dart'
     as _i344;
+import 'package:shafeea/features/StudentsManagement/domain/usecases/check_student_username_usecase.dart'
+    as _i813;
 import 'package:shafeea/features/StudentsManagement/domain/usecases/delete_student_usecase.dart'
     as _i532;
 import 'package:shafeea/features/StudentsManagement/domain/usecases/fetch_more_student_usecase.dart'
@@ -214,6 +216,8 @@ import 'package:shafeea/features/StudentsManagement/domain/usecases/get_students
     as _i578;
 import 'package:shafeea/features/StudentsManagement/domain/usecases/set_student_status_params.dart'
     as _i581;
+import 'package:shafeea/features/StudentsManagement/domain/usecases/suggest_student_username_usecase.dart'
+    as _i856;
 import 'package:shafeea/features/StudentsManagement/domain/usecases/upsert_student_usecase.dart'
     as _i41;
 import 'package:shafeea/features/StudentsManagement/presentation/bloc/student_bloc.dart'
@@ -266,6 +270,8 @@ import 'package:shafeea/features/TeachersManagement/data/services/teacher_sync_s
     as _i976;
 import 'package:shafeea/features/TeachersManagement/domain/repositories/teacher_repository.dart'
     as _i622;
+import 'package:shafeea/features/TeachersManagement/domain/usecases/check_teacher_username_usecase.dart'
+    as _i404;
 import 'package:shafeea/features/TeachersManagement/domain/usecases/delete_teacher_usecase.dart'
     as _i708;
 import 'package:shafeea/features/TeachersManagement/domain/usecases/fetch_more_teachers_usecase.dart'
@@ -276,6 +282,8 @@ import 'package:shafeea/features/TeachersManagement/domain/usecases/get_teachers
     as _i82;
 import 'package:shafeea/features/TeachersManagement/domain/usecases/set_teacher_status_params.dart'
     as _i281;
+import 'package:shafeea/features/TeachersManagement/domain/usecases/suggest_teacher_username_usecase.dart'
+    as _i60;
 import 'package:shafeea/features/TeachersManagement/domain/usecases/upsert_teacher_usecase.dart'
     as _i691;
 import 'package:shafeea/features/TeachersManagement/presentation/bloc/teacher_bloc.dart'
@@ -581,10 +589,17 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i576.TeacherRepositoryImpl(
         localDataSource: gh<_i109.TeacherLocalDataSource>(),
         syncService: gh<_i387.TeacherSyncService>(),
+        remoteDataSource: gh<_i270.TeacherRemoteDataSource>(),
       ),
+    );
+    gh.lazySingleton<_i404.CheckTeacherUsernameUseCase>(
+      () => _i404.CheckTeacherUsernameUseCase(gh<_i622.TeacherRepository>()),
     );
     gh.lazySingleton<_i281.SetTeacherStatusUseCase>(
       () => _i281.SetTeacherStatusUseCase(gh<_i622.TeacherRepository>()),
+    );
+    gh.lazySingleton<_i60.SuggestTeacherUsernameUseCase>(
+      () => _i60.SuggestTeacherUsernameUseCase(gh<_i622.TeacherRepository>()),
     );
     gh.lazySingleton<_i1045.GetAllUsersUseCase>(
       () => _i1045.GetAllUsersUseCase(gh<_i424.AuthRepository>()),
@@ -699,6 +714,18 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i82.WatchTeachersUseCase(repository: gh<_i622.TeacherRepository>()),
     );
+    gh.factory<_i639.TeacherBloc>(
+      () => blocModule.teacherBloc(
+        gh<_i82.WatchTeachersUseCase>(),
+        gh<_i974.FetchMoreTeachersUseCase>(),
+        gh<_i691.UpsertTeacher>(),
+        gh<_i708.DeleteTeacherUseCase>(),
+        gh<_i156.GetTeacherById>(),
+        gh<_i281.SetTeacherStatusUseCase>(),
+        gh<_i60.SuggestTeacherUsernameUseCase>(),
+        gh<_i404.CheckTeacherUsernameUseCase>(),
+      ),
+    );
     gh.lazySingleton<_i249.FetchMoreHalaqasUseCase>(
       () => _i249.FetchMoreHalaqasUseCase(gh<_i673.HalaqaRepository>()),
     );
@@ -714,8 +741,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i478.UpsertHalaqa>(
       () => _i478.UpsertHalaqa(gh<_i673.HalaqaRepository>()),
     );
+    gh.lazySingleton<_i813.CheckStudentUsernameUseCase>(
+      () => _i813.CheckStudentUsernameUseCase(gh<_i344.StudentRepository>()),
+    );
     gh.lazySingleton<_i581.SetStudentStatusUseCase>(
       () => _i581.SetStudentStatusUseCase(gh<_i344.StudentRepository>()),
+    );
+    gh.lazySingleton<_i856.SuggestStudentUsernameUseCase>(
+      () => _i856.SuggestStudentUsernameUseCase(gh<_i344.StudentRepository>()),
     );
     gh.factory<_i447.ApproveApplicantUseCase>(
       () => _i447.ApproveApplicantUseCase(gh<_i421.SupervisorRepository>()),
@@ -757,16 +790,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i981.FollowUpReportFactory>(),
       ),
     );
-    gh.factory<_i639.TeacherBloc>(
-      () => blocModule.teacherBloc(
-        gh<_i82.WatchTeachersUseCase>(),
-        gh<_i974.FetchMoreTeachersUseCase>(),
-        gh<_i691.UpsertTeacher>(),
-        gh<_i708.DeleteTeacherUseCase>(),
-        gh<_i156.GetTeacherById>(),
-        gh<_i281.SetTeacherStatusUseCase>(),
-      ),
-    );
     gh.factory<_i728.HalaqaBloc>(
       () => blocModule.halaqaBloc(
         gh<_i268.WatchHalaqasUseCase>(),
@@ -799,6 +822,8 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i843.GetStudentById>(),
         gh<_i581.SetStudentStatusUseCase>(),
         gh<_i298.GenerateFollowUpReportUseCase>(),
+        gh<_i856.SuggestStudentUsernameUseCase>(),
+        gh<_i813.CheckStudentUsernameUseCase>(),
       ),
     );
     return this;

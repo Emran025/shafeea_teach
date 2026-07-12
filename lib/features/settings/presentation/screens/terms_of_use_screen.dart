@@ -124,7 +124,7 @@ class TermsOfUseScreen extends StatelessWidget {
                   title: Text(
                     point,
                     style: textTheme.bodyMedium!.copyWith(
-                      color: Colors.white60,
+                      color: colorScheme.onSurface,
                     ),
                   ),
                 ),

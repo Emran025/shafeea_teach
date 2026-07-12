@@ -10,9 +10,9 @@ class LogInRequested extends AuthEvent {
 }
 
 class ForgetPasswordRequested extends AuthEvent {
-  final String email;
+  final String login;
 
-  ForgetPasswordRequested({required this.email});
+  ForgetPasswordRequested({required this.login});
 }
 
 class AppStarted extends AuthEvent {}

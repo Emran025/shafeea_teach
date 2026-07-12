@@ -36,7 +36,6 @@ class _StudentProgressChartState extends State<StudentProgressChart> {
   void initState() {
     super.initState();
     _currentFilter = widget.filter;
-    // ابدأ من الفترة الأخيرة (الأحدث) - الفترة 11 (من 0 إلى 11)
     _pageController = PageController(
       initialPage: widget.progressData.length - 1,
     );
@@ -66,7 +65,7 @@ class _StudentProgressChartState extends State<StudentProgressChart> {
         const SizedBox(height: 16),
 
         SizedBox(
-          height: 350, // ارتفاع ثابت للمخطط
+          height: 350,
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: _onPageChanged,

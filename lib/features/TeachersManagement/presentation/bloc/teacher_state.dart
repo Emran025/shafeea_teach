@@ -8,6 +8,10 @@ enum TeacherSubmissionStatus { initial, submitting, success, failure }
 
 enum TeacherUpsertStatus { initial, submitting, success, failure }
 
+enum TeacherUsernameSuggestionStatus { initial, loading, loaded, failure }
+
+enum TeacherUsernameCheckStatus { initial, loading, loaded, failure }
+
 final class TeacherState extends Equatable {
   final TeacherStatus status;
   final List<TeacherListItemEntity> teachers;
@@ -28,6 +32,14 @@ final class TeacherState extends Equatable {
   final TeacherUpsertStatus upsertStatus;
   final Failure? upsertFailure;
 
+  // --- Username Suggestion State ---
+  final TeacherUsernameSuggestionStatus usernameSuggestionStatus;
+  final String usernameSuggestion;
+
+  // --- Username Check State ---
+  final TeacherUsernameCheckStatus usernameCheckStatus;
+  final bool usernameCheck;
+
   const TeacherState({
     this.status = TeacherStatus.initial,
     this.teachers = const [],
@@ -47,6 +59,14 @@ final class TeacherState extends Equatable {
     // New
     this.upsertStatus = TeacherUpsertStatus.initial,
     this.upsertFailure,
+
+    // Username Suggestion
+    this.usernameSuggestionStatus = TeacherUsernameSuggestionStatus.initial,
+    this.usernameSuggestion = '',
+
+    // Username Check
+    this.usernameCheckStatus = TeacherUsernameCheckStatus.initial,
+    this.usernameCheck = false,
   });
 
   TeacherState copyWith({
@@ -73,6 +93,14 @@ final class TeacherState extends Equatable {
     TeacherUpsertStatus? upsertStatus,
     Failure? upsertFailure,
     bool clearUpsertFailure = false,
+
+    // Username Suggestion
+    TeacherUsernameSuggestionStatus? usernameSuggestionStatus,
+    String? usernameSuggestion,
+
+    // Username Check
+    TeacherUsernameCheckStatus? usernameCheckStatus,
+    bool? usernameCheck,
   }) {
     return TeacherState(
       status: status ?? this.status,
@@ -98,6 +126,16 @@ final class TeacherState extends Equatable {
       upsertFailure: clearUpsertFailure
           ? null
           : upsertFailure ?? this.upsertFailure,
+
+      // Username Suggestion
+      usernameSuggestionStatus:
+          usernameSuggestionStatus ?? this.usernameSuggestionStatus,
+      usernameSuggestion: usernameSuggestion ?? this.usernameSuggestion,
+
+      // Username Check
+      usernameCheckStatus:
+          usernameCheckStatus ?? this.usernameCheckStatus,
+      usernameCheck: usernameCheck ?? this.usernameCheck,
     );
   }
 
@@ -111,5 +149,9 @@ final class TeacherState extends Equatable {
     submissionFailure,
     upsertStatus,
     upsertFailure,
+    usernameSuggestionStatus,
+    usernameSuggestion,
+    usernameCheckStatus,
+    usernameCheck,
   ];
 }

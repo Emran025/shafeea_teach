@@ -93,3 +93,21 @@ final class FollowUpReportFetched extends StudentEvent {
   @override
   List<Object> get props => [studentId];
 }
+
+/// Dispatched when the user types into the name field of the student creation
+/// form to request a backend username suggestion.
+final class StudentUsernameRequested extends StudentEvent {
+  final String name;
+  const StudentUsernameRequested(this.name);
+  @override
+  List<Object> get props => [name];
+}
+
+/// Dispatched when the user types into the name field of the student creation
+/// form to request a backend username suggestion.
+final class StudentUsernameCheckRequested extends StudentEvent {
+  final String name;
+  const StudentUsernameCheckRequested(this.name);
+  @override
+  List<Object> get props => [name];
+}

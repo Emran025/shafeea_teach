@@ -14,7 +14,7 @@ abstract class AuthRemoteDataSource {
   Future<AuthResponseModel> logIn({required LogInRequestModel requestModel});
 
   /// Requests a password reset code.
-  Future<SuccessModel> forgetPassword({required String email});
+  Future<SuccessModel> forgetPassword({required String login});
   Future<SuccessModel> changePassword({
     required String currentPassword,
     required String newPassword,

@@ -11,6 +11,7 @@ import 'package:shafeea/shared/widgets/custom_text_field.dart';
 import 'package:shafeea/shared/widgets/phone_zone.dart';
 import 'package:shafeea/shared/widgets/pick_date.dart';
 
+import '../../../../../core/models/education_level.dart';
 import '../../../../../shared/widgets/pick_time.dart';
 
 class TeacherForm extends StatefulWidget {
@@ -25,7 +26,9 @@ class TeacherForm extends StatefulWidget {
   final TextEditingController phoneZoneController = TextEditingController();
   final TextEditingController whatsAppPhoneController = TextEditingController();
   final TextEditingController whatsAppZoneController = TextEditingController();
-  final TextEditingController qualificationController = TextEditingController();
+  final TextEditingController qualificationController = TextEditingController(
+    text: EducationLevel.noFormalEducation.labelAr,
+  );
   final TextEditingController experienceYearsController =
       TextEditingController();
   final TextEditingController eneregyController = TextEditingController();
@@ -130,11 +133,10 @@ class _TeacherFormState extends State<TeacherForm> {
               },
               label: "رقم الواتسآب",
             ),
-
-            CustomTextField(
-              controller: widget.qualificationController,
-              prefixIcon: Icons.school,
-              label: "المؤهل العلمي",
+            _buildDropdown(
+              widget.qualificationController,
+              "نوع التعليم(المهؤهل)",
+              [...(EducationLevel.values.map((e) => e.labelAr).toList())],
             ),
             CustomTextField(
               controller: widget.experienceYearsController,
@@ -211,7 +213,11 @@ class _TeacherFormState extends State<TeacherForm> {
               (e) => DropdownMenuItem(
                 value: e,
                 child: Text(
-                  e == "Male" ? "ذكر" : "أنثى",
+                  e == "Male"
+                      ? "ذكر"
+                      : e == "Female" || e == "female"
+                      ? "أنثى"
+                      : e,
                   style: GoogleFonts.cairo(
                     color: AppColors.lightCream70,
                     fontSize: 14,
@@ -221,8 +227,9 @@ class _TeacherFormState extends State<TeacherForm> {
               ),
             )
             .toList(),
-        onChanged: (val) => setState(() => controller.text = val ?? "Male"),
-        onSaved: (val) => controller.text = val ?? "Male",
+        onChanged: (val) =>
+            setState(() => controller.text = val ?? options.first),
+        onSaved: (val) => controller.text = val ?? options.first,
         decoration: InputDecoration(
           fillColor: AppColors.lightCream12,
           labelText: label,

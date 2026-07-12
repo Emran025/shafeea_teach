@@ -107,7 +107,7 @@ final SwitchUserUseCase switchUserUC;
     Emitter<AuthState> emit,
   ) async {
     emit(state.copyWith(forgetPasswordStatus: ForgetPasswordStatus.initial));
-    final user = await forgetPasswordUC(email: event.email);
+    final user = await forgetPasswordUC(login: event.login);
     user.fold(
       (message) => emit(
         state.copyWith(
