@@ -40,6 +40,11 @@ final class StudentModel {
   final String qualification;
   final bool isDeleted;
 
+  /// The login username for this student.  Nullable so that when creating a
+  /// student offline (no internet) the field is simply omitted from the
+  /// request body and the server auto-assigns one.
+  final String? username;
+
   const StudentModel({
     required this.id,
     required this.name,
@@ -61,10 +66,10 @@ final class StudentModel {
     this.avatar,
     this.createdAt,
     this.updatedAt,
-
     required this.memorizationLevel,
     required this.qualification,
     required this.isDeleted,
+    this.username,
   });
 
   factory StudentModel.fromMap(
@@ -102,9 +107,13 @@ final class StudentModel {
       isDeleted: fromDb
           ? (map['isDeleted'] == 1)
           : (map['isDeleted'] as bool? ?? false),
+      username: map['username'] as String?,
     );
   }
 
+  /// Converts the [StudentModel] to a local-DB map.
+  ///
+  /// The `username` key is included only when non-null.
   Map<String, dynamic> toMap() {
     return {
       'id': int.tryParse(id) ?? 0,
@@ -132,14 +141,18 @@ final class StudentModel {
       'createdAt':
           DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
-
       'lastModified':
           DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
       'isDeleted': isDeleted ? 1 : 0,
+      if (username != null) 'username': username,
     };
   }
 
+  /// Converts the [StudentModel] to a JSON map sent to the API.
+  ///
+  /// The `username` key is included only when non-null.  When `null` the
+  /// server will auto-assign a username (useful for offline-first creation).
   Map<String, dynamic> toJson() {
     return {
       'uuid': id,
@@ -166,11 +179,11 @@ final class StudentModel {
       'createdAt':
           DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
-
       'lastModified':
           DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
       'isDeleted': isDeleted ? 1 : 0,
+      if (username != null) 'username': username,
     };
   }
 
@@ -217,11 +230,12 @@ final class StudentModel {
       bio: bio ?? '',
       createdAt: createdAt ?? '',
       updatedAt: updatedAt ?? '',
-    ); // Convert to FollowUpPlanEntity    );
+      username: username,
+    );
   }
 
   /// Converts this data model into a domain [StudentEntity].
-  /// ///
+  ///
   /// This method serves as the boundary between the data and domain layers,
   /// transforming the data-centric model into a pure business object.
   factory StudentModel.fromEntity(StudentDetailEntity student) {
@@ -240,6 +254,7 @@ final class StudentModel {
       qualification: student.qualification,
       memorizationLevel: student.memorizationLevel,
       isDeleted: false,
+      username: student.username,
     );
   }
 

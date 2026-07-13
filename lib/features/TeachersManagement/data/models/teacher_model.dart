@@ -40,6 +40,11 @@ final class TeacherModel {
   final bool isDeleted;
   final List<AssignedHalaqasModel> assignedHalaqas;
 
+  /// The login username for this teacher.  Nullable so that when creating a
+  /// teacher offline (no internet) the field is simply omitted from the
+  /// request body and the server auto-assigns one.
+  final String? username;
+
   const TeacherModel({
     required this.id,
     required this.name,
@@ -64,6 +69,7 @@ final class TeacherModel {
     required this.qualification,
     required this.isDeleted,
     this.assignedHalaqas = const [],
+    this.username,
   });
 
   // /// Creates a [TeacherModel] from a JSON map received from an API.
@@ -103,6 +109,7 @@ final class TeacherModel {
       qualification: json['qualification'] as String? ?? '',
       isDeleted: json['isDeleted'] as bool? ?? false,
       assignedHalaqas: halqas,
+      username: json['username'] as String?,
     );
   }
 
@@ -134,6 +141,7 @@ final class TeacherModel {
       qualification: map['qualification'] as String? ?? '', //
       isDeleted:
           (map['isDeleted'] as int) == 1, // Convert integer back to boolean
+      username: map['username'] as String?,
     );
   }
 
@@ -179,10 +187,14 @@ final class TeacherModel {
       createdAt: createdAt ?? '',
       updatedAt: updatedAt ?? '',
       halqas: const [],
+      username: username,
     );
   }
 
-  /// Converts the [TeacherModel] to a database map.
+  /// Converts the [TeacherModel] to a JSON map sent to the API.
+  ///
+  /// The `username` key is included only when non-null.  When `null` the
+  /// server will auto-assign a username (useful for offline-first creation).
   Map<String, dynamic> toJson() {
     return {
       'uuid': id,
@@ -209,11 +221,11 @@ final class TeacherModel {
       'createdAt':
           DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
-
       'lastModified':
           DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
       'isDeleted': isDeleted,
+      if (username != null) 'username': username,
     };
   }
 
@@ -243,16 +255,16 @@ final class TeacherModel {
       'createdAt':
           DateTime.tryParse(createdAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
-
       'lastModified':
           DateTime.tryParse(updatedAt ?? "")?.toIso8601String() ??
           DateTime.now().toIso8601String(),
       'isDeleted': isDeleted ? 1 : 0,
+      if (username != null) 'username': username,
     };
   }
 
   /// Converts this data model into a domain [TeacherEntity].
-  /// ///
+  ///
   /// This method serves as the boundary between the data and domain layers,
   /// transforming the data-centric model into a pure business object.
   factory TeacherModel.fromEntity(TeacherDetailEntity teacher) {
@@ -270,6 +282,7 @@ final class TeacherModel {
       status: teacher.status,
       qualification: teacher.qualification,
       isDeleted: false,
+      username: teacher.username,
     );
   }
 

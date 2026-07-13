@@ -29,6 +29,14 @@ class StudentDetailEntity extends BaseStudentEntity {
   final String memorizationLevel;
   final String updatedAt;
 
+  /// The login username for this student.
+  ///
+  /// When creating a new student **without** an internet connection, this is
+  /// `null` — the server will auto-assign a username.  When the device is
+  /// online the form shows the field so the user can accept the server
+  /// suggestion or type a custom value before submission.
+  final String? username;
+
   const StudentDetailEntity({
     required super.id,
     required super.name,
@@ -51,6 +59,7 @@ class StudentDetailEntity extends BaseStudentEntity {
     required this.bio,
     required this.memorizationLevel,
     required this.createdAt,
-    required this.updatedAt
+    required this.updatedAt,
+    this.username,
   });
 }

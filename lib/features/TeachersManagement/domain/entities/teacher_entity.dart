@@ -29,6 +29,14 @@ class TeacherDetailEntity extends BaseTeacherEntity {
   final String updatedAt;
   final List<dynamic> halqas;
 
+  /// The login username for this teacher.
+  ///
+  /// When creating a new teacher **without** an internet connection, this is
+  /// `null` — the server will auto-assign a username.  When the device is
+  /// online the form shows the field so the user can accept the server
+  /// suggestion or type a custom value before submission.
+  final String? username;
+
   const TeacherDetailEntity({
     required super.id,
     required super.name,
@@ -52,9 +60,10 @@ class TeacherDetailEntity extends BaseTeacherEntity {
     required this.createdAt,
     required this.updatedAt,
     this.halqas = const [],
+    this.username,
   });
 
   @override
-  List<Object?> get props => [...super.props, email, phone];
+  List<Object?> get props => [...super.props, email, phone, username];
 }
 
