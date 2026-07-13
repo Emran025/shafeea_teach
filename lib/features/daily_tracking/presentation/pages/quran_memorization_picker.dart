@@ -95,11 +95,7 @@ Future<_QuranPickerData> _loadPickerData(QuranLocalDataSource ds) async {
   for (int i = 0; i < juzRows.length; i++) {
     final row = juzRows[i];
     juzList.add(
-      QuranJuz(
-        index: i + 1,
-      fromPage: row.fromPage,
-        toPage: row.toPage,
-      ),
+      QuranJuz(index: i + 1, fromPage: row.fromPage, toPage: row.toPage),
     );
   }
 
@@ -421,10 +417,10 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                       double xForPage(int page) => (page - 1) / total * w;
 
                       int pageForLocalDx(double dx) {
+                        final double fraction = (1 - (dx / w)).clamp(0.0, 1.0);
                         // dx is measured from the LEFT edge of the strip
                         // (page 1 is on the RIGHT because of surrounding RTL).
-                        final double fraction = (dx / w).clamp(0.0, 1.0);
-                        return (fraction * total).floor().clamp(1, total);
+                        return (fraction * (total - 1)).round() + 1;
                       }
 
                       return GestureDetector(
@@ -452,8 +448,9 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                                     for (final j in data.juzList)
                                       Positioned(
                                         right: xForPage(j.fromPage),
-                                        width: (xForPage(j.toPage) -
-                                                    xForPage(j.fromPage)) +
+                                        width:
+                                            (xForPage(j.toPage) -
+                                                xForPage(j.fromPage)) +
                                             (w / total),
                                         top: 0,
                                         bottom: 0,
@@ -464,8 +461,10 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                                               : Colors.transparent,
                                           alignment: Alignment.bottomCenter,
                                           padding: const EdgeInsets.only(
-                                              bottom: 3),
-                                          child: (xForPage(j.toPage) -
+                                            bottom: 3,
+                                          ),
+                                          child:
+                                              (xForPage(j.toPage) -
                                                       xForPage(j.fromPage)) >
                                                   16
                                               ? Text(

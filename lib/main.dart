@@ -14,10 +14,6 @@ import 'routes/app_router.dart';
 import 'package:flutter/services.dart';
 
 void main() async {
-  // Pre-load all Tracking_Unit rows from the Quran database into the
-  // in-memory cache so that synchronous lookups work throughout the app.
-  await TrackingUnitCache.instance.initialize(sl<QuranLocalDataSource>());
-
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
   // Initialize date formatting for Arabic locale.
@@ -27,6 +23,9 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  // Pre-load all Tracking_Unit rows from the Quran database into the
+  // in-memory cache so that synchronous lookups work throughout the app.
+  await TrackingUnitCache.instance.initialize(sl<QuranLocalDataSource>());
 
   runApp(
     MultiBlocProvider(

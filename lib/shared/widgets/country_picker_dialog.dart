@@ -121,47 +121,58 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                         thumbVisibility: true,
                         child: ListView.separated(
                           itemCount: _filtered.length,
-                          separatorBuilder: (_, __) =>
-                              Divider(color: AppColors.accent),
+                          separatorBuilder: (_, __) => Divider(
+                            color: AppColors.accent,
+                            height: 1,
+                            thickness: 1,
+                          ),
                           itemBuilder: (_, i) {
                             final country = _filtered[i];
-                            return RadioListTile<CountryModel>(
-                              value: country,
-                              groupValue: _tempSelected,
-                              title: Text(
-                                country.arabicName,
-                                style: GoogleFonts.cairo(
-                                  color: AppColors.lightCream,
-                                  fontWeight: FontWeight.bold,
+                            return Material(
+                              color: AppColors.lightCream.withOpacity(0.05),
+                              child: RadioListTile<CountryModel>(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
                                 ),
-                              ),
-                              secondary: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  widget.isCollingCode
-                                      ? Text(
-                                          "+${country.countryCallingCode}",
-                                          textDirection: TextDirection.ltr,
-                                          style: GoogleFonts.cairo(
-                                            color: AppColors.lightCream,
-                                            fontSize: 16,
-                                          ),
-                                        )
-                                      : Center(),
-                                  const SizedBox(width: 8),
-                                  Flag.fromString(
-                                    country.status,
-                                    height: 24,
-                                    width: 36,
+                                tileColor: Colors.transparent,
+                                value: country,
+                                groupValue: _tempSelected,
+                                title: Text(
+                                  country.arabicName,
+                                  style: GoogleFonts.cairo(
+                                    color: AppColors.lightCream,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ],
+                                ),
+                                secondary: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    widget.isCollingCode
+                                        ? Text(
+                                            "+${country.countryCallingCode}",
+                                            textDirection: TextDirection.ltr,
+                                            style: GoogleFonts.cairo(
+                                              color: AppColors.lightCream,
+                                            ),
+                                          )
+                                        : const SizedBox(),
+                                    const SizedBox(width: 8),
+                                    Flag.fromString(
+                                      country.status,
+                                      height: 24,
+                                      width: 36,
+                                    ),
+                                  ],
+                                ),
+                                onChanged: (sel) {
+                                  setState(() {
+                                    _tempSelected = sel!;
+                                    _searchCtrl.text = sel.arabicName;
+                                    _focusNode.unfocus();
+                                    widget.onCountrySelected(sel);
+                                  });
+                                },
                               ),
-                              onChanged: (sel) => setState(() {
-                                _tempSelected = sel!;
-                                _searchCtrl.text = sel.arabicName;
-                                _focusNode.unfocus();
-                                widget.onCountrySelected(sel);
-                              }),
                             );
                           },
                         ),
