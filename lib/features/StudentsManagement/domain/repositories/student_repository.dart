@@ -79,6 +79,7 @@ abstract interface class StudentRepository {
   Future<Either<Failure, List<StudentListItemEntity>>> getFilteredStudents({
     ActiveStatus? status,
     String? halaqaUuid,
+    String? notInHalaqaUuid,
     DateTime? trackDate,
     Frequency? frequencyCode,
     MonitoringFilter monitoringFilter = MonitoringFilter.all,

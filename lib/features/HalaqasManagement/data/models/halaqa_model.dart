@@ -27,6 +27,7 @@ final class HalaqaModel {
   final String? updatedAt;
   final bool isDeleted;
   final int teacherId;
+  final String teacherName;
 
   const HalaqaModel({
     required this.id,
@@ -44,6 +45,7 @@ final class HalaqaModel {
     this.updatedAt,
     required this.isDeleted,
     required this.teacherId,
+    this.teacherName = '',
   });
 
   // /// Creates a [HalaqaModel] from a JSON map received from an API.
@@ -72,6 +74,7 @@ final class HalaqaModel {
           ? (json['isDeleted'] as bool)
           : (json['isDeleted'] as int? ?? 0) == 1,
       teacherId: json['teacherId'] as int? ?? 0,
+      teacherName: json['teacherName'] as String? ?? '',
       sumOfStudents: json['sumOfStudents'] as int? ?? 0,
       maxOfStudents: json['maxOfStudents'] as int? ?? 0,
     );
@@ -93,6 +96,7 @@ final class HalaqaModel {
 
       isDeleted: (map['isDeleted'] as int) == 1, //
       teacherId: map['teacherId'] as int? ?? 0,
+      teacherName: map['teacherName'] as String? ?? '',
       sumOfStudents: map['sumOfStudents'] as int? ?? 0, //
       maxOfStudents: map['maxOfStudents'] as int? ?? 0, //
     );
@@ -124,6 +128,7 @@ final class HalaqaModel {
       createdAt: createdAt ?? '',
       updatedAt: updatedAt ?? '',
       teacherId: teacherId,
+      teacherName: teacherName,
       sumOfStudents: sumOfStudents,
       maxOfStudents: maxOfStudents,
     );
@@ -186,6 +191,7 @@ final class HalaqaModel {
       updatedAt: halaqa.updatedAt,
       isDeleted: false,
       teacherId: halaqa.teacherId,
+      teacherName: halaqa.teacherName,
     );
   }
 

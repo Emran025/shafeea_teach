@@ -9,7 +9,6 @@ import 'package:shafeea/shared/themes/app_theme.dart';
 import '../../../../../config/di/injection.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../shared/widgets/frequency_selector.dart';
-import '../../../../StudentsManagement/domain/entities/student_entity.dart';
 import '../../bloc/halaqa_bloc.dart';
 import 'halaqa_edit_screen.dart';
 
@@ -24,8 +23,6 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
     with TickerProviderStateMixin {
   DateTime selectedDate = DateTime.now();
 
-  List<String> pastTeachers = ["أ. محمد", "أ. علي", "أ. يوسف"];
-  List<String> graduates = ["حسن", "ريان", "وفاء"];
 
   List<String> selectorItems = [
     "الطلاب",
@@ -49,15 +46,12 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
     [Color(0xFFFFA17F), Color(0xFF00223E)],
   ];
 
-  late List<StudentDetailEntity> prevStudents;
-
   late TabController _tabController;
 
   @override
   void initState() {
     _tabController = TabController(length: selectorItems.length, vsync: this);
     _tabController.addListener(() => setState(() {}));
-    prevStudents = fakeStudents1;
     super.initState();
   }
 
@@ -378,7 +372,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
             child: TabBarView(
               controller: _tabController,
               children: [
-                StudentListCardWithOptions(),
+                StudentListCardWithOptions(halaqaUuid: widget.halaqaId),
                 Center(),
                 _openWeeklyDetail(
                   _DashboardStat(
@@ -574,7 +568,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                                 ],
                               ),
                               Text(
-                                " •  ${state.selectedHalaqa!.teacherId}",
+                                " •  ${state.selectedHalaqa!.teacherName.isNotEmpty ? state.selectedHalaqa!.teacherName : 'معلم غير محدد'}",
                                 style: GoogleFonts.cairo(
                                   fontSize: 16,
                                   color: Colors.grey.shade300,
@@ -590,13 +584,15 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildStat(
-                          "الحفاظ",
-                          pastTeachers.length.toString(),
-                          Icons.school,
+                          "الطلاب",
+                          state.selectedHalaqa!.sumOfStudents.toString(),
+                          Icons.people,
                         ),
-
-                        _buildStat("التقييم", "4", Icons.star),
-                        _buildStat("الطلاب", "20", Icons.people),
+                        _buildStat(
+                          "السعة",
+                          state.selectedHalaqa!.maxOfStudents.toString(),
+                          Icons.group,
+                        ),
                       ],
                     ),
                   ],
@@ -612,11 +608,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
   }
 
   Widget _buildStat(String label, String value, IconData icon) {
-    return GestureDetector(
-      onTap: () {
-        _showListDialog(label, pastTeachers, "لا يوجد $label");
-      },
-      child: Column(
+    return Column(
         children: [
           Icon(icon, color: Colors.grey.shade300),
           SizedBox(height: 6),
@@ -633,7 +625,6 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
             style: GoogleFonts.cairo(fontSize: 12, color: Colors.grey.shade400),
           ),
         ],
-      ),
     );
   }
 
@@ -644,7 +635,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => HalaqaEditScreen()),
+          MaterialPageRoute(builder: (_) => HalaqaEditScreen(halaqaId: widget.halaqaId)),
         ),
 
         // highlightElevation: 40,

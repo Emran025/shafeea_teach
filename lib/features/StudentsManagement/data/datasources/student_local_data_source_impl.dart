@@ -1152,6 +1152,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
   Future<List<StudentModel>> getFilteredStudents({
     ActiveStatus? status,
     String? halaqaUuid,
+    String? notInHalaqaUuid,
     DateTime? trackDate,
     Frequency? frequencyCode,
     MonitoringFilter monitoringFilter = MonitoringFilter.all,
@@ -1162,6 +1163,7 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     // If no filter criteria at all → return every student.
     if (status == null &&
         halaqaUuid == null &&
+        notInHalaqaUuid == null &&
         trackDate == null &&
         frequencyCode == null) {
       return _fetchCachedStudents();
@@ -1183,6 +1185,20 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
     if (halaqaUuid != null) {
       baseWhere.write(' AND H.uuid = ?');
       whereArgs.add(halaqaUuid);
+    }
+
+    // Exclude students already enrolled in the specified halaqa.
+    if (notInHalaqaUuid != null) {
+      baseWhere.write(
+        ' AND U.id NOT IN ('
+        'SELECT HS_ex.studentId FROM $_kHalqaStudentsTable HS_ex '
+        'JOIN $_kHalqasTable H_ex ON HS_ex.halqaId = H_ex.id '
+        'WHERE H_ex.uuid = ? AND HS_ex.isDeleted = 0 AND HS_ex.tenant_id = ?'
+        ')',
+      );
+      whereArgs
+        ..add(notInHalaqaUuid)
+        ..add(tenantId);
     }
 
     // ── Build query depending on monitoringFilter ─────────────────────────
@@ -1290,19 +1306,27 @@ final class StudentLocalDataSourceImpl implements StudentLocalDataSource {
             ..add(intervalDays);
       }
     } else {
-      // Fallback: simple filter without plan-schedule logic
-      final fallbackJoins = StringBuffer(
-        'JOIN $_kHalqaStudentsTable HS ON U.id = HS.studentId AND HS.isDeleted = 0 '
-        'JOIN $_kHalqasTable H ON HS.halqaId = H.id ',
-      );
+      // Fallback: simple filter without plan-schedule logic.
+      // Only JOIN halqa_students/halqas when filtering by halaqaUuid or trackDate requires enrollment.
+      final bool needsHalqaJoin = halaqaUuid != null || trackDate != null;
+      final fallbackJoins = StringBuffer();
+
+      if (needsHalqaJoin) {
+        fallbackJoins.write(
+          'JOIN $_kHalqaStudentsTable HS ON U.id = HS.studentId AND HS.isDeleted = 0 AND HS.tenant_id = U.tenant_id '
+          'JOIN $_kHalqasTable H ON HS.halqaId = H.id ',
+        );
+      }
+
       if (trackDate != null) {
         final formattedDate = _formatDateForDb(trackDate);
         fallbackJoins.write(
-          'JOIN $_kDailyTrackingTable DT ON HS.id = DT.enrollmentId ',
+          'JOIN $_kDailyTrackingTable DT ON HS.id = DT.enrollmentId AND DT.tenant_id = U.tenant_id ',
         );
         baseWhere.write(' AND DT.trackDate = ?');
         whereArgs.add(formattedDate);
       }
+
       sql =
           '''
         SELECT DISTINCT U.*

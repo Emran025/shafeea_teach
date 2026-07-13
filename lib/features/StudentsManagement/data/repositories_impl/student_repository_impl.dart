@@ -147,6 +147,7 @@ final class StudentRepositoryImpl implements StudentRepository {
   Future<Either<Failure, List<StudentListItemEntity>>> getFilteredStudents({
     ActiveStatus? status,
     String? halaqaUuid,
+    String? notInHalaqaUuid,
     DateTime? trackDate,
     Frequency? frequencyCode,
     MonitoringFilter monitoringFilter = MonitoringFilter.all,
@@ -155,6 +156,7 @@ final class StudentRepositoryImpl implements StudentRepository {
       final model = await _localDataSource.getFilteredStudents(
         status: status,
         halaqaUuid: halaqaUuid,
+        notInHalaqaUuid: notInHalaqaUuid,
         trackDate: trackDate,
         frequencyCode: frequencyCode,
         monitoringFilter: monitoringFilter,

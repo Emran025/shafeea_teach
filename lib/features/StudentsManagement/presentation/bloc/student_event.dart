@@ -34,6 +34,7 @@ final class StudentUpserted extends StudentEvent {
 final class FilteredStudents extends StudentEvent {
   final ActiveStatus? status;
   final String? halaqaUuid;
+  final String? notInHalaqaUuid;
   final DateTime? trackDate;
   final Frequency? frequencyCode;
   final MonitoringFilter monitoringFilter;
@@ -41,6 +42,7 @@ final class FilteredStudents extends StudentEvent {
   const FilteredStudents({
     this.status,
     this.halaqaUuid,
+    this.notInHalaqaUuid,
     this.trackDate,
     this.frequencyCode,
     this.monitoringFilter = MonitoringFilter.all,

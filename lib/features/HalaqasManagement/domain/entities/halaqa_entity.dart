@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 @immutable
 class HalaqaDetailEntity extends BaseHalaqaEntity {
   final int teacherId;
+  final String teacherName;
 
   final int sumOfStudents;
   final int maxOfStudents;
@@ -26,6 +27,7 @@ class HalaqaDetailEntity extends BaseHalaqaEntity {
     required super.status,
     required super.gender,
     required this.teacherId,
+    this.teacherName = '',
     required super.country,
 
     required super.residence,
@@ -40,6 +42,7 @@ class HalaqaDetailEntity extends BaseHalaqaEntity {
   List<Object?> get props => [
     ...super.props,
     teacherId,
+    teacherName,
     sumOfStudents,
     maxOfStudents,
     createdAt,

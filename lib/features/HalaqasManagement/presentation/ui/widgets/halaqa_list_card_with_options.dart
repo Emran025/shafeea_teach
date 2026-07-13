@@ -12,10 +12,8 @@ import '../../../../../shared/themes/app_theme.dart';
 import '../../../../../shared/widgets/avatar.dart';
 import '../../../../../shared/widgets/caerd_tile.dart';
 import '../../../../../shared/widgets/taj.dart';
-import '../../../../StudentsManagement/presentation/ui/screens/follow_up_report_dialog.dart';
-import '../../../../StudentsManagement/presentation/view_models/factories/follow_up_report_factory.dart';
-import '../../../../StudentsManagement/presentation/view_models/follow_up_report_bundle_entity.dart';
 import '../../../../StudentsManagement/presentation/ui/screens/student_profile_screen.dart';
+import '../../../../StudentsManagement/presentation/ui/widgets/show_student_reports_dialog.dart';
 import '../../../../StudentsManagement/presentation/bloc/student_bloc.dart';
 import '../../../domain/entities/halaqa_list_item_entity.dart';
 import '../../bloc/halaqa_bloc.dart';
@@ -280,22 +278,10 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                 const SizedBox(height: 2),
                             // physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (_, index) {
-                              final planEntity = studentPlan.toEntity();
-                              final trackingEntities = studentTrackings
-                                  .map((model) => model.toEntity())
-                                  .toList();
-                              final factory = FollowUpReportFactory();
-                              final FollowUpReportBundleEntity reportBundle =
-                                  factory.create(
-                                    plan: planEntity,
-                                    trackings: trackingEntities,
-                                    totalPendingReports: 2,
-                                  );
-
+                              final student = students[index];
                               return Container(
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                  // color: AppColors.accent26,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: AppColors.accent70,
@@ -308,7 +294,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             StudentProfileScreen(
-                                              studentID: students[index].id,
+                                              studentID: student.id,
                                             ),
                                       ),
                                     );
@@ -318,9 +304,13 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                     children: [
                                       TextButton(
                                         onPressed: () {
-                                          _showStudentReports(
-                                            students[index].name,
-                                            reportBundle,
+                                          showDialog(
+                                            context: context,
+                                            builder: (_) =>
+                                                ShowStudentReportsDialog(
+                                                  studentId: student.id,
+                                                  studentName: student.name,
+                                                ),
                                           );
                                         },
                                         child: StatusTag(lable: "تقرير"),
@@ -334,40 +324,26 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                       ),
                                     ],
                                   ),
-
                                   contentPadding: const EdgeInsets.symmetric(
                                     horizontal: 0,
                                     vertical: 0,
                                   ),
                                   leading: Avatar(
-                                    gender: students[index].gender,
+                                    gender: student.gender,
                                   ),
                                   title: Text(
-                                    students[index].name,
+                                    student.name,
                                     style: GoogleFonts.cairo(
                                       fontWeight: FontWeight.bold,
                                       color: AppColors.lightCream,
                                     ),
                                   ),
-                                  subtitle: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "عدد الأيام المسجلة: ${reportBundle.followUpReports.length}",
-                                        style: GoogleFonts.cairo(
-                                          fontSize: 13,
-                                          color: AppColors.lightCream70,
-                                        ),
-                                      ),
-                                      Text(
-                                        "متوسط الإنجاز: ${(reportBundle.followUpReports.map((e) => e.behaviourAssessment).reduce((a, b) => a + b) / reportBundle.followUpReports.length).toStringAsFixed(1)}٪",
-                                        style: GoogleFonts.cairo(
-                                          fontSize: 13,
-                                          color: AppColors.lightCream70,
-                                        ),
-                                      ),
-                                    ],
+                                  subtitle: Text(
+                                    student.status.labelAr,
+                                    style: GoogleFonts.cairo(
+                                      fontSize: 13,
+                                      color: AppColors.lightCream70,
+                                    ),
                                   ),
                                 ),
                               );
@@ -733,14 +709,4 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
     );
   }
 
-  void _showStudentReports(
-    String name,
-    FollowUpReportBundleEntity reportBundle,
-  ) {
-    showDialog(
-      context: context,
-      builder: (_) =>
-          FollowUpReportDialog(studentName: name, bundle: reportBundle),
-    );
-  }
 }

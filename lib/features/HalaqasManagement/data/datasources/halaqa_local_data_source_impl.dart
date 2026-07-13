@@ -303,17 +303,27 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
     }
   }
 
-  /// Fetches a single halaqa by their ID from the local database.
-  /// Returns a [HalaqaModel] if found, or throws a [CacheException] if   not.
+  /// Fetches a single halaqa by their ID from the local database,
+  /// including the assigned teacher's name via a JOIN on teacher_halqas + users.
   @override
   Future<HalaqaModel> getHalaqaById(String halaqaId) async {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
     try {
-      final maps = await _db.query(
-        _kHalqasTable,
-        where: 'uuid = ? AND isDeleted = ? AND tenant_id = ?',
-        whereArgs: [halaqaId, 0, tenantId],
+      // JOIN with teacher_halqas and users to resolve the teacher's name.
+      const String _kTeacherHalqasTable = 'teacher_halqas';
+      final maps = await _db.rawQuery(
+        '''
+        SELECT H.*, U.id AS teacherId, U.name AS teacherName
+        FROM $_kHalqasTable H
+        LEFT JOIN $_kTeacherHalqasTable TH
+          ON H.id = TH.halqaId AND TH.isDeleted = 0 AND TH.tenant_id = H.tenant_id
+        LEFT JOIN $_kUsersTable U
+          ON TH.teacherId = U.id AND U.isDeleted = 0
+        WHERE H.uuid = ? AND H.isDeleted = 0 AND H.tenant_id = ?
+        LIMIT 1
+        ''',
+        [halaqaId, tenantId],
       );
 
       if (maps.isEmpty) {

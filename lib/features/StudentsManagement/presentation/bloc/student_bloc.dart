@@ -201,6 +201,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       GetFilteredStudentsParams(
         status: event.status,
         halaqaUuid: event.halaqaUuid,
+        notInHalaqaUuid: event.notInHalaqaUuid,
         trackDate: event.trackDate,
         frequencyCode: event.frequencyCode,
         monitoringFilter: event.monitoringFilter,

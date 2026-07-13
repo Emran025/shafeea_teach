@@ -24,6 +24,7 @@ class FetchFilteredStudentsUseCase extends UseCase<List<StudentListItemEntity>, 
     return await repository.getFilteredStudents(
       status: params.status,
       halaqaUuid: params.halaqaUuid,
+      notInHalaqaUuid: params.notInHalaqaUuid,
       trackDate: params.trackDate,
       frequencyCode: params.frequencyCode,
       monitoringFilter: params.monitoringFilter,
@@ -35,6 +36,7 @@ class FetchFilteredStudentsUseCase extends UseCase<List<StudentListItemEntity>, 
 class GetFilteredStudentsParams extends Equatable {
  final ActiveStatus? status;
  final String? halaqaUuid;
+ final String? notInHalaqaUuid;
  final DateTime? trackDate;
  final Frequency? frequencyCode;
  final MonitoringFilter monitoringFilter;
@@ -42,11 +44,12 @@ class GetFilteredStudentsParams extends Equatable {
   const GetFilteredStudentsParams({
     this.status,
     this.halaqaUuid,
+    this.notInHalaqaUuid,
     this.trackDate,
     this.frequencyCode,
     this.monitoringFilter = MonitoringFilter.all,
   });
 
   @override
-  List<Object?> get props => [status, halaqaUuid, trackDate, frequencyCode, monitoringFilter];
+  List<Object?> get props => [status, halaqaUuid, notInHalaqaUuid, trackDate, frequencyCode, monitoringFilter];
 }

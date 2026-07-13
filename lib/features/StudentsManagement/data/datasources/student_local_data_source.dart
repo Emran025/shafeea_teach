@@ -139,6 +139,7 @@ abstract interface class StudentLocalDataSource {
   Future<List<StudentModel>> getFilteredStudents({
     ActiveStatus? status,
     String? halaqaUuid,
+    String? notInHalaqaUuid,
     DateTime? trackDate,
     Frequency? frequencyCode,
     MonitoringFilter monitoringFilter = MonitoringFilter.all,

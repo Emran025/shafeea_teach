@@ -1,201 +1,71 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shafeea/core/models/active_status.dart';
-import 'package:shafeea/core/models/gender.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
 import 'package:shafeea/shared/widgets/taj.dart';
 
-import '../../../../StudentsManagement/domain/entities/student_entity.dart';
-import '../../../domain/entities/halaqa_list_item_entity.dart';
+import '../../../../../config/di/injection.dart';
+import '../../../../StudentsManagement/domain/entities/student_list_item_entity.dart';
+import '../../../../StudentsManagement/presentation/bloc/student_bloc.dart';
+import '../../../../TeachersManagement/domain/entities/teacher_list_item_entity.dart';
+import '../../../../TeachersManagement/presentation/bloc/teacher_bloc.dart';
+import '../../../presentation/bloc/halaqa_bloc.dart';
 
 class HalaqaEditScreen extends StatefulWidget {
-  const HalaqaEditScreen({super.key});
+  final String halaqaId;
+  const HalaqaEditScreen({super.key, required this.halaqaId});
   @override
   State<HalaqaEditScreen> createState() => _HalaqaEditScreenState();
 }
 
 class _HalaqaEditScreenState extends State<HalaqaEditScreen>
     with TickerProviderStateMixin {
-  List<String> teachers = ["أ. خالد", "أ. سمير", "أ. فاطمة"];
-  HalaqaListItemEntity halqa = HalaqaListItemEntity(
-    id: '0',
-    name: "حلقة كبار السن",
-    country: "اليمن",
-    residence: "اب",
-    avatar: "",
-    status: ActiveStatus.active,
-    gender: Gender.male,
-  );
-
-  late List<StudentDetailEntity> currentStudents;
-  late List<StudentDetailEntity> availableStudents;
+  // Blocs owned and disposed by this screen.
+  late final HalaqaBloc _halaqaBloc;
+  late final TeacherBloc _teacherBloc;
+  late final StudentBloc _currentStudentsBloc;
 
   @override
   void initState() {
-    availableStudents = fakeStudents1;
-    currentStudents = fakeStudents1;
-
     super.initState();
+    _halaqaBloc = sl<HalaqaBloc>()
+      ..add(HalaqaDetailsFetched(widget.halaqaId));
+    _teacherBloc = sl<TeacherBloc>()..add(const WatchTeachersStarted());
+    _currentStudentsBloc = sl<StudentBloc>()
+      ..add(FilteredStudents(halaqaUuid: widget.halaqaId));
   }
 
-  void _showStudentPickerDialog() {
-    List<StudentDetailEntity> tempSelected = [...currentStudents];
-    TextEditingController searchController = TextEditingController();
-    List<StudentDetailEntity> filtered = [...availableStudents];
+  @override
+  void dispose() {
+    _halaqaBloc.close();
+    _teacherBloc.close();
+    _currentStudentsBloc.close();
+    super.dispose();
+  }
 
+  /// Shows a picker dialog populated with candidate students
+  /// (those NOT already enrolled in this halaqa) from a fresh StudentBloc.
+  void _showStudentPickerDialog() {
     showDialog(
       context: context,
-      builder: (_) => StatefulBuilder(
-        builder: (context, setState) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            backgroundColor: Colors.black45,
-            insetPadding: EdgeInsets.all(10),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: Container(
-                padding: EdgeInsets.all(16),
-                constraints: BoxConstraints(maxHeight: 500),
-                decoration: BoxDecoration(
-                  color: AppColors.accent12,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.accent70, width: 0.7),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "إضافة طلاب للحلقة",
-                      style: GoogleFonts.cairo(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.lightCream,
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    TextField(
-                      controller: searchController,
-                      style: GoogleFonts.cairo(color: AppColors.lightCream),
-                      onChanged: (val) {
-                        setState(() {
-                          filtered = availableStudents
-                              .where((s) => s.name == val)
-                              .toList();
-                        });
-                      },
-                      decoration: InputDecoration(
-                        hintText: "ابحث عن طالب...",
-                        hintStyle: GoogleFonts.cairo(
-                          color: AppColors.lightCream70,
-                        ),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: AppColors.lightCream,
-                        ),
-                        filled: true,
-                        fillColor: AppColors.lightCream.withOpacity(0.1),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Expanded(
-                      child: Scrollbar(
-                        thumbVisibility: true,
-                        child: ListView.separated(
-                          itemCount: filtered.length,
-                          separatorBuilder: (_, __) =>
-                              Divider(height: 1, color: AppColors.lightCream26),
-                          itemBuilder: (_, i) {
-                            final student = filtered[i];
-                            final selected = tempSelected.contains(student);
-                            return CheckboxListTile(
-                              value: selected,
-                              title: Text(
-                                student.name,
-                                style: GoogleFonts.cairo(
-                                  color: AppColors.lightCream,
-                                ),
-                              ),
-                              activeColor: AppColors.accent,
-                              onChanged: (val) {
-                                setState(() {
-                                  if (val == true) {
-                                    tempSelected.add(student);
-                                  } else {
-                                    tempSelected.remove(student);
-                                  }
-                                });
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () => Navigator.pop(context),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: AppColors.accent70),
-                            ),
-                            child: Text(
-                              "إلغاء",
-                              style: GoogleFonts.cairo(
-                                color: AppColors.lightCream,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.accent,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                currentStudents.clear();
-                                currentStudents.addAll(tempSelected);
-                                currentStudents.addAll(
-                                  tempSelected.where(
-                                    (s) => !currentStudents.contains(s),
-                                  ),
-                                );
-                              });
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              "إضافة",
-                              style: GoogleFonts.cairo(
-                                color: AppColors.lightCream,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
+      builder: (_) => BlocProvider(
+        create: (ctx) => sl<StudentBloc>()
+          ..add(FilteredStudents(notInHalaqaUuid: widget.halaqaId)),
+        child: _CandidateStudentPickerDialog(),
       ),
     );
   }
 
+  /// Shows the teacher-change dialog using real teachers from [TeacherBloc].
   void _changeTeacherDialog() {
-    String tempSelected = "أ. خالد";
+    // Capture the teacher list before entering the dialog's build context.
+    final List<TeacherListItemEntity> allTeachers =
+        _teacherBloc.state.teachers;
+
+    String tempSelected = allTeachers.isNotEmpty ? allTeachers.first.name : '';
     TextEditingController searchController = TextEditingController();
-    List<String> filteredTeachers = [...teachers];
+    List<TeacherListItemEntity> filteredTeachers = [...allTeachers];
 
     showDialog(
       context: context,
@@ -234,8 +104,8 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                       style: GoogleFonts.cairo(color: AppColors.lightCream),
                       onChanged: (val) {
                         setState(() {
-                          filteredTeachers = teachers
-                              .where((t) => t.contains(val))
+                          filteredTeachers = allTeachers
+                              .where((t) => t.name.contains(val))
                               .toList();
                         });
                       },
@@ -257,35 +127,47 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                       ),
                     ),
                     SizedBox(height: 12),
-                    Expanded(
-                      child: Scrollbar(
-                        thumbVisibility: true,
-                        child: ListView.separated(
-                          itemCount: filteredTeachers.length,
-                          separatorBuilder: (_, __) =>
-                              Divider(height: 1, color: AppColors.lightCream26),
-                          itemBuilder: (_, i) {
-                            final teacher = filteredTeachers[i];
-                            return RadioListTile<String>(
-                              value: teacher,
-                              groupValue: tempSelected,
-                              activeColor: AppColors.accent,
-                              title: Text(
-                                teacher,
+                    allTeachers.isEmpty
+                        ? Expanded(
+                            child: Center(
+                              child: Text(
+                                "لا يوجد معلمون",
                                 style: GoogleFonts.cairo(
-                                  color: AppColors.lightCream,
+                                  color: AppColors.lightCream70,
                                 ),
                               ),
-                              onChanged: (val) {
-                                setState(() {
-                                  tempSelected = val!;
-                                });
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                            ),
+                          )
+                        : Expanded(
+                            child: Scrollbar(
+                              thumbVisibility: true,
+                              child: ListView.separated(
+                                itemCount: filteredTeachers.length,
+                                separatorBuilder: (_, __) => Divider(
+                                    height: 1,
+                                    color: AppColors.lightCream26),
+                                itemBuilder: (_, i) {
+                                  final teacher = filteredTeachers[i];
+                                  return RadioListTile<String>(
+                                    value: teacher.name,
+                                    groupValue: tempSelected,
+                                    activeColor: AppColors.accent,
+                                    title: Text(
+                                      teacher.name,
+                                      style: GoogleFonts.cairo(
+                                        color: AppColors.lightCream,
+                                      ),
+                                    ),
+                                    onChanged: (val) {
+                                      setState(() {
+                                        tempSelected = val!;
+                                      });
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
                     SizedBox(height: 12),
                     Row(
                       children: [
@@ -310,9 +192,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                               backgroundColor: AppColors.accent,
                             ),
                             onPressed: () {
-                              setState(() {
-                                // halqa = tempSelected;
-                              });
+                              // Mutation wiring out of scope – stub only.
                               Navigator.pop(context);
                             },
                             child: Text(
@@ -336,7 +216,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
   }
 
   Widget _buildStudentCard(
-    StudentDetailEntity student,
+    StudentListItemEntity student,
     void Function()? onPressed,
   ) {
     return Container(
@@ -357,13 +237,15 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
         leading: student.avatar != ''
             ? CircleAvatar(
                 radius: 15,
-                backgroundImage: AssetImage(student.avatar), // صور رمزية
+                backgroundImage: AssetImage(student.avatar),
               )
             : CircleAvatar(
                 backgroundColor: AppColors.accent,
                 radius: 15,
                 child: Text(
-                  student.name.substring(0, 1),
+                  student.name.isNotEmpty
+                      ? student.name.substring(0, 1)
+                      : '؟',
                   style: GoogleFonts.cairo(
                     fontWeight: FontWeight.bold,
                     color: AppColors.lightCream,
@@ -381,7 +263,8 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
           padding: const EdgeInsets.only(top: 5.0),
           child: Text(
             student.status.labelAr,
-            style: GoogleFonts.cairo(fontSize: 12, color: AppColors.lightCream),
+            style:
+                GoogleFonts.cairo(fontSize: 12, color: AppColors.lightCream),
           ),
         ),
         onTap: () {},
@@ -390,7 +273,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
           children: [
             TextButton(
               onPressed: () {
-                onPressed!();
+                if (onPressed != null) onPressed();
               },
               child: StatusTag(lable: "اتخاذ اجراء"),
             ),
@@ -405,14 +288,16 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
   }
 
   void _editHalqaNameDialog() {
-    TextEditingController nameController = TextEditingController(
-      text: halqa.name,
-    );
+    final currentName =
+        _halaqaBloc.state.selectedHalaqa?.name ?? '';
+    TextEditingController nameController =
+        TextEditingController(text: currentName);
 
     showDialog(
       context: context,
       builder: (_) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         backgroundColor: AppColors.lightCream.withOpacity(0.1),
         insetPadding: const EdgeInsets.all(16),
         child: BackdropFilter(
@@ -449,7 +334,8 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                   cursorColor: AppColors.lightCream,
                   decoration: InputDecoration(
                     hintText: "ادخل اسم الحلقة الجديد...",
-                    hintStyle: GoogleFonts.cairo(color: AppColors.lightCream70),
+                    hintStyle:
+                        GoogleFonts.cairo(color: AppColors.lightCream70),
                     labelText: "اسم الحلقة",
                     labelStyle: GoogleFonts.cairo(
                       color: AppColors.lightCream70,
@@ -484,7 +370,8 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                         ),
                         child: Text(
                           "إلغاء",
-                          style: GoogleFonts.cairo(color: AppColors.lightCream),
+                          style:
+                              GoogleFonts.cairo(color: AppColors.lightCream),
                         ),
                       ),
                     ),
@@ -495,14 +382,13 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                           backgroundColor: AppColors.accent,
                         ),
                         onPressed: () {
-                          setState(() {
-                            // halqa.name = nameController.text.trim();
-                          });
+                          // Mutation wiring out of scope – stub only.
                           Navigator.pop(context);
                         },
                         child: Text(
                           "تأكيد",
-                          style: GoogleFonts.cairo(color: AppColors.lightCream),
+                          style:
+                              GoogleFonts.cairo(color: AppColors.lightCream),
                         ),
                       ),
                     ),
@@ -516,7 +402,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
     );
   }
 
-  void _showStudentActionDialog(StudentDetailEntity student) {
+  void _showStudentActionDialog(StudentListItemEntity student) {
     String action = "";
     TextEditingController noteCtrl = TextEditingController();
 
@@ -568,7 +454,8 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                           ),
                           selected: isSelected,
                           selectedColor: AppColors.accent,
-                          backgroundColor: AppColors.accent70.withOpacity(0.3),
+                          backgroundColor:
+                              AppColors.accent70.withOpacity(0.3),
                           onSelected: (_) =>
                               setStateDialog(() => action = action1),
                           padding: EdgeInsets.symmetric(
@@ -602,7 +489,8 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      style: GoogleFonts.cairo(color: AppColors.lightCream),
+                      style:
+                          GoogleFonts.cairo(color: AppColors.lightCream),
                     ),
                     SizedBox(height: 16),
                     Row(
@@ -628,16 +516,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                               backgroundColor: AppColors.accent,
                             ),
                             onPressed: () {
-                              if (action == "نقل") {
-                                setState(() {
-                                  currentStudents.remove(student);
-                                  // add to previous + note
-                                });
-                              } else if (action == "فصل" || action == "إيقاف") {
-                                setState(() {
-                                  // stoppedStatus[student] = true;
-                                });
-                              }
+                              // Mutation wiring out of scope – stubs only.
                               Navigator.pop(context);
                             },
                             child: Text(
@@ -662,141 +541,346 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
-      appBar: AppBar(
-        title: Text(
-          "تعديل الحلقة",
-          style: GoogleFonts.cairo(color: AppColors.lightCream),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _halaqaBloc),
+        BlocProvider.value(value: _teacherBloc),
+        BlocProvider.value(value: _currentStudentsBloc),
+      ],
+      child: Scaffold(
+        backgroundColor: AppColors.darkBackground,
+        appBar: AppBar(
+          title: Text(
+            "تعديل الحلقة",
+            style: GoogleFonts.cairo(color: AppColors.lightCream),
+          ),
         ),
-      ),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              // كرت للمعلم والإضافة
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppColors.lightCream12,
+        body: Directionality(
+          textDirection: TextDirection.rtl,
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                // Info card: halaqa name + teacher + add students button
+                BlocBuilder<HalaqaBloc, HalaqaState>(
+                  builder: (ctx, halaqaState) {
+                    final halaqa = halaqaState.selectedHalaqa;
+                    final halaqaName = halaqa?.name ?? '…';
+                    final teacherName = halaqa?.teacherName.isNotEmpty == true
+                        ? halaqa!.teacherName
+                        : 'معلم غير محدد';
+                    return ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.lightCream12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildInfoRow(
-                          icon: Icons.school,
-                          label: "اسم الحلقة:",
-                          value: halqa.name,
-                          onEdit: _editHalqaNameDialog,
-                        ),
-                        const SizedBox(height: 16),
-                        buildInfoRow(
-                          icon: Icons.person,
-                          label: "المعلم الحالي:",
-                          value: "أ. خالد",
-                          // value: halqa.teacher,
-                          onEdit: _changeTeacherDialog,
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.group_add,
-                              color: AppColors.lightCream70,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              "أضف طلاب للحلقة:",
-                              style: GoogleFonts.cairo(
-                                fontSize: 16,
-                                color: AppColors.lightCream,
-                                fontWeight: FontWeight.bold,
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: AppColors.lightCream12,
+                            borderRadius: BorderRadius.circular(20),
+                            border:
+                                Border.all(color: AppColors.lightCream12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              buildInfoRow(
+                                icon: Icons.school,
+                                label: "اسم الحلقة:",
+                                value: halaqaName,
+                                onEdit: _editHalqaNameDialog,
                               ),
-                            ),
-                            const Spacer(),
-                            ElevatedButton(
-                              onPressed: _showStudentPickerDialog,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.accent,
-                                foregroundColor: AppColors.lightCream,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 10,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                elevation: 0,
+                              const SizedBox(height: 16),
+                              buildInfoRow(
+                                icon: Icons.person,
+                                label: "المعلم الحالي:",
+                                value: teacherName,
+                                onEdit: _changeTeacherDialog,
                               ),
-                              child: Text(
-                                "اختر طلاب",
-                                style: GoogleFonts.cairo(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                              const SizedBox(height: 16),
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.group_add,
+                                    color: AppColors.lightCream70,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "أضف طلاب للحلقة:",
+                                    style: GoogleFonts.cairo(
+                                      fontSize: 16,
+                                      color: AppColors.lightCream,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  ElevatedButton(
+                                    onPressed: _showStudentPickerDialog,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.accent,
+                                      foregroundColor:
+                                          AppColors.lightCream,
+                                      padding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 10,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12),
+                                      ),
+                                      elevation: 0,
+                                    ),
+                                    child: Text(
+                                      "اختر طلاب",
+                                      style: GoogleFonts.cairo(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 24),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.people, color: AppColors.accent),
-                      SizedBox(width: 8),
-                      Text(
-                        "الطلاب الحاليين",
-                        style: GoogleFonts.cairo(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.lightCream,
+                            ],
+                          ),
                         ),
                       ),
-                      Spacer(),
-                      Text(
-                        "${currentStudents.length}",
-                        style: GoogleFonts.cairo(
-                          color: AppColors.lightCream,
-                          fontSize: 18,
+                    );
+                  },
+                ),
+                SizedBox(height: 24),
+                // Current students list from StudentBloc
+                Expanded(
+                  child: BlocBuilder<StudentBloc, StudentState>(
+                    builder: (ctx, studentState) {
+                      final students =
+                          studentState.filteredStudents ?? [];
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.people, color: AppColors.accent),
+                              SizedBox(width: 8),
+                              Text(
+                                "الطلاب الحاليين",
+                                style: GoogleFonts.cairo(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.lightCream,
+                                ),
+                              ),
+                              Spacer(),
+                              Text(
+                                "${students.length}",
+                                style: GoogleFonts.cairo(
+                                  color: AppColors.lightCream,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          Expanded(
+                            child: students.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      "لا يوجد طلاب في هذه الحلقة",
+                                      style: GoogleFonts.cairo(
+                                        color: AppColors.lightCream70,
+                                      ),
+                                    ),
+                                  )
+                                : ListView.separated(
+                                    itemCount: students.length,
+                                    separatorBuilder: (_, __) =>
+                                        const SizedBox(height: 8),
+                                    itemBuilder: (_, i) {
+                                      return _buildStudentCard(
+                                          students[i], () {
+                                        _showStudentActionDialog(
+                                            students[i]);
+                                      });
+                                    },
+                                  ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// A self-contained dialog that owns its own [StudentBloc] providing candidate
+/// students (not in the halaqa). Must be wrapped by a [BlocProvider<StudentBloc>]
+/// from the caller.
+class _CandidateStudentPickerDialog extends StatefulWidget {
+  const _CandidateStudentPickerDialog();
+  @override
+  State<_CandidateStudentPickerDialog> createState() =>
+      _CandidateStudentPickerDialogState();
+}
+
+class _CandidateStudentPickerDialogState
+    extends State<_CandidateStudentPickerDialog> {
+  final List<StudentListItemEntity> _tempSelected = [];
+  String _searchQuery = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<StudentBloc, StudentState>(
+      builder: (ctx, state) {
+        final allCandidates = state.filteredStudents ?? [];
+        final filtered = _searchQuery.isEmpty
+            ? allCandidates
+            : allCandidates
+                .where((s) => s.name.contains(_searchQuery))
+                .toList();
+
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.black45,
+          insetPadding: EdgeInsets.all(10),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              padding: EdgeInsets.all(16),
+              constraints: BoxConstraints(maxHeight: 500),
+              decoration: BoxDecoration(
+                color: AppColors.accent12,
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: AppColors.accent70, width: 0.7),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "إضافة طلاب للحلقة",
+                    style: GoogleFonts.cairo(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.lightCream,
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  TextField(
+                    style: GoogleFonts.cairo(color: AppColors.lightCream),
+                    onChanged: (val) => setState(() => _searchQuery = val),
+                    decoration: InputDecoration(
+                      hintText: "ابحث عن طالب...",
+                      hintStyle: GoogleFonts.cairo(
+                        color: AppColors.lightCream70,
+                      ),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: AppColors.lightCream,
+                      ),
+                      filled: true,
+                      fillColor: AppColors.lightCream.withOpacity(0.1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Expanded(
+                    child: filtered.isEmpty
+                        ? Center(
+                            child: Text(
+                              "لا يوجد طلاب متاحون",
+                              style: GoogleFonts.cairo(
+                                color: AppColors.lightCream70,
+                              ),
+                            ),
+                          )
+                        : Scrollbar(
+                            thumbVisibility: true,
+                            child: ListView.separated(
+                              itemCount: filtered.length,
+                              separatorBuilder: (_, __) => Divider(
+                                  height: 1,
+                                  color: AppColors.lightCream26),
+                              itemBuilder: (_, i) {
+                                final student = filtered[i];
+                                final selected =
+                                    _tempSelected.contains(student);
+                                return CheckboxListTile(
+                                  value: selected,
+                                  title: Text(
+                                    student.name,
+                                    style: GoogleFonts.cairo(
+                                      color: AppColors.lightCream,
+                                    ),
+                                  ),
+                                  activeColor: AppColors.accent,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      if (val == true) {
+                                        _tempSelected.add(student);
+                                      } else {
+                                        _tempSelected.remove(student);
+                                      }
+                                    });
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => Navigator.pop(context),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: AppColors.accent70),
+                          ),
+                          child: Text(
+                            "إلغاء",
+                            style: GoogleFonts.cairo(
+                              color: AppColors.lightCream,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accent,
+                          ),
+                          onPressed: () {
+                            // Mutation wiring out of scope – stub only.
+                            Navigator.pop(context);
+                          },
+                          child: Text(
+                            "إضافة",
+                            style: GoogleFonts.cairo(
+                              color: AppColors.lightCream,
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 12),
-                  SizedBox(
-                    height: 400,
-                    child: ListView.separated(
-                      itemCount: availableStudents.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 8),
-                      itemBuilder: (_, i) {
-                        return _buildStudentCard(availableStudents[i], () {
-                          _showStudentActionDialog(availableStudents[i]);
-                        });
-                      },
-                    ),
-                  ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -837,37 +921,41 @@ Widget buildInfoRow({
         ),
       ),
       const SizedBox(width: 8),
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: AppColors.lightCream12,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColors.lightCream12),
-        ),
-        child: Text(
-          value,
-          style: GoogleFonts.cairo(
-            color: AppColors.lightCream,
-            fontWeight: FontWeight.bold,
+      Expanded(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.lightCream12,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Text(
+            value,
+            style: GoogleFonts.cairo(
+              fontSize: 14,
+              color: AppColors.lightCream,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
       ),
-      const Spacer(),
-      ElevatedButton.icon(
-        onPressed: onEdit,
-        icon: const Icon(Icons.edit, size: 18),
-        label: Text(
-          "تغيير",
-          style: GoogleFonts.cairo(fontWeight: FontWeight.bold),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.mediumDark87,
-          foregroundColor: AppColors.lightCream,
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+      const SizedBox(width: 8),
+      InkWell(
+        onTap: onEdit,
+        borderRadius: BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.accent,
+            borderRadius: BorderRadius.circular(10),
           ),
-          elevation: 0,
+          child: Text(
+            "تعديل",
+            style: GoogleFonts.cairo(
+              fontSize: 13,
+              color: AppColors.lightCream,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
       ),
     ],
