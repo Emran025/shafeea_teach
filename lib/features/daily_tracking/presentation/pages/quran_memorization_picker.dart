@@ -128,9 +128,12 @@ Future<_QuranPickerData> _loadPickerData(QuranLocalDataSource ds) async {
 /// segments.  The user taps to set an anchor page, then taps/drags a second
 /// point; the confirmed range is passed to [onConfirm].
 ///
-/// **Direction / sign rule:**
-/// * anchor ≤ second  ("toward An-Nās")  → `signedPages` is **positive**.
-/// * anchor > second  ("toward Al-Fātiḥah") → `signedPages` is **negative**.
+/// **Direction / sign rule (edge-locked selection):**
+/// A memorization range is always anchored to one edge of the Mushaf. The
+/// edge is chosen automatically from the user's first interaction and then
+/// locked until Reset is pressed:
+/// * fixed endpoint = page 1   ("from the beginning") → `signedPages` is **positive**.
+/// * fixed endpoint = page 604 ("from the end")        → `signedPages` is **negative**.
 /// The magnitude is simply `|highPage − lowPage| + 1` (a page count).
 Future<void> showQuranMemorizationPickerDialog({
   required BuildContext context,
@@ -198,19 +201,26 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
     _dataFuture = _loadPickerData(sl<QuranLocalDataSource>());
   }
 
-  void _placePoint(int page) {
+  // Edge-locked selection: the first interaction decides which edge of the
+  // Mushaf is fixed (page 1 or the last page, e.g. 604) based on which edge
+  // the tap is nearer to. `_anchorPage` now always holds that fixed edge and
+  // never changes again until Reset; only `_secondPage` (the movable thumb)
+  // is updated by subsequent taps.
+  void _placePoint(int page, int totalPages) {
     setState(() {
-      final rangeComplete = _anchorPage != null && _secondPage != null;
-      if (_anchorPage == null || rangeComplete) {
-        _anchorPage = page;
-        _secondPage = null;
+      if (_anchorPage == null) {
+        final int midpoint = (1 + totalPages) ~/ 2;
+        _anchorPage = page <= midpoint ? 1 : totalPages;
+        _secondPage = page;
       } else {
         _secondPage = page;
       }
     });
   }
 
-  void _dragAnchorTo(int page) => setState(() => _anchorPage = page);
+  // The fixed endpoint must never move once a direction has been locked, so
+  // dragging the anchor thumb is now a no-op.
+  void _dragAnchorTo(int page) {}
   void _dragSecondTo(int page) => setState(() => _secondPage = page);
 
   void _resetSelection() => setState(() {
@@ -336,9 +346,11 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
 
     int? signedPages;
     if (_anchorPage != null && _secondPage != null) {
-      final bool isForward = _anchorPage! <= _secondPage!;
+      // Sign now depends only on which edge is fixed: page 1 fixed → positive,
+      // last page (e.g. 604) fixed → negative — not on tap order.
+      final bool startFixed = _anchorPage == 1;
       final int magnitude = highPage! - lowPage! + 1;
-      signedPages = isForward ? magnitude : -magnitude;
+      signedPages = startFixed ? magnitude : -magnitude;
     }
 
     final QuranPage? fromInfo = lowPage != null ? data.pageInfo(lowPage) : null;
@@ -418,7 +430,10 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                       return GestureDetector(
                         behavior: HitTestBehavior.opaque,
                         onTapDown: (details) {
-                          _placePoint(pageForLocalDx(details.localPosition.dx));
+                          _placePoint(
+                            pageForLocalDx(details.localPosition.dx),
+                            total,
+                          );
                         },
                         child: Stack(
                           clipBehavior: Clip.none,
