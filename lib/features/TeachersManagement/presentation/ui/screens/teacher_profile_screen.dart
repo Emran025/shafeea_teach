@@ -10,6 +10,7 @@ import '../../../../../config/di/injection.dart';
 import '../../../../../shared/widgets/taj.dart';
 import '../../../domain/entities/teacher_entity.dart';
 import '../../bloc/teacher_bloc.dart';
+import '../widgets/documents_section.dart';
 
 class TeacherProfileScreen extends StatefulWidget {
   final String teacherId;
@@ -187,6 +188,11 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 24),
+                      DocumentsSection(
+                        documents: status.selectedTeacher!.documents,
+                      ),
+                      const SizedBox(height: 24),
 
                       if (status.selectedTeacher!.status ==
                           ActiveStatus.active) ...[

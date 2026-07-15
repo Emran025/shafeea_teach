@@ -1,6 +1,7 @@
 // import 'package:flutter/material.dart';
 
 import 'base_teacher_entity.dart';
+import 'document_entity.dart';
 
 import 'package:flutter/material.dart';
 
@@ -28,6 +29,9 @@ class TeacherDetailEntity extends BaseTeacherEntity {
   final String createdAt;
   final String updatedAt;
   final List<dynamic> halqas;
+
+  /// Documents uploaded by the teacher during their application.
+  final List<DocumentEntity> documents;
 
   /// The login username for this teacher.
   ///
@@ -60,10 +64,11 @@ class TeacherDetailEntity extends BaseTeacherEntity {
     required this.createdAt,
     required this.updatedAt,
     this.halqas = const [],
+    this.documents = const [],
     this.username,
   });
 
   @override
-  List<Object?> get props => [...super.props, email, phone, username];
+  List<Object?> get props => [...super.props, email, phone, username, documents];
 }
 

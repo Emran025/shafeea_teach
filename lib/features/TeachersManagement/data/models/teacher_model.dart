@@ -7,6 +7,7 @@ import 'package:shafeea/core/utils/time_of_day_converter.dart';
 import '../../domain/entities/teacher_entity.dart';
 import '../../domain/entities/teacher_list_item_entity.dart';
 import 'assigned_halaqas_model.dart';
+import 'document_model.dart';
 
 /// The data model for a Teacher, serving as the data transfer object (DTO)
 /// for the data layer. It is a plain, immutable Dart object.
@@ -40,6 +41,9 @@ final class TeacherModel {
   final bool isDeleted;
   final List<AssignedHalaqasModel> assignedHalaqas;
 
+  /// Documents the teacher uploaded with their application.
+  final List<DocumentModel> documents;
+
   /// The login username for this teacher.  Nullable so that when creating a
   /// teacher offline (no internet) the field is simply omitted from the
   /// request body and the server auto-assigns one.
@@ -69,6 +73,7 @@ final class TeacherModel {
     required this.qualification,
     required this.isDeleted,
     this.assignedHalaqas = const [],
+    this.documents = const [],
     this.username,
   });
 
@@ -81,6 +86,12 @@ final class TeacherModel {
           (halaqaJson) =>
               AssignedHalaqasModel.fromJson(halaqaJson as Map<String, dynamic>),
         )
+        .toList();
+
+    // Parse documents list.
+    final docsListJson = json['documents'] as List<dynamic>? ?? [];
+    final docs = docsListJson
+        .map((d) => DocumentModel.fromJson(d as Map<String, dynamic>))
         .toList();
 
     return TeacherModel(
@@ -109,6 +120,7 @@ final class TeacherModel {
       qualification: json['qualification'] as String? ?? '',
       isDeleted: json['isDeleted'] as bool? ?? false,
       assignedHalaqas: halqas,
+      documents: docs,
       username: json['username'] as String?,
     );
   }
@@ -187,6 +199,7 @@ final class TeacherModel {
       createdAt: createdAt ?? '',
       updatedAt: updatedAt ?? '',
       halqas: const [],
+      documents: documents.map((d) => d.toEntity()).toList(),
       username: username,
     );
   }
