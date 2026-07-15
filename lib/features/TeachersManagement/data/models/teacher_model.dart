@@ -198,8 +198,8 @@ final class TeacherModel {
       bio: bio ?? '',
       createdAt: createdAt ?? '',
       updatedAt: updatedAt ?? '',
-      halqas: const [],
-      documents: documents.map((d) => d.toEntity()).toList(),
+      halqas: assignedHalaqas.map((h) => h.toEntity()).toList(),
+      documents: (documents.map((d) => d.toEntity()).toList()),
       username: username,
     );
   }

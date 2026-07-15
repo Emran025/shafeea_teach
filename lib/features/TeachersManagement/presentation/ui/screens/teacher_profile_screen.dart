@@ -5,9 +5,13 @@ import 'package:shafeea/shared/themes/app_theme.dart';
 import 'package:shafeea/core/models/active_status.dart';
 
 import 'package:shafeea/shared/widgets/avatar.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../../../core/messaging/messaging_intent_launcher.dart';
 
 import '../../../../../config/di/injection.dart';
 import '../../../../../shared/widgets/taj.dart';
+import '../../../../TeachersManagement/domain/entities/halqa_entity.dart';
+import '../../../../HalaqasManagement/presentation/ui/screens/halaqa_profile_screen.dart';
 import '../../../domain/entities/teacher_entity.dart';
 import '../../bloc/teacher_bloc.dart';
 import '../widgets/documents_section.dart';
@@ -21,10 +25,6 @@ class TeacherProfileScreen extends StatefulWidget {
 }
 
 class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
-  final List<Map<String, dynamic>> circles = [
-    {'name': 'حلقة الفاروق', 'students': 12, 'level': 'متقدم'},
-    {'name': 'حلقة البخاري', 'students': 9, 'level': 'مبتدئ'},
-  ];
 
   @override
   void initState() {
@@ -90,41 +90,55 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildInfoRow(
-                              "رقم الهاتف",
-                              status.selectedTeacher!.phone,
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => _launchPhone(
+                          status.selectedTeacher!.phone,
+                          "${status.selectedTeacher!.phoneZone}",
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: _buildInfoRow(
+                                "رقم الهاتف",
+                                status.selectedTeacher!.phone,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 8),
-                          Directionality(
-                            textDirection: TextDirection.ltr,
-                            child: _buildInfoRow(
-                              "",
-                              "${status.selectedTeacher!.phoneZone}",
+                            SizedBox(width: 8),
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: _buildInfoRow(
+                                "",
+                                "${status.selectedTeacher!.phoneZone}",
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildInfoRow(
-                              "رقم الواتس",
-                              status.selectedTeacher!.whatsAppPhone,
+                      GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => _launchWhatsApp(
+                          status.selectedTeacher!.whatsAppPhone,
+                          "${status.selectedTeacher!.whatsAppZone}",
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: _buildInfoRow(
+                                "رقم الواتس",
+                                status.selectedTeacher!.whatsAppPhone,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 8),
-                          Directionality(
-                            textDirection: TextDirection.ltr,
-                            child: _buildInfoRow(
-                              "",
-                              "${status.selectedTeacher!.whatsAppZone}",
+                            SizedBox(width: 8),
+                            Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: _buildInfoRow(
+                                "",
+                                "${status.selectedTeacher!.whatsAppZone}",
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       Row(
                         children: [
@@ -138,7 +152,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: _buildInfoRow("العمر", "20")),
+                          Expanded(child: _buildInfoRow("العمر"," ${status.selectedTeacher!.birthDate}")),
                           SizedBox(width: 8),
                           Expanded(
                             child: _buildInfoRow(
@@ -206,8 +220,8 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        ...circles.map(
-                          (circle) => _buildCircleCard(context, circle),
+                        ...status.selectedTeacher!.halqas.map(
+                          (halqa) => _buildCircleCard(context, halqa),
                         ),
                       ] else ...[
                         SizedBox(height: 12),
@@ -326,6 +340,32 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
     );
   }
 
+  /// Dials the teacher's phone number directly in the phone app.
+  Future<void> _launchPhone(String phone, String zone) async {
+    final cleanZone = zone.replaceAll(RegExp(r'\D'), '');
+    final cleanPhone = phone.replaceAll(RegExp(r'\D'), '');
+    final uri = Uri.parse('tel:+$cleanZone$cleanPhone');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  /// Opens WhatsApp directly (no app-chooser) via native Android intent.
+  Future<void> _launchWhatsApp(String phone, String zone) async {
+    final cleanZone = zone.replaceAll(RegExp(r'\D'), '');
+    final cleanPhone = phone.replaceAll(RegExp(r'\D'), '');
+    final fullNumber = '$cleanZone$cleanPhone';
+    final opened = await MessagingIntentLauncher.openWhatsAppTextOnly(
+      WhatsAppFlavor.standard,
+      '',
+      phoneNumber: fullNumber,
+    );
+    if (!opened) {
+      // Fallback to wa.me web link if the native intent fails
+      await MessagingIntentLauncher.openWhatsAppWithText('', phoneNumber: fullNumber);
+    }
+  }
+
   Widget _buildInfoRow(String label, String value) {
     return Container(
       margin: EdgeInsets.only(bottom: 12),
@@ -344,13 +384,13 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
     );
   }
 
-  Widget _buildCircleCard(BuildContext context, Map<String, dynamic> circle) {
+  Widget _buildCircleCard(BuildContext context, AssignedHalaqasEntity halqa) {
     return GestureDetector(
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (_) => CircleProfileScreen(circleName: circle['name'])),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => HalaqaProfileScreen(halaqaId: halqa.id)),
+        );
       },
       child: Container(
         margin: EdgeInsets.only(bottom: 10),
@@ -368,7 +408,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    circle['name'],
+                    halqa.name,
                     style: GoogleFonts.cairo(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -376,7 +416,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                     ),
                   ),
                   Text(
-                    "المستوى: ${circle['level']}",
+                    "تم الإنشاء: ${halqa.enrolledAt}",
                     style: GoogleFonts.cairo(
                       fontSize: 13,
                       color: AppColors.lightCream87,
@@ -386,7 +426,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
               ),
             ),
             Text(
-              "${circle['students']} طالب",
+              "${halqa.students} طالب",
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 color: AppColors.lightCream87,

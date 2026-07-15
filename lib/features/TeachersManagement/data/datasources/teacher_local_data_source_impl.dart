@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import '../../../../../core/error/exceptions.dart';
 import '../../../../../core/models/user_role.dart';
 import '../../../../core/models/sync_queue_model.dart';
+import '../../../TeachersManagement/data/models/assigned_halaqas_model.dart';
 import '../../../auth/data/datasources/auth_local_data_source.dart';
 import '../models/teacher_model.dart';
 import 'teacher_local_data_source.dart';
@@ -22,6 +23,7 @@ import 'teacher_local_data_source.dart';
 const String _kUsersTable = 'users';
 const String _kPendingOperationsTable = 'pending_operations';
 const String _kSyncMetadataTable = 'sync_metadata';
+const String _kTeacherHalqasTable = 'teacher_halqas';
 
 @LazySingleton(as: TeacherLocalDataSource)
 final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
@@ -33,11 +35,11 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   /// event to this controller to trigger all active listeners to re-fetch.
   final _dbChangeNotifier = StreamController<void>.broadcast();
 
-  TeacherLocalDataSourceImpl(
-      {required Database database,
-      required AuthLocalDataSource authLocalDataSource})
-      : _db = database,
-        _authLocalDataSource = authLocalDataSource;
+  TeacherLocalDataSourceImpl({
+    required Database database,
+    required AuthLocalDataSource authLocalDataSource,
+  }) : _db = database,
+       _authLocalDataSource = authLocalDataSource;
 
   // =========================================================================
   //                             Data Access Methods
@@ -204,14 +206,11 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
   Future<void> updateLastSyncTimestampFor(int timestamp) async {
     final user = await _authLocalDataSource.getUser();
     final tenantId = "${user!.id}";
-    await _db.insert(
-        _kSyncMetadataTable,
-        {
-          'entity_type': UserRole.teacher.label,
-          'last_server_sync_timestamp': timestamp,
-          'tenant_id': tenantId,
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace);
+    await _db.insert(_kSyncMetadataTable, {
+      'entity_type': UserRole.teacher.label,
+      'last_server_sync_timestamp': timestamp,
+      'tenant_id': tenantId,
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   @override
@@ -323,6 +322,47 @@ final class TeacherLocalDataSourceImpl implements TeacherLocalDataSource {
     } on DatabaseException catch (e) {
       throw CacheException(
         message: 'Failed to fetch teacher by ID ($teacherId): ${e.toString()}',
+      );
+    }
+  }
+
+  /// Fetches all halaqas assigned to a teacher by performing a JOIN between
+  /// the [teacher_halqas] pivot table and the [halqas] master table.
+  ///
+  /// Uses the teacher's UUID to first resolve their integer `id` in the
+  /// `users` table, then queries the join table.
+  @override
+  Future<List<AssignedHalaqasModel>> getTeacherHalqas(
+    String teacherUuid,
+  ) async {
+    final user = await _authLocalDataSource.getUser();
+    final tenantId = "${user!.id}";
+    try {
+      final rows = await _db.rawQuery(
+        '''
+        SELECT
+          h.uuid  AS id,
+          h.name  AS name,
+          h.sumOfStudents AS students
+          th.lastModified AS assignedAt
+        FROM $_kTeacherHalqasTable th
+        INNER JOIN users u
+          ON u.id = th.teacherId
+          AND u.uuid = ?
+          AND u.tenant_id = ?
+        INNER JOIN halqas h
+          ON h.id = th.halqaId
+          AND h.tenant_id = ?
+        WHERE th.isDeleted = 0
+          AND h.isDeleted  = 0
+        ''',
+        [teacherUuid, tenantId, tenantId],
+      );
+      return rows.map((row) => AssignedHalaqasModel.fromMap(row)).toList();
+    } on DatabaseException catch (e) {
+      throw CacheException(
+        message:
+            'Failed to fetch halaqas for teacher ($teacherUuid): ${e.toString()}',
       );
     }
   }

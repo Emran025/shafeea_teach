@@ -1,4 +1,5 @@
 import 'package:shafeea/features/supervisor_dashboard/domain/entities/applicant_profile_entity.dart';
+import '../../../TeachersManagement/data/models/document_model.dart';
 
 class ApplicantProfileModel extends ApplicantProfileEntity {
   const ApplicantProfileModel({
@@ -14,6 +15,7 @@ class ApplicantProfileModel extends ApplicantProfileEntity {
     required super.createdAt,
     required super.updatedAt,
     required super.user,
+    super.documents,
   });
 
   factory ApplicantProfileModel.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,9 @@ class ApplicantProfileModel extends ApplicantProfileEntity {
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
       user: UserModel.fromJson(json['user']),
+      documents: ((json['documents'] as List<dynamic>?) ?? [])
+          .map((d) => DocumentModel.fromJson(d as Map<String, dynamic>).toEntity())
+          .toList(),
     );
   }
 }

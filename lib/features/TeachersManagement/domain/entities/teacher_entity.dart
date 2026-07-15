@@ -2,6 +2,7 @@
 
 import 'base_teacher_entity.dart';
 import 'document_entity.dart';
+import 'halqa_entity.dart';
 
 import 'package:flutter/material.dart';
 
@@ -28,7 +29,7 @@ class TeacherDetailEntity extends BaseTeacherEntity {
   final String bio;
   final String createdAt;
   final String updatedAt;
-  final List<dynamic> halqas;
+  final List<AssignedHalaqasEntity> halqas;
 
   /// Documents uploaded by the teacher during their application.
   final List<DocumentEntity> documents;

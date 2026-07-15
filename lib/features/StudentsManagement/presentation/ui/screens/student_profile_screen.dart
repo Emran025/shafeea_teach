@@ -1,8 +1,10 @@
 import 'dart:ui';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../core/utils/date_utils_helper.dart';
 import '../widgets/show_student_reports_dialog.dart';
 import '../../../../../shared/themes/app_theme.dart';
 import '../../../../../core/models/active_status.dart';
@@ -16,6 +18,7 @@ import '../../../domain/entities/student_entity.dart';
 import '../../bloc/student_bloc.dart';
 import '../widgets/study_plan_card.dart';
 import 'add_student_plan.dart';
+import '../../../../../core/messaging/messaging_intent_launcher.dart';
 
 class StudentProfileScreen extends StatefulWidget {
   final String studentID;
@@ -31,7 +34,6 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
 
   @override
   void initState() {
-    // student = fakeStudents[int.parse(widget.studentID)];
     super.initState();
   }
 
@@ -85,37 +87,51 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
             _buildHeader(context, student),
             SizedBox(height: 24),
             _buildInfoRow("البريد", student.email),
-            Row(
-              children: [
-                Expanded(child: _buildInfoRow("رقم الهاتف", student.phone)),
-                SizedBox(width: 8),
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: _buildInfoRow(
-                    "",
-                    "${status.selectedStudent!.studentDetailEntity.phoneZone}",
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildInfoRow(
-                    "رقم الواتس",
-                    status.selectedStudent!.studentDetailEntity.whatsAppPhone,
-                  ),
-                ),
-                SizedBox(width: 8),
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: _buildInfoRow(
-                    "",
-                    "${status.selectedStudent!.studentDetailEntity.whatsAppZone}",
-                  ),
-                ),
-              ],
-            ),
+             GestureDetector(
+               behavior: HitTestBehavior.opaque,
+               onTap: () => _launchPhone(
+                 student.phone,
+                 "${status.selectedStudent!.studentDetailEntity.phoneZone}",
+               ),
+               child: Row(
+                 children: [
+                   Expanded(child: _buildInfoRow("رقم الهاتف", student.phone)),
+                   SizedBox(width: 8),
+                   Directionality(
+                     textDirection: TextDirection.ltr,
+                     child: _buildInfoRow(
+                       "",
+                       "${status.selectedStudent!.studentDetailEntity.phoneZone}",
+                     ),
+                   ),
+                 ],
+               ),
+             ),
+             GestureDetector(
+               behavior: HitTestBehavior.opaque,
+               onTap: () => _launchWhatsApp(
+                 status.selectedStudent!.studentDetailEntity.whatsAppPhone,
+                 "${status.selectedStudent!.studentDetailEntity.whatsAppZone}",
+               ),
+               child: Row(
+                 children: [
+                   Expanded(
+                     child: _buildInfoRow(
+                       "رقم الواتس",
+                       status.selectedStudent!.studentDetailEntity.whatsAppPhone,
+                     ),
+                   ),
+                   SizedBox(width: 8),
+                   Directionality(
+                     textDirection: TextDirection.ltr,
+                     child: _buildInfoRow(
+                       "",
+                       "${status.selectedStudent!.studentDetailEntity.whatsAppZone}",
+                     ),
+                   ),
+                 ],
+               ),
+             ),
             Row(
               children: [
                 Expanded(
@@ -479,7 +495,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "25  عام",
+                  "${DateUtilsHelper.calculateAge(student.birthDate)}  عام",
                   style: GoogleFonts.cairo(
                     fontSize: 16,
                     color: AppColors.lightCream,
@@ -508,6 +524,31 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
         ],
       ),
     );
+  }
+
+  /// Dials the student's phone number directly in the phone app.
+  Future<void> _launchPhone(String phone, String zone) async {
+    final cleanZone = zone.replaceAll(RegExp(r'\D'), '');
+    final cleanPhone = phone.replaceAll(RegExp(r'\D'), '');
+    final uri = Uri.parse('tel:+$cleanZone$cleanPhone');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  /// Opens WhatsApp directly (no app-chooser) via native Android intent.
+  Future<void> _launchWhatsApp(String phone, String zone) async {
+    final cleanZone = zone.replaceAll(RegExp(r'\D'), '');
+    final cleanPhone = phone.replaceAll(RegExp(r'\D'), '');
+    final fullNumber = '$cleanZone$cleanPhone';
+    final opened = await MessagingIntentLauncher.openWhatsAppTextOnly(
+      WhatsAppFlavor.standard,
+      '',
+      phoneNumber: fullNumber,
+    );
+    if (!opened) {
+      await MessagingIntentLauncher.openWhatsAppWithText('', phoneNumber: fullNumber);
+    }
   }
 
   Widget _buildInfoRow(String label, String value) {

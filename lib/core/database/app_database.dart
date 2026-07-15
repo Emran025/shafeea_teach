@@ -41,7 +41,7 @@ class AppDatabase {
 
   // --- Database & Table Constants ---
   static const String _dbName = 'app_main.db';
-  static const int _dbVersion = 1;
+  static const int _dbVersion = 2;
 
   // Table Names
   static const String _kRolesTable = 'roles';
@@ -320,6 +320,7 @@ class AppDatabase {
         gender            INTEGER NOT NULL DEFAULT 1,
         birthDate         TEXT,
         email             TEXT    NOT NULL,
+        username          TEXT,
         avatar            TEXT,
         phoneZone         TEXT,
         bio               TEXT,
@@ -341,6 +342,7 @@ class AppDatabase {
         
         UNIQUE(email, tenant_id),
         UNIQUE(roleId, uuid, tenant_id),
+        UNIQUE(username, tenant_id),
         FOREIGN KEY(roleId) REFERENCES $_kRolesTable(id) ON UPDATE CASCADE ON DELETE RESTRICT
       )
     ''');
@@ -541,6 +543,10 @@ class AppDatabase {
   /// Creates indexes on foreign key columns to improve query performance.
   Future<void> _createIndexes(Transaction txn) async {
     await txn.execute('CREATE INDEX idx_users_roleId ON $_kUsersTable(roleId)');
+    // Enables efficient lookups by username (e.g. API queries like GET /users?username=...).
+    await txn.execute(
+      'CREATE INDEX idx_users_username ON $_kUsersTable(tenant_id, username)',
+    );
     await txn.execute(
       'CREATE INDEX idx_teacher_halqas_halqaId ON $_kTeacherHalqasTable(halqaId)',
     );
@@ -564,12 +570,18 @@ class AppDatabase {
   /// Called when the database needs to be upgraded.
   /// Use this to alter tables and add new features in future app versions.
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // Example for a future migration:
-    // if (oldVersion < 2) {
-    //   await db.execute("ALTER TABLE $_kUsersTable ADD COLUMN someNewField TEXT;");
-    // }
-    // if (oldVersion < 3) {
-    //   await db.execute("CREATE TABLE new_awesome_table (...)");
-    // }
+    // v1 → v2: Added `username` column to the users table and a covering index
+    //          to support efficient username-based API queries.
+    if (oldVersion < 2) {
+      await db.execute(
+        'ALTER TABLE $_kUsersTable ADD COLUMN username TEXT',
+      );
+      // SQLite does not allow adding a UNIQUE constraint via ALTER TABLE,
+      // so we create a unique index instead — semantically equivalent.
+      await db.execute(
+        'CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username'
+        ' ON $_kUsersTable(tenant_id, username)',
+      );
+    }
   }
 }

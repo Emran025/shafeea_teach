@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import '../../../TeachersManagement/domain/entities/document_entity.dart';
 
 class ApplicantProfileEntity extends Equatable {
   final int id;
@@ -14,6 +15,7 @@ class ApplicantProfileEntity extends Equatable {
   final String createdAt;
   final String updatedAt;
   final UserEntity user;
+  final List<DocumentEntity> documents;
 
   const ApplicantProfileEntity({
     required this.id,
@@ -29,6 +31,7 @@ class ApplicantProfileEntity extends Equatable {
     required this.createdAt,
     required this.updatedAt,
     required this.user,
+    this.documents = const [],
   });
 
   @override
@@ -46,6 +49,7 @@ class ApplicantProfileEntity extends Equatable {
         createdAt,
         updatedAt,
         user,
+        documents,
       ];
 }
 

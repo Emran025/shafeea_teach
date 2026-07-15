@@ -9,6 +9,7 @@ import 'package:shafeea/features/supervisor_dashboard/presentation/ui/widgets/ap
 import 'package:shafeea/features/supervisor_dashboard/presentation/ui/widgets/reject_applicant_dialog.dart';
 
 import '../../../../../core/models/gender.dart';
+import '../../../../TeachersManagement/presentation/ui/widgets/documents_section.dart';
 
 class ApplicantProfileScreen extends StatefulWidget {
   final int applicantId;
@@ -84,8 +85,10 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
             _buildInfoRow('الجنس', applicant.user.gender),
             _buildInfoRow('الدولة', applicant.user.country),
             _buildInfoRow('المدينة', applicant.user.city),
-            _buildInfoRow('المؤهلات', applicant.qualifications),
-            _buildInfoRow('بيان النوايا', applicant.intentStatement),
+            _buildInfoRow('المؤهلات', applicant.qualifications ?? ''),
+            _buildInfoRow('بيان النوايا', applicant.intentStatement ?? ''),
+            const SizedBox(height: 24),
+            DocumentsSection(documents: applicant.documents),
             const SizedBox(height: 24),
             _buildActionButtons(context, applicant),
           ],

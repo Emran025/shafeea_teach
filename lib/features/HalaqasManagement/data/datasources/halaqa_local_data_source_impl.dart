@@ -26,10 +26,11 @@ const String _kUsersTable = 'users';
 const String _kHalqasTable = 'halqas';
 const String _kPendingOperationsTable = 'pending_operations';
 const String _kSyncMetadataTable = 'sync_metadata';
-const String _kFrequenciesTable = 'frequencies';
+// const String _kFrequenciesTable = 'frequencies';
 const String _kDailyTrackingTable = 'daily_tracking';
 const String _kHalqaStudentsTable = 'halqa_students';
 const String _kFollowUpPlansTable = 'follow_up_plans';
+const String _kTeacherHalqasTable = 'teacher_halqas';
 
 @LazySingleton(as: HalaqaLocalDataSource)
 final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
@@ -311,7 +312,6 @@ final class HalaqaLocalDataSourceImpl implements HalaqaLocalDataSource {
     final tenantId = "${user!.id}";
     try {
       // JOIN with teacher_halqas and users to resolve the teacher's name.
-      const String _kTeacherHalqasTable = 'teacher_halqas';
       final maps = await _db.rawQuery(
         '''
         SELECT H.*, U.id AS teacherId, U.name AS teacherName

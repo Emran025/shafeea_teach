@@ -1,5 +1,6 @@
 
 import '../../../../core/models/sync_queue_model.dart';
+import '../models/assigned_halaqas_model.dart';
 import '../models/teacher_model.dart';
 
 /// Defines the abstract contract for the local data source of teachers.
@@ -70,4 +71,11 @@ abstract interface class TeacherLocalDataSource {
   /// @param teacherId The unique identifier of the teacher.
   /// @returns A [TeacherModel] representing the teacher.
   Future<TeacherModel> getTeacherById(String teacherId);
+
+  /// Fetches all halaqas (study circles) assigned to a teacher by their UUID.
+  ///
+  /// Performs a JOIN between [teacher_halqas] and [halqas] tables.
+  /// Returns an empty list if the teacher has no assigned halaqas.
+  /// Throws a [CacheException] if the query fails.
+  Future<List<AssignedHalaqasModel>> getTeacherHalqas(String teacherUuid);
 }
