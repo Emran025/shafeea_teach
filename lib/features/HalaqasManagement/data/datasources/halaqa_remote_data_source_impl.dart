@@ -98,10 +98,12 @@ final class HalaqaRemoteDataSourceImpl implements HalaqaRemoteDataSource {
     // The API should handle both create (if no ID or ID is 0) and update (if ID exists).
     final int id = int.tryParse(halaqaData['id']?.toString() ?? '0') ?? 0;
     final bool isUpdate = id > 0;
-    
-    final path = isUpdate ? '${EndPoint.halaqas}/$id' : EndPoint.halaqas;
 
-    final responseJson = await (isUpdate 
+    final path = isUpdate
+        ? EndPoint.halaqasUpsert.replaceAll('{id}', id.toString())
+        : EndPoint.halaqas;
+
+    final responseJson = await (isUpdate
         ? _apiConsumer.put(path, data: halaqaData)
         : _apiConsumer.post(path, data: halaqaData));
 
@@ -127,7 +129,7 @@ final class HalaqaRemoteDataSourceImpl implements HalaqaRemoteDataSource {
   @override
   Future<void> assignStudents(String halaqaId, List<int> studentUserIds) async {
     await _apiConsumer.post(
-      '${EndPoint.halaqas}/$halaqaId/assign-students',
+      EndPoint.userProfile.replaceAll('{halaqaId}', halaqaId.toString()),
       data: {'studentUserIds': studentUserIds},
     );
   }

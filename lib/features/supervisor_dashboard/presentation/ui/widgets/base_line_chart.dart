@@ -35,18 +35,14 @@ class _BaseLineChartState extends State<BaseLineChart> {
   double _getSafeHorizontalInterval() {
     final maxY = widget.chartData.maxY;
 
-    // إذا كان maxY صفر أو أقل، نستخدم قيمة افتراضية
     if (maxY <= 0) return 1.0;
 
-    // نقسم إلى 5 أجزاء مع ضمان أن النتيجة ليست صفر
     final interval = maxY / 5;
     return interval > 0 ? interval : 1.0;
   }
 
-  // دالة لحساب maxY آمن للرسم البياني
   double _getSafeMaxY() {
     final maxY = widget.chartData.maxY;
-    // إذا كان maxY صفر، نستخدم قيمة افتراضية لمنع الأخطاء
     return maxY > 0 ? maxY : 5.0;
   }
 

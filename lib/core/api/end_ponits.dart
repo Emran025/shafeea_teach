@@ -17,6 +17,10 @@ class EndPoint {
   static const String resendEmailVerification = "$v1/auth/email/resend";
   static const String me = "$v1/auth/me";
   static const String checkUsername = "$v1/auth/check-username";
+  /// Public endpoint that returns a sanitized username candidate derived from
+  /// a name string. No authentication required. No DB uniqueness check.
+  /// Query param: `name` (raw name, Arabic or Latin).
+  static const String usernameSuggest = "$v1/auth/username/suggest";
   static const String refreshToken = "$v1/refreshToken";
   static const String userProfile = "$v1/account/profile";
   static const String changePassword = "$v1/account/change-password";
@@ -33,18 +37,14 @@ class EndPoint {
   static const String teachers = "$v1/teachers";
   static const String students = "$v1/students";
   static const String halaqas = "$v1/halaqas";
+  static const String halaqasUpsert = "$v1/halaqas/{id}";
+  static const String assignStudents = "$v1/halaqas/{halaqaId}/assign-students";
   static const String teachersSync = "$v1/sync/teachers";
   static const String studentsSync = "$v1/sync/students";
   static const String halaqasSync = "$v1/sync/halaqas";
   static const String trackingsSync = "$v1/sync/trackings";
   static const String teachersUpsert = "$v1/teachers/{id}";
   static const String studentsUpsert = "$v1/students/{id}";
-  static const String halaqasUpsert = "$v1/halaqas/{id}";
-
-  /// Public endpoint that returns a sanitized username candidate derived from
-  /// a name string. No authentication required. No DB uniqueness check.
-  /// Query param: `name` (raw name, Arabic or Latin).
-  static const String usernameSuggest = "$v1/auth/username/suggest";
 
   static String getUserDataEndPoint(id) {
     return "user/get-user/$id";
