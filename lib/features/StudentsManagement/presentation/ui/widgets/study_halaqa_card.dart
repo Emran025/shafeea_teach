@@ -69,47 +69,50 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
                 ),
               ],
             ),
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 18),
-              shape: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide.none,
-              ),
-
-              title: Text(
-                widget.assignedHalaqasEntity.name,
-                style: GoogleFonts.cairo(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.lightCream,
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(16),
+              child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              ),
-              leading: Avatar(size: Size(45, 45)),
 
-              subtitle: Padding(
-                padding: const EdgeInsets.only(top: 5.0),
-                child: Text(
-                  " الإنظمام : ${formatDate(DateTime.parse(widget.assignedHalaqasEntity.enrolledAt))}",
+                title: Text(
+                  widget.assignedHalaqasEntity.name,
                   style: GoogleFonts.cairo(
-                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
                     color: AppColors.lightCream,
                   ),
                 ),
-              ),
-              onTap: () => {},
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      // onPressed!();
-                    },
-                    child: StatusTag(lable: "تفاصيل"),
+                leading: Avatar(size: Size(45, 45)),
+
+                subtitle: Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Text(
+                    " الإنظمام : ${formatDate(DateTime.parse(widget.assignedHalaqasEntity.enrolledAt))}",
+                    style: GoogleFonts.cairo(
+                      fontSize: 10,
+                      color: AppColors.lightCream,
+                    ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.more_vert, color: AppColors.lightCream),
-                    onPressed: () => {},
-                  ),
-                ],
+                ),
+                onTap: () => {},
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        // onPressed!();
+                      },
+                      child: StatusTag(lable: "تفاصيل"),
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.more_vert, color: AppColors.lightCream),
+                      onPressed: () => {},
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

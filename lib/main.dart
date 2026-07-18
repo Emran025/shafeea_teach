@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'config/localization/l10n_config.dart';
 import 'core/constants/tracking_unit_cache.dart';
@@ -15,6 +16,10 @@ import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Disable network fetching — Cairo is already bundled in assets/fonts/Cairo/.
+  // Without this, google_fonts tries to download from fonts.gstatic.com at
+  // runtime, which fails on devices without internet access.
+  GoogleFonts.config.allowRuntimeFetching = false;
   await configureDependencies();
   // Initialize date formatting for Arabic locale.
   // This is necessary for proper date formatting in the app.

@@ -2,7 +2,7 @@ name: shafeea
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -145,11 +145,22 @@ flutter:
     - family: "Cairo"
       fonts:
         - asset: assets/fonts/Cairo/Cairo-VariableFont_slnt,wght.ttf
+        - asset: assets/fonts/Cairo/static/Cairo-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Cairo/static/Cairo-Light.ttf
+          weight: 300
         - asset: assets/fonts/Cairo/static/Cairo-Regular.ttf
+          weight: 400
         - asset: assets/fonts/Cairo/static/Cairo-Medium.ttf
           weight: 500
+        - asset: assets/fonts/Cairo/static/Cairo-SemiBold.ttf
+          weight: 600
         - asset: assets/fonts/Cairo/static/Cairo-Bold.ttf
           weight: 700
+        - asset: assets/fonts/Cairo/static/Cairo-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Cairo/static/Cairo-Black.ttf
+          weight: 900
     - family: quran
       fonts:
         - asset: assets/fonts/lpmq.otf
@@ -2613,14 +2624,7 @@ flutter:
     - family: page604
       fonts:
         - asset: assets/fonts/quran_fonts/p2604.ttf
-    - family: "Cairo"
-      fonts:
-        - asset: assets/fonts/Cairo/Cairo-VariableFont_slnt,wght.ttf
-        - asset: assets/fonts/Cairo/static/Cairo-Regular.ttf
-        - asset: assets/fonts/Cairo/static/Cairo-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Cairo/static/Cairo-Bold.ttf
-          weight: 700
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

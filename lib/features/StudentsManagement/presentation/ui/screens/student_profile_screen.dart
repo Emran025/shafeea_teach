@@ -87,51 +87,51 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
             _buildHeader(context, student),
             SizedBox(height: 24),
             _buildInfoRow("البريد", student.email),
-             GestureDetector(
-               behavior: HitTestBehavior.opaque,
-               onTap: () => _launchPhone(
-                 student.phone,
-                 "${status.selectedStudent!.studentDetailEntity.phoneZone}",
-               ),
-               child: Row(
-                 children: [
-                   Expanded(child: _buildInfoRow("رقم الهاتف", student.phone)),
-                   SizedBox(width: 8),
-                   Directionality(
-                     textDirection: TextDirection.ltr,
-                     child: _buildInfoRow(
-                       "",
-                       "${status.selectedStudent!.studentDetailEntity.phoneZone}",
-                     ),
-                   ),
-                 ],
-               ),
-             ),
-             GestureDetector(
-               behavior: HitTestBehavior.opaque,
-               onTap: () => _launchWhatsApp(
-                 status.selectedStudent!.studentDetailEntity.whatsAppPhone,
-                 "${status.selectedStudent!.studentDetailEntity.whatsAppZone}",
-               ),
-               child: Row(
-                 children: [
-                   Expanded(
-                     child: _buildInfoRow(
-                       "رقم الواتس",
-                       status.selectedStudent!.studentDetailEntity.whatsAppPhone,
-                     ),
-                   ),
-                   SizedBox(width: 8),
-                   Directionality(
-                     textDirection: TextDirection.ltr,
-                     child: _buildInfoRow(
-                       "",
-                       "${status.selectedStudent!.studentDetailEntity.whatsAppZone}",
-                     ),
-                   ),
-                 ],
-               ),
-             ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _launchPhone(
+                student.phone,
+                "${status.selectedStudent!.studentDetailEntity.phoneZone}",
+              ),
+              child: Row(
+                children: [
+                  Expanded(child: _buildInfoRow("رقم الهاتف", student.phone)),
+                  SizedBox(width: 8),
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: _buildInfoRow(
+                      "",
+                      "${status.selectedStudent!.studentDetailEntity.phoneZone}",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _launchWhatsApp(
+                status.selectedStudent!.studentDetailEntity.whatsAppPhone,
+                "${status.selectedStudent!.studentDetailEntity.whatsAppZone}",
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildInfoRow(
+                      "رقم الواتس",
+                      status.selectedStudent!.studentDetailEntity.whatsAppPhone,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: _buildInfoRow(
+                      "",
+                      "${status.selectedStudent!.studentDetailEntity.whatsAppZone}",
+                    ),
+                  ),
+                ],
+              ),
+            ),
             Row(
               children: [
                 Expanded(
@@ -250,9 +250,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                       .toList(growable: false),
                   selected: {''},
                   onSelectionChanged: (newSel) {
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
                 ),
               ),
@@ -495,7 +493,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "${DateUtilsHelper.calculateAge(student.birthDate)}  عام",
+                  "${DateUtilsHelper.calculateAge(student.birthDate) ?? '—'}  عام",
                   style: GoogleFonts.cairo(
                     fontSize: 16,
                     color: AppColors.lightCream,
@@ -512,7 +510,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
-                  "25  جزءًا",
+                  student.memorizationLevel,
                   style: GoogleFonts.cairo(
                     fontSize: 16,
                     color: AppColors.lightCream,
@@ -547,7 +545,10 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
       phoneNumber: fullNumber,
     );
     if (!opened) {
-      await MessagingIntentLauncher.openWhatsAppWithText('', phoneNumber: fullNumber);
+      await MessagingIntentLauncher.openWhatsAppWithText(
+        '',
+        phoneNumber: fullNumber,
+      );
     }
   }
 
