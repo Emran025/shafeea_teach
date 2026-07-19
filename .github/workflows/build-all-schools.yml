@@ -1,0 +1,233 @@
+name: Build All Schools — Teacher App
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Mirror of shafeea_student's build-all-schools.yml — for the teacher app.
+# Triggered by a version tag push to shafeea_teach (e.g. v2.1.0).
+# APK naming: {school_code}-teach-v{version}.apk
+# ──────────────────────────────────────────────────────────────────────────────
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - 'v[0-9]+.[0-9]+.[0-9]+\+[0-9]+'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to build against (e.g. v2.1.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  packages: read
+
+env:
+  BUILDER_IMAGE: ghcr.io/emran025/flutter-android-builder:3.44.5
+  APP: teach
+
+jobs:
+  prepare-matrix:
+    name: Fetch Active Schools
+    runs-on: ubuntu-latest
+    outputs:
+      matrix:      ${{ steps.schools.outputs.matrix }}
+      has_schools: ${{ steps.schools.outputs.has_schools }}
+      release_tag: ${{ steps.tag.outputs.release_tag }}
+      build_name:  ${{ steps.tag.outputs.build_name }}
+    steps:
+      - name: Resolve release tag
+        id: tag
+        run: |
+          TAG="${{ inputs.tag || github.ref_name }}"
+          VERSION="${TAG#v}"
+          if [[ "$VERSION" == *"+"* ]]; then
+            BUILD_NAME="${VERSION%%+*}"
+          else
+            BUILD_NAME="${VERSION}"
+          fi
+          echo "release_tag=${TAG}"       >> "$GITHUB_OUTPUT"
+          echo "build_name=${BUILD_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Sign Build API request
+        id: sign
+        env:
+          BUILD_API_PRIVATE_KEY: ${{ secrets.BUILD_API_PRIVATE_KEY }}
+        run: |
+          TIMESTAMP=$(date +%s)
+          BODY=""
+          BODY_HASH=$(echo -n "${BODY}" | sha256sum | awk '{print $1}')
+          PAYLOAD="${TIMESTAMP}.${BODY_HASH}"
+          SIGNATURE=$(echo -n "${PAYLOAD}" | \
+            openssl dgst -sha256 -sign <(echo "${BUILD_API_PRIVATE_KEY}") | \
+            base64 -w 0)
+          echo "timestamp=${TIMESTAMP}" >> "$GITHUB_OUTPUT"
+          echo "signature=${SIGNATURE}" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch active schools
+        id: schools
+        env:
+          BUILD_API_BASE_URL: ${{ secrets.BUILD_API_BASE_URL }}
+        run: |
+          RESPONSE=$(curl -fsSL \
+            -H "X-Build-Timestamp: ${{ steps.sign.outputs.timestamp }}" \
+            -H "X-Build-Signature: ${{ steps.sign.outputs.signature }}" \
+            "${BUILD_API_BASE_URL}/api/build/schools?mode=all")
+
+          MATRIX=$(echo "${RESPONSE}" | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          schools = data.get('data', [])
+          items = []
+          for s in schools:
+              items.append({
+                  'school_id':   s['id'],
+                  'school_code': s['school_code'],
+                  'school_name': s['name'],
+                  'logo_url':    s.get('logo_url', ''),
+                  'app_key':     s.get('app_key', ''),
+                  'school_locked_mode': s.get('school_locked_mode', True),
+                  'keystore_file':           s.get('keystore_file', ''),
+                  'keystore_store_password': s.get('keystore_store_password', ''),
+                  'keystore_key_alias':      s.get('keystore_key_alias', ''),
+                  'keystore_key_password':   s.get('keystore_key_password', ''),
+              })
+          print(json.dumps({'include': items}))
+          ")
+          COUNT=$(echo "${RESPONSE}" | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d.get('data', [])))")
+          echo "matrix=${MATRIX}" >> "$GITHUB_OUTPUT"
+          echo "has_schools=$([[ ${COUNT} -gt 0 ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  build-school:
+    name: "${{ matrix.school_code }}"
+    needs: prepare-matrix
+    if: needs.prepare-matrix.outputs.has_schools == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+      fail-fast: false
+      max-parallel: 10
+
+    container:
+      image: ghcr.io/emran025/flutter-android-builder:3.44.5
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout Flutter source
+        uses: actions/checkout@v4
+
+      - name: Download school logo
+        if: matrix.logo_url != ''
+        run: |
+          mkdir -p /tmp/logos
+          curl -fsSL "${{ matrix.logo_url }}" \
+            -o "/tmp/logos/${{ matrix.school_code }}.png" || \
+            echo "⚠️ Logo download failed — using default icons."
+
+      - name: Build branded APK — ${{ matrix.school_code }}
+        env:
+          SCHOOL_CODE: ${{ matrix.school_code }}
+          SCHOOL_NAME: ${{ matrix.school_name }}
+          SCHOOL_ID:   ${{ matrix.school_id }}
+          APP_KEY:     ${{ matrix.app_key }}
+          SCHOOL_LOCKED_MODE: ${{ matrix.school_locked_mode }}
+          LOGO_PATH:   /tmp/logos/${{ matrix.school_code }}.png
+          KEYSTORE_FILE:           ${{ matrix.keystore_file }}
+          STORE_PASSWORD:          ${{ matrix.keystore_store_password }}
+          KEY_ALIAS:               ${{ matrix.keystore_key_alias }}
+          KEY_PASSWORD:            ${{ matrix.keystore_key_password }}
+          SHAFEEA_TEACH_API_URL: ${{ secrets.SHAFEEA_TEACH_API_URL }}
+        run: |
+          build-apk.sh \
+            teach \
+            "${{ needs.prepare-matrix.outputs.build_name }}" \
+            "${{ github.run_number }}"
+
+      - name: Locate built APK
+        id: apk
+        run: |
+          APK_PATH=$(find build/app/outputs/flutter-apk \
+            -name "${{ matrix.school_code }}-teach-v*.apk" | head -1)
+          echo "path=${APK_PATH}" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "${APK_PATH}")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: school-teach-${{ matrix.school_code }}
+          path: ${{ steps.apk.outputs.path }}
+          retention-days: 7
+          if-no-files-found: error
+
+  attach-to-release:
+    name: Attach School APKs to Release
+    needs: [prepare-matrix, build-school]
+    if: always() && needs.prepare-matrix.outputs.has_schools == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all school APK artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: school-teach-*
+          path: dist/
+          merge-multiple: true
+
+      - name: Upload all APKs to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.prepare-matrix.outputs.release_tag }}
+          files: dist/*.apk
+          fail_on_unmatched_files: false
+
+  notify-platform:
+    name: Notify & Mark Built
+    needs: [prepare-matrix, attach-to-release]
+    if: always() && needs.prepare-matrix.outputs.has_schools == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+      fail-fast: false
+    steps:
+      - name: Sign and notify web platform
+        env:
+          BUILD_API_PRIVATE_KEY: ${{ secrets.BUILD_API_PRIVATE_KEY }}
+          BUILD_API_BASE_URL:    ${{ secrets.BUILD_API_BASE_URL }}
+        run: |
+          RELEASE_TAG="${{ needs.prepare-matrix.outputs.release_tag }}"
+          APK_NAME="${{ matrix.school_code }}-teach-v${{ needs.prepare-matrix.outputs.build_name }}.apk"
+          APK_URL="https://github.com/${{ github.repository }}/releases/download/${RELEASE_TAG}/${APK_NAME}"
+
+          sign_and_post() {
+            local URL="$1"; local BODY="$2"
+            local TIMESTAMP=$(date +%s)
+            local BODY_HASH=$(echo -n "${BODY}" | sha256sum | awk '{print $1}')
+            local SIGNATURE=$(echo -n "${TIMESTAMP}.${BODY_HASH}" | \
+              openssl dgst -sha256 -sign <(echo "${BUILD_API_PRIVATE_KEY}") | \
+              base64 -w 0)
+            curl -fsSL -X POST \
+              -H "Content-Type: application/json" \
+              -H "X-Build-Timestamp: ${TIMESTAMP}" \
+              -H "X-Build-Signature: ${SIGNATURE}" \
+              -d "${BODY}" "${URL}" || true
+          }
+
+          sign_and_post \
+            "${BUILD_API_BASE_URL}/api/build/schools/${{ matrix.school_id }}/mark-built" \
+            "{\"release\":\"${RELEASE_TAG}\",\"apk_asset\":\"${APK_NAME}\"}"
+
+          sign_and_post \
+            "${BUILD_API_BASE_URL}/api/webhooks/build-complete" \
+            "{\"school_id\":${{ matrix.school_id }},\"app\":\"teach\",\"release\":\"${RELEASE_TAG}\",\"apk_url\":\"${APK_URL}\"}"
+
+  summarize:
+    name: Build Summary
+    needs: [prepare-matrix, attach-to-release]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Write summary
+        run: |
+          echo "## 🏷️ White-Label Teacher Build — ${{ needs.prepare-matrix.outputs.release_tag }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "🔗 [View Release](https://github.com/${{ github.repository }}/releases/tag/${{ needs.prepare-matrix.outputs.release_tag }})" >> "$GITHUB_STEP_SUMMARY"

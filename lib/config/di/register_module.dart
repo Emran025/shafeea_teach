@@ -6,6 +6,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:shafeea/core/api/interceptors/auth_interceptor.dart';
+import 'package:shafeea/core/api/interceptors/app_key_interceptor.dart';
 
 import 'package:shafeea/core/api/api_consumer.dart';
 import 'package:shafeea/core/api/dio_consumer.dart';
@@ -85,10 +86,14 @@ abstract class RegisterModule {
     );
 
     // The interceptor chain. Order matters:
-    // 1. AuthInterceptor: Injects the token.
+    // 0. AppKeyInterceptor: Injects X-App-Key for school-locked builds (no-op in General Mode).
+    // 1. AuthInterceptor: Injects the Bearer token.
     // 2. TokenRefreshInterceptor: Handles 401s if the token is expired.
     // 3. LogInterceptor: Logs the final state of the request.
     mainDio.interceptors.addAll([
+      // School-Locked Mode header — transparent no-op when APP_KEY is not embedded.
+      AppKeyInterceptor(),
+
       // TEMP: The authentication interceptors are temporarily disabled.
       // To enable token-based authentication, uncomment the following lines.
       // -------------------------------------------------------------------

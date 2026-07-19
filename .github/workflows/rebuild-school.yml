@@ -1,0 +1,173 @@
+name: Rebuild School — Teacher App
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Mirror of shafeea_student's rebuild-school.yml — for the teacher app.
+# Triggered by a repository_dispatch from the Laravel admin panel.
+# ──────────────────────────────────────────────────────────────────────────────
+
+on:
+  repository_dispatch:
+    types: [rebuild_school]
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  get-release:
+    name: Resolve Latest Release
+    runs-on: ubuntu-latest
+    outputs:
+      release_tag: ${{ steps.tag.outputs.tag }}
+      build_name:  ${{ steps.tag.outputs.build_name }}
+    steps:
+      - name: Get latest release tag
+        id: tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG=$(gh release list \
+            --repo "${{ github.repository }}" \
+            --limit 1 \
+            --json tagName \
+            --jq '.[0].tagName')
+          VERSION="${TAG#v}"
+          if [[ "$VERSION" == *"+"* ]]; then
+            BUILD_NAME="${VERSION%%+*}"
+          else
+            BUILD_NAME="${VERSION}"
+          fi
+          echo "tag=${TAG}"             >> "$GITHUB_OUTPUT"
+          echo "build_name=${BUILD_NAME}" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: Build ${{ github.event.client_payload.school_code }} / teach
+    needs: get-release
+    runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/emran025/flutter-android-builder:3.44.5
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout Flutter source
+        uses: actions/checkout@v4
+
+      - name: Download school logo
+        if: github.event.client_payload.logo_url != ''
+        run: |
+          mkdir -p /tmp/logos
+          curl -fsSL "${{ github.event.client_payload.logo_url }}" \
+            -o "/tmp/logos/${{ github.event.client_payload.school_code }}.png" || \
+            echo "⚠️ Logo download failed — using default icons."
+
+      - name: Build branded APK
+        env:
+          SCHOOL_CODE: ${{ github.event.client_payload.school_code }}
+          SCHOOL_NAME: ${{ github.event.client_payload.school_name }}
+          SCHOOL_ID:   ${{ github.event.client_payload.school_id }}
+          APP_KEY:     ${{ github.event.client_payload.app_key }}
+          SCHOOL_LOCKED_MODE: ${{ github.event.client_payload.school_locked_mode }}
+          LOGO_PATH:   /tmp/logos/${{ github.event.client_payload.school_code }}.png
+          KEYSTORE_FILE:         ${{ github.event.client_payload.keystore_file }}
+          STORE_PASSWORD:        ${{ github.event.client_payload.keystore_store_password }}
+          KEY_ALIAS:             ${{ github.event.client_payload.keystore_key_alias }}
+          KEY_PASSWORD:          ${{ github.event.client_payload.keystore_key_password }}
+          SHAFEEA_TEACH_API_URL: ${{ secrets.SHAFEEA_TEACH_API_URL }}
+        run: |
+          build-apk.sh \
+            teach \
+            "${{ needs.get-release.outputs.build_name }}" \
+            "${{ github.run_number }}"
+
+      - name: Locate built APK
+        id: apk
+        run: |
+          APK_PATH=$(find build/app/outputs/flutter-apk \
+            -name "${{ github.event.client_payload.school_code }}-teach-v*.apk" | head -1)
+          echo "path=${APK_PATH}" >> "$GITHUB_OUTPUT"
+          echo "name=$(basename "${APK_PATH}")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rebuild-teach-${{ github.event.client_payload.school_code }}
+          path: ${{ steps.apk.outputs.path }}
+          retention-days: 7
+          if-no-files-found: error
+
+    outputs:
+      apk_name: ${{ steps.apk.outputs.name }}
+
+  attach-to-release:
+    name: Attach to Release
+    needs: [get-release, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: rebuild-teach-${{ github.event.client_payload.school_code }}
+          path: dist/
+
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.get-release.outputs.release_tag }}
+          files: dist/*.apk
+          fail_on_unmatched_files: false
+
+  notify-platform:
+    name: Notify Platform
+    needs: [get-release, build, attach-to-release]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sign and notify
+        env:
+          BUILD_API_PRIVATE_KEY: ${{ secrets.BUILD_API_PRIVATE_KEY }}
+          BUILD_API_BASE_URL:    ${{ secrets.BUILD_API_BASE_URL }}
+        run: |
+          RELEASE_TAG="${{ needs.get-release.outputs.release_tag }}"
+          APK_NAME="${{ needs.build.outputs.apk_name }}"
+          APK_URL="https://github.com/${{ github.repository }}/releases/download/${RELEASE_TAG}/${APK_NAME}"
+
+          sign_and_post() {
+            local URL="$1"; local BODY="$2"
+            local TIMESTAMP=$(date +%s)
+            local BODY_HASH=$(echo -n "${BODY}" | sha256sum | awk '{print $1}')
+            local SIGNATURE=$(echo -n "${TIMESTAMP}.${BODY_HASH}" | \
+              openssl dgst -sha256 -sign <(echo "${BUILD_API_PRIVATE_KEY}") | \
+              base64 -w 0)
+            curl -fsSL -X POST \
+              -H "Content-Type: application/json" \
+              -H "X-Build-Timestamp: ${TIMESTAMP}" \
+              -H "X-Build-Signature: ${SIGNATURE}" \
+              -d "${BODY}" "${URL}" || true
+          }
+
+          sign_and_post \
+            "${BUILD_API_BASE_URL}/api/build/schools/${{ github.event.client_payload.school_id }}/mark-built" \
+            "{\"release\":\"${RELEASE_TAG}\",\"apk_asset\":\"${APK_NAME}\"}"
+
+          sign_and_post \
+            "${BUILD_API_BASE_URL}/api/webhooks/build-complete" \
+            "{\"school_id\":${{ github.event.client_payload.school_id }},\"app\":\"teach\",\"release\":\"${RELEASE_TAG}\",\"apk_url\":\"${APK_URL}\"}"
+
+  summarize:
+    name: Summary
+    needs: [get-release, build]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Write summary
+        run: |
+          echo "## 🔨 Rebuild — ${{ github.event.client_payload.school_name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "| | |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| School | **${{ github.event.client_payload.school_name }}** |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Code | \`${{ github.event.client_payload.school_code }}\` |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| App | teach |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Release | ${{ needs.get-release.outputs.release_tag }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| APK | \`${{ needs.build.outputs.apk_name }}\` |" >> "$GITHUB_STEP_SUMMARY"
