@@ -136,8 +136,7 @@ jobs:
           sign_and_post() {
             local URL="$1"; local BODY="$2"
             local TIMESTAMP=$(date +%s)
-            local BODY_HASH=$(echo -n "${BODY}" | sha256sum | awk '{print $1}')
-            local SIGNATURE=$(echo -n "${TIMESTAMP}.${BODY_HASH}" | \
+            local SIGNATURE=$(printf '%s\n%s' "${TIMESTAMP}" "${BODY}" | \
               openssl dgst -sha256 -sign <(echo "${BUILD_API_PRIVATE_KEY}") | \
               base64 -w 0)
             curl -fsSL -X POST \
