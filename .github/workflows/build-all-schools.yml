@@ -22,11 +22,16 @@ permissions:
   contents: write
   packages: read
 
+defaults:
+  run:
+    shell: bash
+
 env:
   BUILDER_IMAGE: ghcr.io/emran025/flutter-android-builder:3.44.5
   APP: teach
 
 jobs:
+  # ── Job 1: Fetch active schools + build the matrix ───────────────────────────
   prepare-matrix:
     name: Fetch Active Schools
     runs-on: ubuntu-latest
@@ -54,11 +59,14 @@ jobs:
         env:
           BUILD_API_PRIVATE_KEY: ${{ secrets.BUILD_API_PRIVATE_KEY }}
         run: |
+          KEY_FILE=$(mktemp)
+          printf '%s\n' "${BUILD_API_PRIVATE_KEY}" > "${KEY_FILE}"
           TIMESTAMP=$(date +%s)
           BODY=""
           SIGNATURE=$(printf '%s\n%s' "${TIMESTAMP}" "${BODY}" | \
-            openssl dgst -sha256 -sign <(echo "${BUILD_API_PRIVATE_KEY}") | \
-            base64 -w 0)
+            openssl dgst -sha256 -sign "${KEY_FILE}" | \
+            base64 | tr -d '\r\n')
+          rm -f "${KEY_FILE}"
           echo "timestamp=${TIMESTAMP}" >> "$GITHUB_OUTPUT"
           echo "signature=${SIGNATURE}" >> "$GITHUB_OUTPUT"
 
@@ -72,7 +80,14 @@ jobs:
             -H "X-Build-Signature: ${{ steps.sign.outputs.signature }}" \
             "${BUILD_API_BASE_URL}/api/build/schools?mode=all")
 
-          MATRIX=$(echo "${RESPONSE}" | python3 -c "
+          if [[ -z "${RESPONSE}" ]]; then
+            echo "::error::Build API returned an empty response — check BUILD_API_BASE_URL and signing secrets."
+            exit 1
+          fi
+
+          # Output ONLY non-sensitive metadata for the matrix to prevent GitHub Actions
+          # secret masking/redaction from skipping the matrix output.
+          MATRIX=$(printf '%s' "${RESPONSE}" | python3 -c "
           import json, sys
           data = json.load(sys.stdin)
           schools = data.get('data', [])
@@ -82,20 +97,24 @@ jobs:
                   'school_id':   s['id'],
                   'school_code': s['school_code'],
                   'school_name': s['name'],
-                  'logo_url':    s.get('logo_url', ''),
-                  'app_key':     s.get('app_key', ''),
-                  'school_locked_mode': s.get('school_locked_mode', True),
-                  'keystore_file':           s.get('keystore_file', ''),
-                  'keystore_store_password': s.get('keystore_store_password', ''),
-                  'keystore_key_alias':      s.get('keystore_key_alias', ''),
-                  'keystore_key_password':   s.get('keystore_key_password', ''),
               })
+          if not items:
+              items = [{'_no_schools': True, 'school_id': 0, 'school_code': 'none', 'school_name': 'none'}]
           print(json.dumps({'include': items}))
+          sys.stderr.write(f'Found {len(schools)} active schools.\n')
           ")
-          COUNT=$(echo "${RESPONSE}" | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d.get('data', [])))")
-          echo "matrix=${MATRIX}" >> "$GITHUB_OUTPUT"
+
+          COUNT=$(printf '%s' "${RESPONSE}" | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d.get('data', [])))")
+
+          # Use heredoc form for matrix output
+          {
+            echo 'matrix<<__MATRIX_EOF__'
+            echo "${MATRIX}"
+            echo '__MATRIX_EOF__'
+          } >> "$GITHUB_OUTPUT"
           echo "has_schools=$([[ ${COUNT} -gt 0 ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
 
+  # ── Job 2: Build one APK per school (parallel, max 10 concurrent) ─────────────
   build-school:
     name: "${{ matrix.school_code }}"
     needs: prepare-matrix
@@ -116,26 +135,72 @@ jobs:
       - name: Checkout Flutter source
         uses: actions/checkout@v4
 
+      - name: Fetch school build configuration
+        id: config
+        env:
+          BUILD_API_PRIVATE_KEY: ${{ secrets.BUILD_API_PRIVATE_KEY }}
+          BUILD_API_BASE_URL: ${{ secrets.BUILD_API_BASE_URL }}
+        run: |
+          KEY_FILE=$(mktemp)
+          printf '%s\n' "${BUILD_API_PRIVATE_KEY}" > "${KEY_FILE}"
+          TIMESTAMP=$(date +%s)
+          BODY=""
+          SIGNATURE=$(printf '%s\n%s' "${TIMESTAMP}" "${BODY}" | \
+            openssl dgst -sha256 -sign "${KEY_FILE}" | \
+            base64 | tr -d '\r\n')
+          rm -f "${KEY_FILE}"
+
+          RESPONSE=$(curl -fsSL \
+            -H "X-Build-Timestamp: ${TIMESTAMP}" \
+            -H "X-Build-Signature: ${SIGNATURE}" \
+            "${BUILD_API_BASE_URL}/api/build/schools/${{ matrix.school_id }}")
+
+          if [[ -z "${RESPONSE}" ]]; then
+            echo "::error::Failed to fetch build configuration for school ID ${{ matrix.school_id }}"
+            exit 1
+          fi
+
+          printf '%s' "${RESPONSE}" | python3 -c "
+          import json, os, sys
+
+          raw = sys.stdin.read()
+          data = json.loads(raw)
+          s = data.get('school', {})
+
+          logo_url = s.get('logo_url') or ''
+          school_code = s.get('school_code', '${{ matrix.school_code }}')
+          logo_path = f'/tmp/logos/{school_code}.png' if logo_url else ''
+
+          env_vars = {
+              'SCHOOL_CODE': school_code,
+              'SCHOOL_NAME': s.get('name', '${{ matrix.school_name }}'),
+              'SCHOOL_ID': str(s.get('id', '${{ matrix.school_id }}')),
+              'APP_KEY': s.get('app_key') or '',
+              'SCHOOL_LOCKED_MODE': str(s.get('school_locked_mode', True)).lower(),
+              'LOGO_URL': logo_url,
+              'LOGO_PATH': logo_path,
+              'KEYSTORE_FILE': s.get('keystore_file') or '',
+              'STORE_PASSWORD': s.get('keystore_store_password') or '',
+              'KEY_ALIAS': s.get('keystore_key_alias') or '',
+              'KEY_PASSWORD': s.get('keystore_key_password') or '',
+          }
+
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as f:
+              for k, v in env_vars.items():
+                  delim = f'EOF_{k}'
+                  f.write(f'{k}<<{delim}\n{v}\n{delim}\n')
+          "
+
       - name: Download school logo
-        if: matrix.logo_url != ''
+        if: env.LOGO_URL != ''
         run: |
           mkdir -p /tmp/logos
-          curl -fsSL "${{ matrix.logo_url }}" \
-            -o "/tmp/logos/${{ matrix.school_code }}.png" || \
+          curl -fsSL "${LOGO_URL}" \
+            -o "${LOGO_PATH}" || \
             echo "⚠️ Logo download failed — using default icons."
 
       - name: Build branded APK — ${{ matrix.school_code }}
         env:
-          SCHOOL_CODE: ${{ matrix.school_code }}
-          SCHOOL_NAME: ${{ matrix.school_name }}
-          SCHOOL_ID:   ${{ matrix.school_id }}
-          APP_KEY:     ${{ matrix.app_key }}
-          SCHOOL_LOCKED_MODE: ${{ matrix.school_locked_mode }}
-          LOGO_PATH:   /tmp/logos/${{ matrix.school_code }}.png
-          KEYSTORE_FILE:           ${{ matrix.keystore_file }}
-          STORE_PASSWORD:          ${{ matrix.keystore_store_password }}
-          KEY_ALIAS:               ${{ matrix.keystore_key_alias }}
-          KEY_PASSWORD:            ${{ matrix.keystore_key_password }}
           SHAFEEA_TEACH_API_URL: ${{ secrets.SHAFEEA_TEACH_API_URL }}
         run: |
           build-apk.sh \
@@ -159,6 +224,7 @@ jobs:
           retention-days: 7
           if-no-files-found: error
 
+  # ── Job 3: Attach all school APKs to the GitHub Release ──────────────────────
   attach-to-release:
     name: Attach School APKs to Release
     needs: [prepare-matrix, build-school]
@@ -179,6 +245,7 @@ jobs:
           files: dist/*.apk
           fail_on_unmatched_files: false
 
+  # ── Job 4: Notify web platform for each school ────────────────────────────────
   notify-platform:
     name: Notify & Mark Built
     needs: [prepare-matrix, attach-to-release]
@@ -197,12 +264,16 @@ jobs:
           APK_NAME="${{ matrix.school_code }}-teach-v${{ needs.prepare-matrix.outputs.build_name }}.apk"
           APK_URL="https://github.com/${{ github.repository }}/releases/download/${RELEASE_TAG}/${APK_NAME}"
 
+          KEY_FILE=$(mktemp)
+          printf '%s\n' "${BUILD_API_PRIVATE_KEY}" > "${KEY_FILE}"
+
           sign_and_post() {
-            local URL="$1"; local BODY="$2"
+            local URL="$1"
+            local BODY="$2"
             local TIMESTAMP=$(date +%s)
             local SIGNATURE=$(printf '%s\n%s' "${TIMESTAMP}" "${BODY}" | \
-              openssl dgst -sha256 -sign <(echo "${BUILD_API_PRIVATE_KEY}") | \
-              base64 -w 0)
+              openssl dgst -sha256 -sign "${KEY_FILE}" | \
+              base64 | tr -d '\r\n')
             curl -fsSL -X POST \
               -H "Content-Type: application/json" \
               -H "X-Build-Timestamp: ${TIMESTAMP}" \
@@ -218,6 +289,9 @@ jobs:
             "${BUILD_API_BASE_URL}/api/webhooks/build-complete" \
             "{\"school_id\":${{ matrix.school_id }},\"app\":\"teach\",\"release\":\"${RELEASE_TAG}\",\"apk_url\":\"${APK_URL}\"}"
 
+          rm -f "${KEY_FILE}"
+
+  # ── Job 5: Summary ─────────────────────────────────────────────────────────────
   summarize:
     name: Build Summary
     needs: [prepare-matrix, attach-to-release]

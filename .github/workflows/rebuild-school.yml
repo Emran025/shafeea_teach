@@ -13,6 +13,10 @@ permissions:
   contents: write
   packages: read
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   get-release:
     name: Resolve Latest Release
@@ -133,12 +137,16 @@ jobs:
           APK_NAME="${{ needs.build.outputs.apk_name }}"
           APK_URL="https://github.com/${{ github.repository }}/releases/download/${RELEASE_TAG}/${APK_NAME}"
 
+          KEY_FILE=$(mktemp)
+          printf '%s\n' "${BUILD_API_PRIVATE_KEY}" > "${KEY_FILE}"
+
           sign_and_post() {
-            local URL="$1"; local BODY="$2"
+            local URL="$1"
+            local BODY="$2"
             local TIMESTAMP=$(date +%s)
             local SIGNATURE=$(printf '%s\n%s' "${TIMESTAMP}" "${BODY}" | \
-              openssl dgst -sha256 -sign <(echo "${BUILD_API_PRIVATE_KEY}") | \
-              base64 -w 0)
+              openssl dgst -sha256 -sign "${KEY_FILE}" | \
+              base64 | tr -d '\r\n')
             curl -fsSL -X POST \
               -H "Content-Type: application/json" \
               -H "X-Build-Timestamp: ${TIMESTAMP}" \
@@ -153,6 +161,8 @@ jobs:
           sign_and_post \
             "${BUILD_API_BASE_URL}/api/webhooks/build-complete" \
             "{\"school_id\":${{ github.event.client_payload.school_id }},\"app\":\"teach\",\"release\":\"${RELEASE_TAG}\",\"apk_url\":\"${APK_URL}\"}"
+
+          rm -f "${KEY_FILE}"
 
   summarize:
     name: Summary
