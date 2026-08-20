@@ -69,6 +69,18 @@ class RecitationSideBar extends StatelessWidget {
             ),
 
             CustomModeIconButton(
+              icon: Icons.video_call,
+              label: 'بدء مكالمة',
+              isSelected: false,
+              onTap: () {
+                Navigator.of(context).pop();
+                // TODO: Trigger WebRTC Call Accept/Join here
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('جاري بدء الجلسة التفاعلية...')),
+                );
+              },
+            ),
+            CustomModeIconButton(
               icon: Icons.assessment,
               label: 'تقرير',
               isSelected: false,
