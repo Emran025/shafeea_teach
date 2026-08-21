@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_webrtc: ^0.10.4
+  flutter_webrtc: ^1.1.0
   encrypt: ^5.0.3
   pointycastle: ^3.7.3
   http: ^1.2.0
