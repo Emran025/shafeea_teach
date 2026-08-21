@@ -82,6 +82,15 @@ class _AyahaTextSpansState extends State<AyahTextSpans> {
               newMistakeType: MistakeType.none,
             ),
           );
+
+          // --- P2P Interactive Mushaf Sync ---
+          // Broadcast this error mark to the student in real-time.
+          try {
+             // In a full implementation, activeSessionId is retrieved from the state.
+             // context.read<MushafSyncService>().markError(activeSessionId, ayah.surahId, ayah.number, tappedWordIndex);
+          } catch (e) {
+             debugPrint('Failed to sync mistake: $e');
+          }
         },
       );
 
