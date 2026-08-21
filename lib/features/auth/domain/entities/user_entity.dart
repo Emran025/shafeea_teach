@@ -8,6 +8,8 @@ class UserEntity {
   final String? avatar;
   final UserRole role;
   final bool isEmailVerified;
+  final String genderScope;
+  final List<String> roles;
 
   const UserEntity({
     required this.id,
@@ -17,5 +19,7 @@ class UserEntity {
     required this.role,
     this.avatar,
     this.isEmailVerified = false,
+    this.genderScope = 'all',
+    this.roles = const [],
   });
 }

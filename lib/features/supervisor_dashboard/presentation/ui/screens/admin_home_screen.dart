@@ -14,7 +14,7 @@ import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../auth/presentation/ui/widgets/log_out_dialog.dart';
 import '../../../../settings/presentation/screens/settings_screen.dart';
 
-// import '../../../../../core/constants/app_colors.dart';
+import 'package:shafeea/core/constants/constants.dart';
 
 class SupervisorDashboard extends StatefulWidget {
   const SupervisorDashboard({super.key});
@@ -25,21 +25,70 @@ class SupervisorDashboard extends StatefulWidget {
 
 class _SupervisorDashboardState extends State<SupervisorDashboard> {
   int _currentIndex = 0;
-  final List<Widget> _tabs = [
-    ModernDashboardScreen(role: UserRole.supervisor),
+  
+  // These will be dynamically populated based on roles
+  List<Widget> _tabs = [];
+  List<String> headers = [];
+  List<BottomNavigationBarItem> _navItems = [];
 
-    TeachersManagementScreen(),
-    StudentsManagementScreen(),
-    HalaqaManagementScreen(),
-    MonitoringScreen(),
-  ];
-  final List<String> headers = [
-    "الرئيسية",
-    "إدارة المعلمين",
-    "إدارة الطلاب",
-    "إدارة الحلقات",
-    "المتابعة الشاملة",
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _buildTabsBasedOnRoles();
+  }
+
+  void _buildTabsBasedOnRoles() {
+    final authState = context.read<AuthBloc>().state;
+    final roles = authState.user?.roles ?? [];
+
+    // Everyone gets the dashboard
+    _tabs.add(ModernDashboardScreen(role: UserRole.supervisor));
+    headers.add("الرئيسية");
+    _navItems.add(const BottomNavigationBarItem(
+      icon: Icon(Icons.dashboard_outlined),
+      label: 'الرئيسية',
+    ));
+
+    // School Admin or Teachers Supervisor
+    if (roles.contains('school_admin') || roles.contains('teachers_supervisor')) {
+      _tabs.add(TeachersManagementScreen());
+      headers.add("إدارة المعلمين");
+      _navItems.add(const BottomNavigationBarItem(
+        icon: Icon(Icons.school_outlined),
+        label: 'المعلمين',
+      ));
+    }
+
+    // School Admin or Students Supervisor
+    if (roles.contains('school_admin') || roles.contains('students_supervisor')) {
+      _tabs.add(StudentsManagementScreen());
+      headers.add("إدارة الطلاب");
+      _navItems.add(const BottomNavigationBarItem(
+        icon: Icon(Icons.group_outlined),
+        label: 'الطلاب',
+      ));
+    }
+
+    // School Admin or Halaqah Supervisor
+    if (roles.contains('school_admin') || roles.contains('halaqah_supervisor')) {
+      _tabs.add(HalaqaManagementScreen());
+      headers.add("إدارة الحلقات");
+      _navItems.add(const BottomNavigationBarItem(
+        icon: Icon(Icons.book_outlined),
+        label: 'الحلقات',
+      ));
+    }
+
+    // School Admin or Reports Supervisor
+    if (roles.contains('school_admin') || roles.contains('reports_supervisor')) {
+      _tabs.add(MonitoringScreen());
+      headers.add("المتابعة الشاملة");
+      _navItems.add(const BottomNavigationBarItem(
+        icon: Icon(Icons.analytics_outlined),
+        label: 'المتابعة',
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,13 +159,11 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
           textDirection: TextDirection.rtl,
           child: SafeArea(child: _tabs[_currentIndex]),
         ),
-        bottomNavigationBar: Container(
+        bottomNavigationBar: _navItems.length > 1 ? Container(
           padding: EdgeInsets.only(bottom: 5, top: 5),
           decoration: BoxDecoration(
             color: AppColors.mediumDark,
-            // borderRadius: BorderRadius.circular(24),
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.2),
@@ -134,30 +181,9 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
             unselectedItemColor: AppColors.lightCream54,
             showUnselectedLabels: true,
             onTap: (index) => setState(() => _currentIndex = index),
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.dashboard_outlined),
-                label: 'الرئيسية',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.school_outlined),
-                label: 'المعلمين',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.group_outlined),
-                label: 'الطلاب',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.book_outlined),
-                label: 'الحلقات',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.analytics_outlined),
-                label: 'المتابعة',
-              ),
-            ],
+            items: _navItems,
           ),
-        ),
+        ) : null,
       ),
     );
   }

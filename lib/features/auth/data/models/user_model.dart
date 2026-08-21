@@ -8,8 +8,9 @@ class UserModel {
   final String phone;
   final String? avatar;
   final UserRole role;
-
   final bool isEmailVerified;
+  final String genderScope;
+  final List<String> roles;
 
   const UserModel({
     required this.id,
@@ -19,6 +20,8 @@ class UserModel {
     required this.role,
     this.avatar,
     this.isEmailVerified = false,
+    this.genderScope = 'all',
+    this.roles = const [],
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json, UserRole role) {
@@ -30,6 +33,8 @@ class UserModel {
       avatar: json['avatar'],
       role: role,
       isEmailVerified: json['is_email_verified'] ?? false,
+      genderScope: json['gender_scope'] ?? 'all',
+      roles: json['roles'] != null ? List<String>.from(json['roles']) : [],
     );
   }
 
@@ -43,6 +48,8 @@ class UserModel {
       phone: map['phone'] ?? '',
       role: UserRole.fromId(map['roleId'] ?? 0),
       isEmailVerified: (map['is_email_verified'] ?? 0) == 1,
+      genderScope: map['gender_scope'] ?? 'all',
+      roles: map['roles'] != null ? map['roles'].toString().split(',') : [],
     );
   }
 
@@ -54,6 +61,8 @@ class UserModel {
       'phone': phone,
       'avatar': avatar,
       'is_email_verified': isEmailVerified,
+      'gender_scope': genderScope,
+      'roles': roles,
     };
   }
 
@@ -66,6 +75,8 @@ class UserModel {
       'avatar': avatar,
       'roleId': role.id,
       'is_email_verified': isEmailVerified ? 1 : 0,
+      'gender_scope': genderScope,
+      'roles': roles.join(','),
     };
   }
 
@@ -78,6 +89,8 @@ class UserModel {
       avatar: avatar,
       role: role,
       isEmailVerified: isEmailVerified,
+      genderScope: genderScope,
+      roles: roles,
     );
   }
 }
