@@ -15,10 +15,12 @@ class WebSocketService {
 
   WebSocketService(this._storage, {required String baseUrl}) : _baseUrl = baseUrl;
 
-  Future<void> connect() async {
+  Future<void> connect({String? userId}) async {
     final token = await _storage.read(key: 'auth_token');
-    if (token == null) {
-      debugPrint('WebSocket: No auth token found, cannot connect.');
+    final actualUserId = userId ?? await _storage.read(key: 'user_id');
+    
+    if (token == null || actualUserId == null) {
+      debugPrint('WebSocket: No auth token or user id found, cannot connect.');
       return;
     }
 
@@ -42,7 +44,7 @@ class WebSocketService {
         },
       );
 
-      _subscribeToPrivateChannel(token);
+      _subscribeToPrivateChannel(token, actualUserId);
       
     } catch (e) {
       debugPrint('WebSocket Connection Exception: $e');
@@ -50,8 +52,8 @@ class WebSocketService {
     }
   }
 
-  Future<void> _subscribeToPrivateChannel(String token) async {
-    final channelName = 'private-user.MOCK_USER_ID'; 
+  Future<void> _subscribeToPrivateChannel(String token, String userId) async {
+    final channelName = 'private-user.$userId'; 
     
     try {
       final authUrl = Uri.parse('$_baseUrl/broadcasting/auth');
