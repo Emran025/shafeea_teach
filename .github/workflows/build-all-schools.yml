@@ -135,11 +135,6 @@ jobs:
       - name: Checkout Flutter source
         uses: actions/checkout@v4
 
-      - name: Setup Shorebird
-        uses: shorebirdtech/setup-shorebird@v1
-        with:
-          cache: true
-
       - name: Fetch school build configuration
         id: config
         env:
@@ -208,27 +203,10 @@ jobs:
         env:
           SHAFEEA_TEACH_API_URL: ${{ secrets.SHAFEEA_TEACH_API_URL }}
         run: |
-          # Shorebird Integration: Check if we are doing a patch or release
-          if [ "${{ github.event.inputs.force_release }}" = "true" ] || [ -z "${{ secrets.SHOREBIRD_TOKEN }}" ]; then
-            echo "Building standard APK or Shorebird Release..."
-            if [ -n "${{ secrets.SHOREBIRD_TOKEN }}" ]; then
-              shorebird release android --force \
-                -- --dart-define=SCHOOL_ID=${{ matrix.school_id }} \
-                --dart-define=SCHOOL_CODE=${{ matrix.school_code }} \
-                --dart-define=SCHOOL_NAME="${{ matrix.school_name }}"
-            else
-              build-apk.sh \
-                teach \
-                "${{ needs.prepare-matrix.outputs.build_name }}" \
-                "${{ github.run_number }}"
-            fi
-          else
-            echo "Building Shorebird Patch..."
-            shorebird patch android --force \
-              -- --dart-define=SCHOOL_ID=${{ matrix.school_id }} \
-              --dart-define=SCHOOL_CODE=${{ matrix.school_code }} \
-              --dart-define=SCHOOL_NAME="${{ matrix.school_name }}"
-          fi
+          build-apk.sh \
+            teach \
+            "${{ needs.prepare-matrix.outputs.build_name }}" \
+            "${{ github.run_number }}"
 
       - name: Locate built APK
         id: apk

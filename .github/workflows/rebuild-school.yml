@@ -59,11 +59,6 @@ jobs:
       - name: Checkout Flutter source
         uses: actions/checkout@v4
 
-      - name: Setup Shorebird
-        uses: shorebirdtech/setup-shorebird@v1
-        with:
-          cache: true
-
       - name: Download school logo
         if: github.event.client_payload.logo_url != ''
         run: |
@@ -86,19 +81,10 @@ jobs:
           KEY_PASSWORD:          ${{ github.event.client_payload.keystore_key_password }}
           SHAFEEA_TEACH_API_URL: ${{ secrets.SHAFEEA_TEACH_API_URL }}
         run: |
-          if [ -n "${{ secrets.SHOREBIRD_TOKEN }}" ]; then
-            echo "Building with Shorebird for OTA support..."
-            shorebird release android --force \
-              -- --dart-define=SCHOOL_ID=${{ github.event.client_payload.school_id }} \
-              --dart-define=SCHOOL_CODE=${{ github.event.client_payload.school_code }} \
-              --dart-define=SCHOOL_NAME="${{ github.event.client_payload.school_name }}"
-          else
-            echo "Building standard APK (No Shorebird token)..."
-            build-apk.sh \
-              teach \
-              "${{ needs.get-release.outputs.build_name }}" \
-              "${{ github.run_number }}"
-          fi
+          build-apk.sh \
+            teach \
+            "${{ needs.get-release.outputs.build_name }}" \
+            "${{ github.run_number }}"
 
       - name: Locate built APK
         id: apk
