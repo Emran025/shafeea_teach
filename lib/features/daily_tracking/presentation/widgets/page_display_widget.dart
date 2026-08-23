@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // lib/features/quran_reader/presentation/widgets/page_display_widget.dart
 
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ import 'top_title_page_header_widget.dart'; // Add shimmer package to pubspec.ya
 class PageDisplayWidget extends StatefulWidget {
   final int pageNumber;
 
-  const PageDisplayWidget({super.key, required this.pageNumber});
+  PageDisplayWidget({super.key, required this.pageNumber});
 
   @override
   State<PageDisplayWidget> createState() => _PageDisplayWidgetState();
@@ -248,7 +249,7 @@ class _PageDisplayWidgetState extends State<PageDisplayWidget> {
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           // Add Basmalah for all surahs except Al-Fatiha (1) and At-Tawbah (9)
           if (surahNumber != 1 && surahNumber != 9)
             SvgPicture.asset(
@@ -256,7 +257,7 @@ class _PageDisplayWidgetState extends State<PageDisplayWidget> {
               width: 150.0,
               // height: 100,
               color: Theme.of(context).colorScheme.secondary,
-              // color: const Color(0xffd0d0d0),
+              // color: Color(0xffd0d0d0),
             ),
         ],
       ),
@@ -287,13 +288,13 @@ class _PageDisplayWidgetState extends State<PageDisplayWidget> {
               color: Theme.of(context).colorScheme.error,
               size: 48,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text(
               message ?? AppStrings.defaultErrorMessage,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 // Retry fetching the data for this page.
@@ -301,7 +302,7 @@ class _PageDisplayWidgetState extends State<PageDisplayWidget> {
                   PageDataRequested(widget.pageNumber),
                 );
               },
-              child: const Text('إعادة المحاولة'),
+              child: Text(L10nStrings.AppStrings.retry),
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // lib/features/daily_tracking/presentation/widgets/session_bottom_toolbar.dart
 
 import 'dart:ui';
@@ -19,7 +20,7 @@ import 'package:shafeea/features/daily_tracking/presentation/pages/student_error
 class SessionTopToolbar extends StatelessWidget {
   final VoidCallback onTap;
   final String enrollmentId;
-  const SessionTopToolbar({
+  SessionTopToolbar({
     super.key,
     required this.onTap,
     required this.enrollmentId,
@@ -73,9 +74,9 @@ class SessionTopToolbar extends StatelessWidget {
                     builder: (context, scrollController) {
                       return StudentErrorAnalysisChart(
                         enrollmentId: enrollmentId,
-                        tile: const ChartTile(
-                          title: 'تحليل أداء الطالب',
-                          subTitle: 'عرض إحصائيات الأخطاء',
+                        tile: ChartTile(
+                          title: L10nStrings.AppStrings.studentPerformanceAnalysis,
+                          subTitle: L10nStrings.AppStrings.viewErrorStatistics,
                           icon: Icons.bar_chart,
                         ),
                       );

@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ import 'add_halaqas_screen.dart';
 import 'halaqa_profile_screen.dart';
 
 class HalaqaManagementScreen extends StatefulWidget {
-  const HalaqaManagementScreen({super.key});
+  HalaqaManagementScreen({super.key});
 
   @override
   State<HalaqaManagementScreen> createState() => _HalaqaManagementScreenState();
@@ -73,15 +74,15 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
           // Provide a fresh TeacherBloc — streams active teachers with
           // capacity info so the picker can filter by remaining circles.
           BlocProvider<TeacherBloc>(
-            create: (_) => sl<TeacherBloc>()..add(const WatchTeachersStarted()),
+            create: (_) => sl<TeacherBloc>()..add(WatchTeachersStarted()),
           ),
           // Provide a fresh StudentBloc — streams all students so the
           // picker can filter to those not yet enrolled in any halaqa.
           BlocProvider<StudentBloc>(
-            create: (_) => sl<StudentBloc>()..add(const WatchStudentsStarted()),
+            create: (_) => sl<StudentBloc>()..add(WatchStudentsStarted()),
           ),
         ],
-        child: const AddHalaqaDialog(),
+        child: AddHalaqaDialog(),
       ),
     );
   }
@@ -100,7 +101,7 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
               },
               icon: Icon(Icons.add, color: AppColors.lightCream),
               label: Text(
-                "إضافة حلقة",
+                L10nStrings.AppStrings.addHalaqa,
                 style: GoogleFonts.cairo(
                   fontWeight: FontWeight.bold,
                   color: AppColors.lightCream,
@@ -114,7 +115,7 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildSearchBar(),
-                    const SizedBox(height: 10),
+                    SizedBox(height: 10),
                     Expanded(
                       // Use a BlocBuilder because this part only needs to rebuild based on state.
                       // ...
@@ -123,7 +124,7 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
                           // --- Central Loading Indicator ---
                           if (state.status == HalaqaStatus.loading &&
                               state.halaqas.isEmpty) {
-                            return const Center(
+                            return Center(
                               child: CircularProgressIndicator(),
                             );
                           }
@@ -138,8 +139,8 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
                                   ElevatedButton(
                                     onPressed: () => context
                                         .read<HalaqaBloc>()
-                                        .add(const HalaqasRefreshed()),
-                                    child: const Text('Try Again'),
+                                        .add(HalaqasRefreshed()),
+                                    child: Text('Try Again'),
                                   ),
                                 ],
                               ),
@@ -152,11 +153,11 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
                             return RefreshIndicator(
                               onRefresh: () async {
                                 context.read<HalaqaBloc>().add(
-                                  const HalaqasRefreshed(),
+                                  HalaqasRefreshed(),
                                 );
                                 // The refresh completes when the BLoC emits a new state.
                               },
-                              child: const Center(
+                              child: Center(
                                 child: Text('No halaqas found.'),
                               ),
                             );
@@ -177,14 +178,14 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
                                   state.hasMorePages &&
                                   !state.isLoadingMore) {
                                 context.read<HalaqaBloc>().add(
-                                  const HalaqasRefreshed(),
+                                  HalaqasRefreshed(),
                                 );
                               }
                               // The refresh completes when the BLoC emits a new state.
                             },
                             child: ListView.separated(
                               separatorBuilder: (_, __) =>
-                                  const SizedBox(height: 5),
+                                  SizedBox(height: 5),
                               controller:
                                   _scrollController, // Controller for "load more"
                               itemCount:
@@ -193,7 +194,7 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
                               itemBuilder: (ctx, i) {
                                 if (i >= filteredHalaqas.length) {
                                   // "Load More" indicator
-                                  return const Center(
+                                  return Center(
                                     child: Padding(
                                       padding: EdgeInsets.all(16.0),
                                       child: CircularProgressIndicator(),
@@ -232,7 +233,7 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
           Icons.search,
           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
         ),
-        hintText: "ابحث عن حلقة...",
+        hintText: L10nStrings.AppStrings.searchHalaqaHint,
         hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
@@ -278,7 +279,7 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
 class AddHalaqaDialog extends StatefulWidget {
   //   // All controllers are created here, inside the dialog's scope.
 
-  const AddHalaqaDialog({super.key});
+  AddHalaqaDialog({super.key});
 
   @override
   State<AddHalaqaDialog> createState() => _AddHalaqaDialogState();
@@ -315,7 +316,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'يرجى اختيار المعلم المسؤول عن الحلقة',
+              L10nStrings.AppStrings.pleaseSelectHalaqaTeacher,
               style: GoogleFonts.cairo(color: AppColors.lightCream),
             ),
             backgroundColor: AppColors.error,
@@ -345,7 +346,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'يرجى اختيار المعلم المسؤول عن الحلقة',
+              L10nStrings.AppStrings.pleaseSelectHalaqaTeacher,
               style: GoogleFonts.cairo(color: AppColors.lightCream),
             ),
             backgroundColor: AppColors.error,
@@ -361,9 +362,9 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
         name: form.nameController.text,
         gender: Gender.fromLabel(
           form.genderController.text == 'Male' ||
-                  form.genderController.text == 'ذكر'
-              ? 'ذكر'
-              : 'أنثى',
+                  form.genderController.text == L10nStrings.AppStrings.genderMale
+              ? L10nStrings.AppStrings.genderMale
+              : L10nStrings.AppStrings.genderFemale,
         ),
         country: form.countryController.text,
         residence: form.residenceController.text,
@@ -400,7 +401,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
           // On success, close the dialog
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text('Halaqa saved successfully!'),
               backgroundColor: Colors.green,
             ),
@@ -430,13 +431,13 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(icon, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Text(
                       message,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 16),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: 16),
                     Row(
                       children: [
                         Expanded(
@@ -454,7 +455,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                               // Navigator.pop(context);
                             },
                             child: Text(
-                              "حاول مجددًا",
+                              L10nStrings.AppStrings.tryAgain,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -510,14 +511,14 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Center(
-                            child: const Icon(
+                            child: Icon(
                               Icons.add,
                               color: AppColors.lightCream,
                             ),
                           ),
-                          const SizedBox(width: 8),
+                          SizedBox(width: 8),
                           Text(
-                            "بناء حلقة",
+                            L10nStrings.AppStrings.createHalaqa,
                             style: GoogleFonts.cairo(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -526,7 +527,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.only(left: 16),
                         child: Divider(height: 2, color: AppColors.accent70),
@@ -548,7 +549,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 14),
+                      SizedBox(height: 14),
                       Row(
                         children: [
                           Expanded(
@@ -560,7 +561,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "الغاء",
+                                L10nStrings.AppStrings.cancel2,
                                 style: GoogleFonts.cairo(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -582,7 +583,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "اضافة آخر",
+                                L10nStrings.AppStrings.addAnother,
                                 style: GoogleFonts.cairo(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -603,7 +604,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                                 });
                               },
                               child: Text(
-                                "حفظ",
+                                L10nStrings.AppStrings.save,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                   fontSize: 13,

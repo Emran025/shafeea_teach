@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -106,7 +107,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  constraints: const BoxConstraints(maxHeight: 540),
+                  constraints: BoxConstraints(maxHeight: 540),
                   decoration: BoxDecoration(
                     color: AppColors.lightCream.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(20),
@@ -117,22 +118,22 @@ class _HalaqaFormState extends State<HalaqaForm> {
                     children: [
                       // ----- Header -----
                       Text(
-                        "إضافة طلاب للحلقة",
+                        L10nStrings.AppStrings.addStudentsToHalaqa,
                         style: GoogleFonts.cairo(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppColors.lightCream,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
-                        "يُعرض فقط الطلاب غير الملتحقين بحلقة نشطة",
+                        L10nStrings.AppStrings.onlyShowStudentsNotInActiveHalaqa,
                         style: GoogleFonts.cairo(
                           fontSize: 12,
                           color: AppColors.lightCream70,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // ----- Search -----
                       TextField(
@@ -145,11 +146,11 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: "ابحث عن طالب...",
+                          hintText: L10nStrings.AppStrings.searchStudentHint,
                           hintStyle: GoogleFonts.cairo(
                             color: AppColors.lightCream70,
                           ),
-                          prefixIcon: const Icon(
+                          prefixIcon: Icon(
                             Icons.search,
                             color: AppColors.lightCream,
                           ),
@@ -161,7 +162,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // ----- Student list -----
                       if (eligibleStudents.isEmpty)
@@ -177,19 +178,19 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                   size: 48,
                                   color: AppColors.lightCream70,
                                 ),
-                                const SizedBox(height: 12),
+                                SizedBox(height: 12),
                                 Text(
                                   studentState.status == StudentStatus.loading
-                                      ? "جارٍ تحميل الطلاب..."
-                                      : "لا يوجد طلاب غير ملتحقين حاليًا",
+                                      ? L10nStrings.AppStrings.loadingStudents
+                                      : L10nStrings.AppStrings.noUnassignedStudents,
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream70,
                                   ),
                                 ),
                                 if (studentState.status ==
                                     StudentStatus.loading) ...[
-                                  const SizedBox(height: 12),
-                                  const CircularProgressIndicator(),
+                                  SizedBox(height: 12),
+                                  CircularProgressIndicator(),
                                 ],
                               ],
                             ),
@@ -241,7 +242,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                           color: AppColors.lightCream70,
                                         ),
                                       ),
-                                      const Spacer(),
+                                      Spacer(),
                                       // Status badge
                                       Container(
                                         padding: const EdgeInsets.symmetric(
@@ -281,7 +282,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           ),
                         ),
 
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // ----- Actions -----
                       Row(
@@ -293,14 +294,14 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "إلغاء",
+                                L10nStrings.AppStrings.cancel,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -369,7 +370,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                 filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  constraints: const BoxConstraints(maxHeight: 500),
+                  constraints: BoxConstraints(maxHeight: 500),
                   decoration: BoxDecoration(
                     color: AppColors.lightCream.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(20),
@@ -380,22 +381,22 @@ class _HalaqaFormState extends State<HalaqaForm> {
                     children: [
                       // ----- Header -----
                       Text(
-                        "اختر معلمًا متاحًا",
+                        L10nStrings.AppStrings.selectAvailableTeacher,
                         style: GoogleFonts.cairo(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: AppColors.lightCream,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4),
                       Text(
-                        "يُعرض فقط المعلمون الذين لديهم حلقات متاحة",
+                        L10nStrings.AppStrings.onlyShowTeachersWithAvailableHalaqas,
                         style: GoogleFonts.cairo(
                           fontSize: 12,
                           color: AppColors.lightCream70,
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // ----- Search -----
                       TextField(
@@ -408,11 +409,11 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: "ابحث عن معلم...",
+                          hintText: L10nStrings.AppStrings.searchTeacherHint,
                           hintStyle: GoogleFonts.cairo(
                             color: AppColors.lightCream70,
                           ),
-                          prefixIcon: const Icon(
+                          prefixIcon: Icon(
                             Icons.search,
                             color: AppColors.lightCream,
                           ),
@@ -424,7 +425,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // ----- Teacher List -----
                       if (availableTeachers.isEmpty)
@@ -438,19 +439,19 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                   size: 48,
                                   color: AppColors.lightCream70,
                                 ),
-                                const SizedBox(height: 12),
+                                SizedBox(height: 12),
                                 Text(
                                   teacherState.status == TeacherStatus.loading
-                                      ? "جارٍ تحميل المعلمين..."
-                                      : "لا يوجد معلمون متاحون حاليًا",
+                                      ? L10nStrings.AppStrings.loadingTeachers
+                                      : L10nStrings.AppStrings.noAvailableTeachers,
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream70,
                                   ),
                                 ),
                                 if (teacherState.status ==
                                     TeacherStatus.loading) ...[
-                                  const SizedBox(height: 12),
-                                  const CircularProgressIndicator(),
+                                  SizedBox(height: 12),
+                                  CircularProgressIndicator(),
                                 ],
                               ],
                             ),
@@ -496,7 +497,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                           color: AppColors.lightCream70,
                                         ),
                                       ),
-                                      const Spacer(),
+                                      Spacer(),
                                       // Capacity badge
                                       Container(
                                         padding: const EdgeInsets.symmetric(
@@ -537,7 +538,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           ),
                         ),
 
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
 
                       // ----- Actions -----
                       Row(
@@ -549,14 +550,14 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "إلغاء",
+                                L10nStrings.AppStrings.cancel,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -579,7 +580,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                       Navigator.pop(context);
                                     },
                               child: Text(
-                                "تأكيد",
+                                L10nStrings.AppStrings.confirm,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -617,24 +618,24 @@ class _HalaqaFormState extends State<HalaqaForm> {
             CustomTextField(
               controller: widget.nameController,
               prefixIcon: Icons.auto_stories_rounded,
-              label: "اسم الحلقة",
+              label: L10nStrings.AppStrings.halaqaNameLabel,
               keyboardType: TextInputType.name,
             ),
 
-            _buildDropdown(widget.genderController, "الجنس", [
+            _buildDropdown(widget.genderController, L10nStrings.AppStrings.genderLabel, [
               ...(Gender.values.map((e) => e.label).toList()),
             ]),
             CustomTextField(
               controller: widget.eneregyController,
               prefixIcon: Icons.group,
-              label: "الطاقة الإستيعابية",
+              label: L10nStrings.AppStrings.capacityLabel,
               keyboardType: TextInputType.number,
             ),
 
             CustomTextField(
               controller: widget.residenceController,
               prefixIcon: Icons.home_filled,
-              label: "البلد",
+              label: L10nStrings.AppStrings.countryLabel,
               onTap: _changeCountryDialog,
               readOnly: true,
             ),
@@ -642,7 +643,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
             CustomTimePicker(
               controller: widget.availableTimeController,
               icon: Icons.timelapse_rounded,
-              label: "الوقت المتاح",
+              label: L10nStrings.AppStrings.availableTimeLabel,
               onTimeSelected: (date) {
                 widget.availableTimeController.text = "$date";
               },
@@ -668,16 +669,16 @@ class _HalaqaFormState extends State<HalaqaForm> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.person_search_rounded,
                       color: AppColors.lightCream70,
                       size: 20,
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10),
                     Expanded(
                       child: teacher == null
                           ? Text(
-                              "اختر المعلم المسؤول عن الحلقة",
+                              L10nStrings.AppStrings.chooseHalaqaTeacher,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream70,
                                 fontSize: 14,
@@ -718,7 +719,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          "تغيير",
+                          L10nStrings.AppStrings.change,
                           style: GoogleFonts.cairo(
                             fontSize: 11,
                             color: AppColors.lightCream,
@@ -726,7 +727,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                         ),
                       )
                     else
-                      const Icon(
+                      Icon(
                         Icons.arrow_forward_ios_rounded,
                         color: AppColors.lightCream70,
                         size: 14,
@@ -743,10 +744,10 @@ class _HalaqaFormState extends State<HalaqaForm> {
               onTap: _showStudentPickerDialog,
               child: Row(
                 children: [
-                  const Icon(Icons.add, color: AppColors.mediumDark87),
-                  const SizedBox(width: 8),
+                  Icon(Icons.add, color: AppColors.mediumDark87),
+                  SizedBox(width: 8),
                   Text(
-                    "إضافة طلاب",
+                    L10nStrings.AppStrings.addStudents,
                     style: GoogleFonts.cairo(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -756,12 +757,12 @@ class _HalaqaFormState extends State<HalaqaForm> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.only(left: 16),
               child: Divider(height: 2, color: AppColors.accent70),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: SingleChildScrollView(
@@ -794,7 +795,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
       decoration: BoxDecoration(
         color: AppColors.accent.withOpacity(0.3),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
         ],
       ),
@@ -820,7 +821,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
           ),
         ),
         trailing: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.playlist_remove_rounded,
             color: AppColors.lightCream,
           ),
@@ -875,7 +876,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
               (e) => DropdownMenuItem(
                 value: e,
                 child: Text(
-                  e == "Male" ? "ذكر" : "أنثى",
+                  e == "Male" ? L10nStrings.AppStrings.genderMale : L10nStrings.AppStrings.genderFemale,
                   style: GoogleFonts.cairo(
                     color: AppColors.lightCream70,
                     fontSize: 14,

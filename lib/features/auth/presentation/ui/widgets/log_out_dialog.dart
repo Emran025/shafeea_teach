@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -5,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../bloc/auth_bloc.dart';
 
 class LogoutConfirmationDialog extends StatefulWidget {
-  const LogoutConfirmationDialog({super.key});
+  LogoutConfirmationDialog({super.key});
 
   @override
   State<LogoutConfirmationDialog> createState() =>
@@ -38,7 +39,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    state.logOutFailure?.message ?? 'فشل تسجيل الخروج',
+                    state.logOutFailure?.message ?? L10nStrings.AppStrings.logoutFailed,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onError,
                     ),
@@ -61,24 +62,24 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
             children: [
               // العنوان
               Text(
-                'تسجيل الخروج',
+                L10nStrings.AppStrings.logOut,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               // الرسالة
               Text(
-                'هل تريد تسجيل الخروج من التطبيق؟',
+                L10nStrings.AppStrings.confirmLogoutQuestion,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(
                     context,
                   ).colorScheme.onBackground.withOpacity(0.87),
                 ),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16),
 
               Row(
                 children: [
@@ -96,7 +97,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                   ),
                   Expanded(
                     child: Text(
-                      'حذف بيانات التسجيل المخزنة',
+                      L10nStrings.AppStrings.deleteStoredLoginData,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(
                           context,
@@ -106,12 +107,12 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
 
               Padding(
                 padding: const EdgeInsets.only(left: 48),
                 child: Text(
-                  'سيتم حذف اسم المستخدم وكلمة المرور المحفوظة',
+                  L10nStrings.AppStrings.savedCredentialsWillBeDeleted,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(
                       context,
@@ -119,7 +120,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               Row(
                 children: [
@@ -146,7 +147,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                         ),
                       ),
                       child: Text(
-                        'البقاء',
+                        L10nStrings.AppStrings.stay,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               color: Theme.of(context).colorScheme.onBackground,
@@ -154,7 +155,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
 
                   // زر تسجيل الخروج
                   Expanded(
@@ -169,8 +170,8 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                                 LogOutRequested(
                                   deleteCredentials: _deleteCredentials,
                                   message: _deleteCredentials
-                                      ? 'تم تسجيل الخروج وحذف بيانات الاعتماد'
-                                      : 'تم تسجيل الخروج',
+                                      ? L10nStrings.AppStrings.loggedOutCredentialsDeleted
+                                      : L10nStrings.AppStrings.loggedOut,
                                 ),
                               );
                             },
@@ -197,7 +198,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                               ),
                             )
                           : Text(
-                              'تسجيل الخروج',
+                              L10nStrings.AppStrings.logOut,
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     color: Theme.of(

@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // path: lib/features/settings/presentation/screens/profile_screen.dart (New File)
 
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ import '../widgets/settings_group_widget.dart';
 /// It reacts to the [SettingsState] to show loading, error, and success states
 /// for the user profile data.
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -36,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (state is! SettingsLoadSuccess) {
             // This case should ideally not be hit if navigation is handled correctly,
             // but serves as a robust fallback.
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           }
           return _buildProfileContent(context, state);
         },
@@ -49,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
-          title: const Text('الملف الشخصي'),
+          title: Text(L10nStrings.AppStrings.profile),
           // Makes the AppBar float and snap back into view, a modern UX pattern.
           floating: true,
           pinned: true,
@@ -71,7 +72,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         // --- Loading/Error State for Profile Section ---
         // Show a loading indicator while the profile is being fetched.
         if (state.profileStatus == SectionStatus.loading)
-          const SliverFillRemaining(
+          SliverFillRemaining(
             child: Center(child: CircularProgressIndicator()),
           ),
 
@@ -89,12 +90,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // --- Account Actions Group ---
           SliverToBoxAdapter(
             child: SettingsGroup(
-              title: 'إدارة الحساب',
+              title: L10nStrings.AppStrings.accountManagement,
               children: [
                 ModernSettingTile(
                   icon: Icons.edit_outlined,
                   iconBackgroundColor: Colors.blueAccent,
-                  title: 'تعديل معلومات التواصل',
+                  title: L10nStrings.AppStrings.editContactInformation,
                   onTap: () {
                     /* TODO: Navigate to Edit Profile Form */
                   },
@@ -102,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ModernSettingTile(
                   icon: Icons.lock_outline,
                   iconBackgroundColor: Colors.deepPurpleAccent,
-                  title: 'تغيير كلمة المرور',
+                  title: L10nStrings.AppStrings.changePassword,
                   onTap: () {
                     /* TODO: Navigate to Change Password Screen */
                     _showLogoutDialog();
@@ -115,21 +116,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // --- Active Sessions Group ---
           SliverToBoxAdapter(
             child: SettingsGroup(
-              title: 'الجلسات النشطة',
+              title: L10nStrings.AppStrings.activeSessions,
               children: state.userProfile!.activeSessions.isNotEmpty
                   ? state.userProfile!.activeSessions
                         .map((session) => _SessionCard(session: session))
                         .toList()
                   : [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.all(16.0),
-                        child: Center(child: Text('لا توجد جلسات أخرى نشطة.')),
+                        child: Center(child: Text(L10nStrings.AppStrings.noOtherActiveSessions)),
                       ),
                     ],
             ),
           ),
         ],
-        const SliverToBoxAdapter(child: SizedBox(height: 32)),
+        SliverToBoxAdapter(child: SizedBox(height: 32)),
       ],
     );
   }
@@ -139,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (context) => BlocProvider.value(
         value: context.read<AuthBloc>(),
-        child: const ChangePasswordDialog(),
+        child: ChangePasswordDialog(),
       ),
     );
   }
@@ -168,14 +169,14 @@ class _ProfileHeader extends StatelessWidget {
                 ? Icon(Icons.person, size: 60, color: Colors.amber)
                 : null,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
             user.name,
             style: theme.textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             user.email,
             style: theme.textTheme.bodyLarge?.copyWith(
@@ -216,7 +217,7 @@ class _SessionCard extends StatelessWidget {
       child: Row(
         children: [
           Icon(deviceIcon, color: theme.colorScheme.primary, size: 32),
-          const SizedBox(width: 16),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,7 +237,7 @@ class _SessionCard extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
                     child: Text(
-                      '• هذا الجهاز',
+                      L10nStrings.AppStrings.thisDeviceBullet,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: Colors.green.shade700,
                         fontWeight: FontWeight.bold,
@@ -252,7 +253,7 @@ class _SessionCard extends StatelessWidget {
                 // TODO: Dispatch a "RemoveSession" event to the BLoC
                 // context.read<SettingsBloc>().add(RemoveSession(session.id));
               },
-              child: const Text('تسجيل الخروج'),
+              child: Text(L10nStrings.AppStrings.logOut),
             ),
         ],
       ),

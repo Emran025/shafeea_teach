@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/core/models/user_role.dart';
@@ -9,7 +10,7 @@ import '../../bloc/student_bloc.dart';
 import 'student_management_screen.dart';
 
 class StudentsManagementScreen extends StatefulWidget {
-  const StudentsManagementScreen({super.key});
+  StudentsManagementScreen({super.key});
 
   @override
   State<StudentsManagementScreen> createState() =>
@@ -34,12 +35,12 @@ class _StudentsManagementScreenState extends State<StudentsManagementScreen>
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           toolbarHeight: 0,
-          // title: const Text("إدارة الطالبين"),
+          // title: Text("إدارة الطالبين"),
           bottom: TabBar(
             controller: _tabController,
-            tabs: const [
-              Tab(text: "الطلاب الحاليون"),
-              Tab(text: "طلبات التقديم"),
+            tabs: [
+              Tab(text: L10nStrings.AppStrings.currentStudents2),
+              Tab(text: L10nStrings.AppStrings.applicationRequests),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
 import 'package:shafeea/features/StudentsManagement/presentation/ui/screens/students_continuous_monitoring.dart';
@@ -5,7 +6,7 @@ import 'package:shafeea/features/StudentsManagement/presentation/ui/screens/stud
 import '../../../../HalaqasManagement/presentation/ui/screens/halqas_continuous_monitoring.dart';
 
 class MonitoringScreen extends StatefulWidget {
-  const MonitoringScreen({super.key});
+  MonitoringScreen({super.key});
 
   @override
   State<MonitoringScreen> createState() => _MonitoringScreenState();
@@ -33,8 +34,8 @@ class _MonitoringScreenState extends State<MonitoringScreen>
             controller: _tabController,
             dividerColor: Colors.black12,
             tabs: [
-              Tab(text: "الحلقات"),
-              Tab(text: "الطلاب"),
+              Tab(text: L10nStrings.AppStrings.halaqasLabel),
+              Tab(text: L10nStrings.AppStrings.students),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,7 +9,7 @@ import '../../bloc/auth_bloc.dart';
 // import '../../../../../core/constants/app_colors.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
-  const ForgetPasswordScreen({super.key});
+  ForgetPasswordScreen({super.key});
 
   @override
   State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
@@ -51,16 +52,16 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           : null,
       filled: true,
       fillColor: AppColors.lightCream.withOpacity(0.1),
-      labelStyle: const TextStyle(color: AppColors.lightCream),
+      labelStyle: TextStyle(color: AppColors.lightCream),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.lightCream26),
+        borderSide: BorderSide(color: AppColors.lightCream26),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.lightCream),
+        borderSide: BorderSide(color: AppColors.lightCream),
       ),
-      errorStyle: const TextStyle(color: Colors.amber),
+      errorStyle: TextStyle(color: Colors.amber),
     );
   }
 
@@ -83,7 +84,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         body: Stack(
           children: [
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [AppColors.accent, AppColors.mediumDark],
                   begin: Alignment.topCenter,
@@ -99,7 +100,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     vertical: 32,
                   ),
                   child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
+                    duration: Duration(milliseconds: 300),
                     curve: Curves.easeOut,
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
@@ -110,7 +111,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         BoxShadow(
                           color: AppColors.darkBackground26,
                           blurRadius: 12,
-                          offset: const Offset(0, 4),
+                          offset: Offset(0, 4),
                         ),
                       ],
                     ),
@@ -121,7 +122,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           Hero(
                             tag: 'logo',
                             child: Container(
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: AppColors.lightCream,
                                 shape: BoxShape.circle,
                               ),
@@ -131,33 +132,33 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
 
                           TextFormField(
                             controller: emailController,
                             keyboardType: TextInputType.emailAddress,
-                            style: const TextStyle(color: AppColors.lightCream),
+                            style: TextStyle(color: AppColors.lightCream),
                             validator: (val) =>
                                 val!.trim().contains('@') ||
                                     val.trim().length >= 7
                                 ? null
-                                : 'بريد أو رقم هاتف غير صالح',
+                                : L10nStrings.AppStrings.invalidEmailOrPhone,
                             decoration: _inputDecoration(
-                              "رقم الهاتف أو البريد الإلكتروني",
+                              L10nStrings.AppStrings.phoneOrEmail,
                               Icons.email,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
 
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
                           BlocConsumer<AuthBloc, AuthState>(
                             listener: (context, state) {
                               if (state.forgetPasswordStatus ==
                                   ForgetPasswordStatus.success) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                     content: Text(
-                                      'تم ارسال رابط تعيين كلمة السر الى الإيميل',
+                                      L10nStrings.AppStrings.passwordResetLinkSentToEmail,
                                     ),
                                   ),
                                 );
@@ -176,11 +177,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             builder: (context, state) {
                               return state.forgetPasswordStatus ==
                                       ForgetPasswordStatus.submitting
-                                  ? const CircularProgressIndicator(
+                                  ? CircularProgressIndicator(
                                       color: AppColors.lightCream,
                                     )
                                   : CustomButton(
-                                      text: 'تعيين',
+                                      text: L10nStrings.AppStrings.setPassword,
                                       onPressed: () =>
                                           _submitForgetPassword(context),
                                     );

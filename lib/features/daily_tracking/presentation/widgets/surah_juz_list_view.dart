@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // lib/features/quran_reader/presentation/widgets/surah_juz_list_view.dart
 import '../../../../core/utils/data_status.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ import 'package:shafeea/features/daily_tracking/presentation/bloc/quran_reader_b
 class SurahJuzListView extends StatelessWidget {
   final void Function(int) jumpToPage;
 
-  const SurahJuzListView({super.key, required this.jumpToPage});
+  SurahJuzListView({super.key, required this.jumpToPage});
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +47,9 @@ class SurahJuzListView extends StatelessWidget {
             unselectedLabelColor: colorScheme.onSurface.withOpacity(0.6),
             indicatorColor: colorScheme.primary,
             indicatorWeight: 3.0,
-            tabs: const [
+            tabs: [
               Tab(text: AppStrings.surah),
-              Tab(text: AppStrings.juz),
+              Tab(text: L10nStrings.AppStrings.juz),
             ],
           ),
 
@@ -166,16 +167,16 @@ class SurahJuzListView extends StatelessWidget {
               color: Theme.of(context).colorScheme.error,
               size: 48,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             Text(
               message ?? AppStrings.defaultErrorMessage,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {},
-              child: const Text('إعادة المحاولة'),
+              child: Text(L10nStrings.AppStrings.retry),
             ),
           ],
         ),

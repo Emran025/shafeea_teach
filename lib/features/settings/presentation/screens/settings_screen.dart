@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // path: lib/features/settings/presentation/screens/settings_screen.dart
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ import 'terms_of_use_screen.dart';
 /// user interactions.
 class SettingsScreen extends StatefulWidget {
   /// Creates a const instance of the settings screen.
-  const SettingsScreen({super.key});
+  SettingsScreen({super.key});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
@@ -37,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         // The user-facing title remains in its original language.
-        title: const Text('الإعدادات'),
+        title: Text(L10nStrings.AppStrings.settings),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         // Using a zero-height bottom to ensure a clean look with CustomScrollView
@@ -58,7 +59,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           // State 2: Data is loading (either initial or subsequent).
           // Display a central loading indicator. This covers `SettingsInitial`.
           if (state is! SettingsLoadSuccess) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           }
 
           // State 3: Data has been successfully loaded.
@@ -82,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       slivers: [
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: 'المظهر',
+            title: L10nStrings.AppStrings.appearance,
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -104,18 +105,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
         // --- Account Group ---
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: 'الحساب',
+            title: L10nStrings.AppStrings.accountSection,
             children: [
               ModernSettingTile(
                 icon: Icons.person_outline,
                 iconBackgroundColor: Colors.blue,
-                title: 'الملف الشخصي',
-                subtitle: 'عرض الملف الشخصي وجلسات التسجيل، تعديل وكلمة المرور',
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                title: L10nStrings.AppStrings.profile,
+                subtitle: L10nStrings.AppStrings.viewProfileSessionsEditPassword,
+                trailing: Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   context.read<SettingsBloc>().add(LoadUserProfile());
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                    MaterialPageRoute(builder: (_) => ProfileScreen()),
                   );
                 },
               ),
@@ -126,13 +127,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         // --- Preferences Group ---
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: 'الإشعارات والتنبيهات',
+            title: L10nStrings.AppStrings.notificationsAndAlerts,
             children: [
               ModernSettingTile(
                 icon: Icons.notifications_outlined,
                 iconBackgroundColor: Colors.orange,
-                title: 'تفعيل الإشعارات',
-                subtitle: 'استقبال تنبيهات الدروس والتحديثات',
+                title: L10nStrings.AppStrings.enableNotifications,
+                subtitle: L10nStrings.AppStrings.receiveLessonAndUpdateAlerts,
                 trailing: Switch(
                   value: state.settings.notificationsEnabled,
                   onChanged: (value) {
@@ -156,20 +157,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: "مركز البيانات",
+            title: L10nStrings.AppStrings.dataCenter,
             children: [
               ModernSettingTile(
                 icon: Icons.storage_outlined,
                 iconBackgroundColor: Colors.indigo,
-                title: 'إدارة البيانات',
-                subtitle: 'استيراد وتصدير بيانات التطبيق',
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                title: L10nStrings.AppStrings.dataManagement,
+                subtitle: L10nStrings.AppStrings.importExportAppData,
+                trailing: Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => BlocProvider.value(
                         value: BlocProvider.of<SettingsBloc>(context),
-                        child: const DataManagementScreen(),
+                        child: DataManagementScreen(),
                       ),
                     ),
                   );
@@ -180,13 +181,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: 'الدعم والخصوصية',
+            title: L10nStrings.AppStrings.supportAndPrivacy,
             children: [
               ModernSettingTile(
                 icon: Icons.analytics_outlined,
                 iconBackgroundColor: Colors.purple,
-                title: 'تحليل البيانات',
-                subtitle: 'المساهمة في تحسين التطبيق',
+                title: L10nStrings.AppStrings.dataAnalysis,
+                subtitle: L10nStrings.AppStrings.contributeToImprovingApp,
                 trailing: Switch(
                   value: state.settings.analyticsEnabled,
                   onChanged: (value) {
@@ -206,15 +207,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ModernSettingTile(
                 icon: Icons.description_outlined,
                 iconBackgroundColor: Colors.grey,
-                title: 'شروط الاستخدام',
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                title: L10nStrings.AppStrings.termsOfUse,
+                trailing: Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   context.read<SettingsBloc>().add(LoadTermsOfUse());
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => BlocProvider.value(
                         value: BlocProvider.of<SettingsBloc>(context),
-                        child: const TermsOfUseScreen(),
+                        child: TermsOfUseScreen(),
                       ),
                     ),
                   );
@@ -223,8 +224,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ModernSettingTile(
                 icon: Icons.privacy_tip_outlined,
                 iconBackgroundColor: Colors.indigoAccent,
-                title: 'سياسة الخصوصية',
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                title: L10nStrings.AppStrings.privacyPolicy,
+                trailing: Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   // --- START OF UPDATED CODE ---
 
@@ -239,7 +240,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         // Provide the existing BLoC instance to the new screen
                         // so it can listen to the state changes we just triggered.
                         value: BlocProvider.of<SettingsBloc>(context),
-                        child: const PrivacyPolicyScreen(),
+                        child: PrivacyPolicyScreen(),
                       ),
                     ),
                   );
@@ -251,14 +252,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   return ModernSettingTile(
                     icon: Icons.help_outline,
                     iconBackgroundColor: Colors.green,
-                    title: 'المساعدة والدعم',
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                    title: L10nStrings.AppStrings.helpAndSupport,
+                    trailing: Icon(Icons.arrow_forward_ios, size: 16),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => BlocProvider.value(
                             value: BlocProvider.of<SettingsBloc>(context),
-                            child: const FaqScreen(),
+                            child: FaqScreen(),
                           ),
                         ),
                       );
@@ -270,7 +271,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         // Provides bottom padding for better visual spacing when scrolled to the end.
-        const SliverToBoxAdapter(child: SizedBox(height: 32)),
+        SliverToBoxAdapter(child: SizedBox(height: 32)),
       ],
     );
   }

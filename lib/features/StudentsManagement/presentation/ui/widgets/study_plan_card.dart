@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,7 +10,7 @@ class StudyPlanCard extends StatefulWidget {
 
   final List<PlanDetailEntity> planDetailList;
   final VoidCallback? onPress;
-  const StudyPlanCard({
+  StudyPlanCard({
     super.key,
     required this.planType,
     required this.planDetailList,
@@ -54,7 +55,7 @@ class _StudyPlanCardState extends State<StudyPlanCard> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Table(
               border: TableBorder.all(
                 color: Theme.of(context).brightness == Brightness.dark
@@ -63,7 +64,7 @@ class _StudyPlanCardState extends State<StudyPlanCard> {
                 width: 0.5,
               ),
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-              columnWidths: const {
+              columnWidths: {
                 0: FlexColumnWidth(3),
                 1: FlexColumnWidth(2),
                 2: FlexColumnWidth(2),
@@ -76,9 +77,9 @@ class _StudyPlanCardState extends State<StudyPlanCard> {
                         : AppColors.mediumDark,
                   ),
                   children: [
-                    _buildTableHeader("نوع الورد"),
-                    _buildTableHeader("الوحدة"),
-                    _buildTableHeader("الكمية"),
+                    _buildTableHeader(L10nStrings.AppStrings.portionTypeHeader),
+                    _buildTableHeader(L10nStrings.AppStrings.unitHeader),
+                    _buildTableHeader(L10nStrings.AppStrings.quantityHeader),
                   ],
                 ),
                 ...[...widget.planDetailList].map(

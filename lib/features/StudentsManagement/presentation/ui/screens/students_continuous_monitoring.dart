@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:shafeea/core/models/monitoring_filter.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
@@ -17,7 +18,7 @@ import '../widgets/student_list_card_with_options.dart';
 ///   - المرسل  : طلاب رفعوا التقرير فعلاً.
 ///   - المتبقي : طلاب لم يُرفع تقريرهم بعد رغم حلول موعده.
 class StudentsContinuousMonitoring extends StatefulWidget {
-  const StudentsContinuousMonitoring({super.key});
+  StudentsContinuousMonitoring({super.key});
 
   @override
   State<StudentsContinuousMonitoring> createState() =>
@@ -57,7 +58,7 @@ class _StudentsContinuousMonitoringState
 
     return Column(
         children: [
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
 
           // ── مُحدِّد التكرار (يومي / أسبوعي / ...) ──
           Selector(
@@ -73,8 +74,8 @@ class _StudentsContinuousMonitoringState
 
           // ── منتقي التاريخ الأفقي ──
           HorizontalCalendarDatePicker(
-            startDate: DateTime.now().subtract(const Duration(days: 60)),
-            endDate: DateTime.now().add(const Duration(days: 60)),
+            startDate: DateTime.now().subtract(Duration(days: 60)),
+            endDate: DateTime.now().add(Duration(days: 60)),
             initialDate: DateTime.now(),
             onDateSelected: (date) {
               setState(() => selectedDate = date);
@@ -83,7 +84,7 @@ class _StudentsContinuousMonitoringState
 
           Expanded(
             child: CustomScrollView(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               slivers: [
                 // ── عنوان التقرير ──
                 SliverToBoxAdapter(
@@ -105,19 +106,19 @@ class _StudentsContinuousMonitoringState
                       tabs: [
                         _buildTab(
                           icon: Icons.schedule,
-                          label: 'المتوقع',
+                          label: L10nStrings.AppStrings.expected,
                           count: _expectedCount,
                           filter: MonitoringFilter.expected,
                         ),
                         _buildTab(
                           icon: Icons.upload_rounded,
-                          label: 'المرسل',
+                          label: L10nStrings.AppStrings.sent,
                           count: _sentCount,
                           filter: MonitoringFilter.sent,
                         ),
                         _buildTab(
                           icon: Icons.person_off_outlined,
-                          label: 'المتبقي',
+                          label: L10nStrings.AppStrings.remaining,
                           count: _remainingCount,
                           filter: MonitoringFilter.remaining,
                         ),
@@ -184,9 +185,9 @@ class _StudentsContinuousMonitoringState
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(label, style: Theme.of(context).textTheme.bodyLarge!),
-          const SizedBox(width: 6),
+          SizedBox(width: 6),
           AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
+            duration: Duration(milliseconds: 300),
             child: Text(
               '($count)',
               key: ValueKey(count),

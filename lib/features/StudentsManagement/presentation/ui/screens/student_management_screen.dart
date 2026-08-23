@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ import '../../../domain/entities/student_entity.dart';
 import 'student_profile_screen.dart';
 
 class StudentManagementScreen extends StatefulWidget {
-  const StudentManagementScreen({super.key});
+  StudentManagementScreen({super.key});
 
   @override
   State<StudentManagementScreen> createState() =>
@@ -68,7 +69,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
       // Provide the existing StudentBloc to the dialog.
       builder: (_) => BlocProvider.value(
         value: context.read<StudentBloc>(),
-        child: const AddStudentDialog(),
+        child: AddStudentDialog(),
       ),
     );
   }
@@ -80,7 +81,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
         onPressed: _showAddStudentsDialog,
         icon: Icon(Icons.add, color: AppColors.lightCream),
         label: Text(
-          "إضافة طالب",
+          L10nStrings.AppStrings.addStudent,
           style: GoogleFonts.cairo(
             fontWeight: FontWeight.bold,
             color: AppColors.lightCream,
@@ -94,7 +95,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildSearchBar(),
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               Expanded(
                 // Use a BlocBuilder because this part only needs to rebuild based on state.
                 child: BlocBuilder<StudentBloc, StudentState>(
@@ -102,7 +103,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
                     // --- Central Loading Indicator ---
                     if (state.status == StudentStatus.loading &&
                         state.students.isEmpty) {
-                      return const Center(child: CircularProgressIndicator());
+                      return Center(child: CircularProgressIndicator());
                     }
                     // --- Central Failure View ---
                     if (state.status == StudentStatus.failure &&
@@ -114,9 +115,9 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
                             Text('Error: state.failure?.message'),
                             ElevatedButton(
                               onPressed: () => context.read<StudentBloc>().add(
-                                const StudentsRefreshed(),
+                                StudentsRefreshed(),
                               ),
-                              child: const Text('Try Again'),
+                              child: Text('Try Again'),
                             ),
                           ],
                         ),
@@ -131,13 +132,13 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
                               state.hasMorePages &&
                               !state.isLoadingMore) {
                             context.read<StudentBloc>().add(
-                              const StudentsRefreshed(),
+                              StudentsRefreshed(),
                             );
                           }
 
                           // The refresh completes when the BLoC emits a new state.
                         },
-                        child: const Center(child: Text('No students found.')),
+                        child: Center(child: Text('No students found.')),
                       );
                     }
 
@@ -153,13 +154,13 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
                     return RefreshIndicator(
                       onRefresh: () async {
                         context.read<StudentBloc>().add(
-                          const StudentsRefreshed(),
+                          StudentsRefreshed(),
                         );
                         // The refresh completes when the BLoC emits a new state.
                       },
                       // behavior: GlowOnlyScrollBehavior(),
                       child: ListView.separated(
-                        separatorBuilder: (_, __) => const SizedBox(height: 5),
+                        separatorBuilder: (_, __) => SizedBox(height: 5),
                         controller:
                             _scrollController, // Controller for "load more"
                         itemCount:
@@ -168,7 +169,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
                         itemBuilder: (ctx, i) {
                           if (i >= filteredStudents.length) {
                             // "Load More" indicator
-                            return const Center(
+                            return Center(
                               child: Padding(
                                 padding: EdgeInsets.all(16.0),
                                 child: CircularProgressIndicator(),
@@ -204,7 +205,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
           Icons.search,
           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
         ),
-        hintText: "ابحث عن طالب...",
+        hintText: L10nStrings.AppStrings.searchStudentHint,
         hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
@@ -251,7 +252,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
 class AddStudentDialog extends StatefulWidget {
   //   // All controllers are created here, inside the dialog's scope.
 
-  const AddStudentDialog({super.key});
+  AddStudentDialog({super.key});
 
   @override
   State<AddStudentDialog> createState() => _AddStudentDialogState();
@@ -299,9 +300,9 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
             name: form.nameController.text,
             gender: Gender.fromLabel(
               form.genderController.text == 'Male' ||
-                      form.genderController.text == 'ذكر'
-                  ? 'ذكر'
-                  : 'أنثى',
+                      form.genderController.text == L10nStrings.AppStrings.genderMale
+                  ? L10nStrings.AppStrings.genderMale
+                  : L10nStrings.AppStrings.genderFemale,
             ),
             birthDate: form.birthDateController.text,
             email: form.emailController.text,
@@ -320,7 +321,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
             stopReasons: '',
             avatar: '',
             memorizationLevel: form.memorizationLevelController.text,
-            bio: "خبرة لخمس سنوات",
+            bio: L10nStrings.AppStrings.fiveYearsExperience,
             createdAt: "${DateTime.now()}",
             updatedAt: "${DateTime.now()}",
             username: rawUsername.isEmpty ? null : rawUsername,
@@ -349,7 +350,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
             // On success, close the dialog
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Text('Student saved successfully!'),
                 backgroundColor: Colors.green,
               ),
@@ -379,13 +380,13 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(icon, size: 64, color: Colors.red),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Text(
                         message,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Row(
                         children: [
                           Expanded(
@@ -403,7 +404,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                                 // Navigator.pop(context);
                               },
                               child: Text(
-                                "حاول مجددًا",
+                                L10nStrings.AppStrings.tryAgain,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -459,14 +460,14 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Center(
-                              child: const Icon(
+                              child: Icon(
                                 Icons.add,
                                 color: AppColors.lightCream,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Text(
-                              "اضافة ملف الأستاذ",
+                              L10nStrings.AppStrings.addTeacherProfile,
                               style: GoogleFonts.cairo(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -475,7 +476,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: Divider(height: 2, color: AppColors.accent70),
@@ -497,7 +498,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 14),
+                        SizedBox(height: 14),
                         Row(
                           children: [
                             Expanded(
@@ -509,7 +510,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  "الغاء",
+                                  L10nStrings.AppStrings.cancel2,
                                   style: GoogleFonts.cairo(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -531,7 +532,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  "اضافة آخر",
+                                  L10nStrings.AppStrings.addAnother,
                                   style: GoogleFonts.cairo(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -552,7 +553,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                                   });
                                 },
                                 child: Text(
-                                  "حفظ",
+                                  L10nStrings.AppStrings.save,
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream,
                                     fontSize: 13,

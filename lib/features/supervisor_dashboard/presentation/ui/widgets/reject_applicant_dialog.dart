@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
@@ -5,7 +6,7 @@ import 'package:shafeea/features/supervisor_dashboard/presentation/bloc/supervis
 class RejectApplicantDialog extends StatefulWidget {
   final int applicantId;
 
-  const RejectApplicantDialog({super.key, required this.applicantId});
+  RejectApplicantDialog({super.key, required this.applicantId});
 
   @override
   State<RejectApplicantDialog> createState() => _RejectApplicantDialogState();
@@ -14,7 +15,7 @@ class RejectApplicantDialog extends StatefulWidget {
 class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
   final _formKey = GlobalKey<FormState>();
   final _reasonController = TextEditingController(
-    text: 'سجل المتقدم لا يتماشى مع تطلعات وسياسات مدرستنا.',
+    text: L10nStrings.AppStrings.applicantRecordNotAligned,
   );
 
   @override
@@ -56,29 +57,29 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
               children: [
                 Center(
                   child: Text(
-                    'رفض الطلب',
+                    L10nStrings.AppStrings.rejectApplication,
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 Text(
-                  'سبب الرفض',
+                  L10nStrings.AppStrings.reasonForRejection,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(
                       context,
                     ).colorScheme.onBackground.withOpacity(0.87),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextFormField(
                   controller: _reasonController,
                   textInputAction: TextInputAction.done,
                   maxLines: 5,
                   maxLength: 1000,
                   decoration: InputDecoration(
-                    hintText: 'أدخل سبب الرفض',
+                    hintText: L10nStrings.AppStrings.enterRejectionReason,
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(
                         context,
@@ -101,12 +102,12 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال سبب الرفض';
+                      return L10nStrings.AppStrings.pleaseEnterRejectionReason;
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 BlocBuilder<SupervisorBloc, SupervisorState>(
                   builder: (context, state) {
                     final isLoading =
@@ -128,7 +129,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                           elevation: 2,
                         ),
                         child: isLoading
-                            ? const SizedBox(
+                            ? SizedBox(
                                 height: 20,
                                 width: 20,
                                 child: CircularProgressIndicator(
@@ -139,7 +140,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                                 ),
                               )
                             : Text(
-                                'رفض',
+                                L10nStrings.AppStrings.reject,
                                 style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
                                       color: Theme.of(
@@ -152,7 +153,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                     );
                   },
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(

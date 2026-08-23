@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shafeea/shared/func/date_format.dart';
@@ -10,7 +11,7 @@ import '../../../domain/entities/halqa_entity.dart';
 class StudyHalaqaCard extends StatefulWidget {
   final AssignedHalaqasEntity assignedHalaqasEntity;
   final VoidCallback? onPress;
-  const StudyHalaqaCard({
+  StudyHalaqaCard({
     super.key,
     required this.assignedHalaqasEntity,
     required this.onPress,
@@ -40,7 +41,7 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "📝 حلقة الطالب",
+                L10nStrings.AppStrings.studentHalaqaLabel,
                 style: GoogleFonts.cairo(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -53,7 +54,7 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
@@ -105,7 +106,7 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
                       onPressed: () {
                         // onPressed!();
                       },
-                      child: StatusTag(lable: "تفاصيل"),
+                      child: StatusTag(lable: L10nStrings.AppStrings.detailsLabel),
                     ),
                     IconButton(
                       icon: Icon(Icons.more_vert, color: AppColors.lightCream),

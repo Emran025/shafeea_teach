@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // path: lib/features/settings/presentation/widgets/theme_switcher_widget.dart
 import 'package:flutter/material.dart';
 // تأكد من استيراد ملف الثيمات الذي يحتوي على AppThemeType
@@ -14,7 +15,7 @@ class ThemeSwitcherWidget extends StatelessWidget {
   /// تقوم بإرسال القيمة الجديدة (AppThemeType) إلى الـ BLoC.
   final ValueChanged<AppThemeType> onThemeSelected;
 
-  const ThemeSwitcherWidget({
+  ThemeSwitcherWidget({
     super.key,
     required this.currentTheme,
     required this.onThemeSelected,
@@ -55,20 +56,20 @@ class ThemeSwitcherWidget extends StatelessWidget {
 
       // 4. تعريف الخيارات (Segments) التي ستظهر للمستخدم.
       // استخدام `const` هنا يحسن الأداء.
-      segments: const [
+      segments: [
         ButtonSegment<AppThemeType>(
           value: AppThemeType.light,
-          label: Text('فاتح'),
+          label: Text(L10nStrings.AppStrings.light),
           icon: Icon(Icons.wb_sunny_outlined),
         ),
         ButtonSegment<AppThemeType>(
           value: AppThemeType.dark,
-          label: Text('داكن'),
+          label: Text(L10nStrings.AppStrings.dark),
           icon: Icon(Icons.nightlight_round_outlined),
         ),
         ButtonSegment<AppThemeType>(
           value: AppThemeType.reading,
-          label: Text('قراءة'),
+          label: Text(L10nStrings.AppStrings.reading),
           icon: Icon(
             Icons.chrome_reader_mode_outlined,
           ), // أيقونة أنسب لوضع القراءة

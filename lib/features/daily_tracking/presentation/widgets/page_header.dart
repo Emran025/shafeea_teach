@@ -11,7 +11,7 @@ import 'package:shafeea/features/daily_tracking/presentation/bloc/quran_reader_b
 /// It shows the current Surah name and Juz' number. It listens to the
 /// [QuranReaderBloc] to update itself as the user navigates through pages.
 class PageHeader extends StatelessWidget {
-  const PageHeader({super.key});
+  PageHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

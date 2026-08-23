@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/config/di/injection.dart';
@@ -9,7 +10,7 @@ import '../../../../../core/models/user_role.dart';
 import '../../../../supervisor_dashboard/presentation/ui/screens/requests_screen.dart';
 
 class TeachersManagementScreen extends StatefulWidget {
-  const TeachersManagementScreen({super.key});
+  TeachersManagementScreen({super.key});
 
   @override
   State<TeachersManagementScreen> createState() =>
@@ -38,9 +39,9 @@ class _TeachersManagementScreenState extends State<TeachersManagementScreen>
             dividerColor: Colors.black12,
             indicatorColor: AppColors.accent,
             controller: _tabController,
-            tabs: const [
-              Tab(text: "المعلمون الحاليون"),
-              Tab(text: "طلبات التقديم"),
+            tabs: [
+              Tab(text: L10nStrings.AppStrings.currentTeachersTab),
+              Tab(text: L10nStrings.AppStrings.applicationRequests),
             ],
           ),
         ),

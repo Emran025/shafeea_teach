@@ -1,9 +1,10 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+  WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
         body: Stack(
           children: [
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [AppColors.accent, AppColors.mediumDark],
                   begin: Alignment.topCenter,
@@ -35,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
                       Hero(
                         tag: 'logo',
                         child: Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             color: AppColors.lightCream,
                             shape: BoxShape.circle,
                           ),
@@ -45,9 +46,9 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
-                      const Text(
-                        'مرحبًا بك في \nأكاديمية شفيع',
+                      SizedBox(height: 32),
+                      Text(
+                        L10nStrings.AppStrings.welcomeToShafiAcademy,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 26,
@@ -62,20 +63,20 @@ class WelcomeScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        'منصة تعليمية متكاملة لتعليم ومتابعة طلاب القرآن الكريم، للمعلمين والمشرفين عن بُعد.',
+                      SizedBox(height: 16),
+                      Text(
+                        L10nStrings.AppStrings.platformDescription,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
                           color: AppColors.lightCream70,
                         ),
                       ),
-                      const SizedBox(height: 48),
+                      SizedBox(height: 48),
                       ElevatedButton(
                         onPressed: () => context.go('/login'),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
+                          minimumSize: Size(double.infinity, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -83,7 +84,7 @@ class WelcomeScreen extends StatelessWidget {
                           shadowColor: AppColors.accent38,
                         ),
                         child: Text(
-                          'ابدأ الآن',
+                          L10nStrings.AppStrings.getStarted,
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.primary,

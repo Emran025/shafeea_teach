@@ -13,7 +13,7 @@ import 'package:shafeea/features/daily_tracking/presentation/bloc/quran_reader_b
 class TopTitlePageHeaderWidget extends StatelessWidget {
   final int pageNumber;
 
-  const TopTitlePageHeaderWidget({super.key, required this.pageNumber});
+  TopTitlePageHeaderWidget({super.key, required this.pageNumber});
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/core/utils/data_status.dart';
@@ -15,7 +16,7 @@ import 'mistake_item_widget.dart';
 /// listening to the [TrackingSessionBloc] for the core data. It orchestrates user
 /// interactions, dispatching events to update the BLoC and ultimately save the report.
 class MistakesList extends StatefulWidget {
-  const MistakesList({super.key});
+  MistakesList({super.key});
 
   @override
   State<MistakesList> createState() => _MistakesListState();
@@ -56,7 +57,7 @@ class _MistakesListState extends State<MistakesList> {
 
         // Condition 1: If loading, show progress indicator.
         if (isLoading) {
-          return const Center(
+          return Center(
             heightFactor: 3,
             child: CircularProgressIndicator(),
           );
@@ -78,9 +79,9 @@ class _MistakesListState extends State<MistakesList> {
         }
 
         // Condition 3: Fallback for any other state (e.g., error, inconsistency).
-        return const Center(
+        return Center(
           heightFactor: 3,
-          child: Text("خطأ في تحميل بيانات الآيات."),
+          child: Text(L10nStrings.AppStrings.errorLoadingVersesData),
         );
       },
     );
@@ -94,10 +95,10 @@ class _MistakesListState extends State<MistakesList> {
     return LimitedBox(
       maxHeight: MediaQuery.of(context).size.height * 0.25,
       child: mistakes.isEmpty
-          ? const Center(
+          ? Center(
               child: Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Text("لا توجد أخطاء مسجلة لهذه المهمة."),
+                child: Text(L10nStrings.AppStrings.noMistakesRecordedForTask),
               ),
             )
           : ListView.builder(

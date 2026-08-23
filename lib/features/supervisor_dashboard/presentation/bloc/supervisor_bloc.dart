@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // bloc/student_timeline_bloc.dart
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -107,7 +108,7 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
 
           // Ensure we have a reasonable date range
           if (startDate.isAfter(DateTime.now())) {
-            startDate = DateTime.now().subtract(const Duration(days: 30));
+            startDate = DateTime.now().subtract(Duration(days: 30));
           }
           if (endDate.isBefore(startDate)) {
             endDate = DateTime.now();
@@ -215,7 +216,7 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
       emit(currentState.copyWith(chartData: chartData, filter: event.filter));
     } catch (e) {
       if (!isClosed) {
-        emit(SupervisorError(message: 'حدث خطأ غير متوقع'));
+        emit(SupervisorError(message: L10nStrings.AppStrings.unexpectedErrorOccurred));
       }
     }
   }

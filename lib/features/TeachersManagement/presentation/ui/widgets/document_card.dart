@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +13,7 @@ import '../../../domain/entities/document_entity.dart';
 class DocumentCard extends StatefulWidget {
   final DocumentEntity document;
 
-  const DocumentCard({super.key, required this.document});
+  DocumentCard({super.key, required this.document});
 
   @override
   State<DocumentCard> createState() => _DocumentCardState();
@@ -36,7 +37,7 @@ class _DocumentCardState extends State<DocumentCard> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('تعذّر فتح الرابط', style: GoogleFonts.cairo()),
+            content: Text(L10nStrings.AppStrings.couldNotOpenLinkMessage, style: GoogleFonts.cairo()),
             backgroundColor: AppColors.error,
           ),
         );
@@ -143,7 +144,7 @@ class _DocumentCardState extends State<DocumentCard> {
                         : AppColors.lightCream70,
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +157,7 @@ class _DocumentCardState extends State<DocumentCard> {
                           color: AppColors.lightCream,
                         ),
                       ),
-                      const SizedBox(height: 2),
+                      SizedBox(height: 2),
                       _TypeBadge(
                         label: doc.certificateTypeOther?.isNotEmpty == true
                             ? doc.certificateTypeOther!
@@ -173,27 +174,27 @@ class _DocumentCardState extends State<DocumentCard> {
           if (doc.riwayah != null) ...[
             _MetaRow(
               icon: Icons.menu_book_rounded,
-              label: 'الرواية',
+              label: L10nStrings.AppStrings.narrationLabel,
               value: doc.riwayah!,
             ),
           ],
           if (doc.issuingPlace != null) ...[
             _MetaRow(
               icon: Icons.location_on_outlined,
-              label: 'جهة الإصدار',
+              label: L10nStrings.AppStrings.issuingAuthorityLabel,
               value: doc.issuingPlace!,
             ),
           ],
           if (doc.issuingDate != null) ...[
             _MetaRow(
               icon: Icons.calendar_today_outlined,
-              label: 'تاريخ الإصدار',
+              label: L10nStrings.AppStrings.issueDateLabel,
               value: doc.issuingDate!,
             ),
           ],
 
-          const SizedBox(height: 10),
-          const Divider(height: 1, thickness: 1),
+          SizedBox(height: 10),
+          Divider(height: 1, thickness: 1),
 
           // ── Actions ────────────────────────────────────────────────────
           Padding(
@@ -232,13 +233,13 @@ class _DocumentCardState extends State<DocumentCard> {
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
-            icon: const Icon(
+            icon: Icon(
               Icons.open_in_new_rounded,
               size: 16,
               color: AppColors.accent,
             ),
             label: Text(
-              'عرض',
+              L10nStrings.AppStrings.viewButton,
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -247,7 +248,7 @@ class _DocumentCardState extends State<DocumentCard> {
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         // Download button
         Expanded(
           child: ElevatedButton.icon(
@@ -268,7 +269,7 @@ class _DocumentCardState extends State<DocumentCard> {
               color: AppColors.lightCream,
             ),
             label: Text(
-              _isDownloading ? 'جارٍ التحميل…' : 'تحميل',
+              _isDownloading ? L10nStrings.AppStrings.downloadingStatus : L10nStrings.AppStrings.downloadButton,
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -289,9 +290,9 @@ class _DocumentCardState extends State<DocumentCard> {
           size: 16,
           color: AppColors.lightCream70,
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Text(
-          'لا يوجد ملف مرفق',
+          L10nStrings.AppStrings.noFileAttachedMessage,
           style: GoogleFonts.cairo(
             fontSize: 13,
             color: AppColors.lightCream70,
@@ -303,9 +304,9 @@ class _DocumentCardState extends State<DocumentCard> {
   }
 
   IconData _iconForType(String type) {
-    if (type.contains('إجازة')) return Icons.verified_rounded;
-    if (type.contains('حفظ')) return Icons.auto_stories_rounded;
-    if (type.contains('سيرة')) return Icons.badge_rounded;
+    if (type.contains(L10nStrings.AppStrings.leaveDocumentType)) return Icons.verified_rounded;
+    if (type.contains(L10nStrings.AppStrings.save)) return Icons.auto_stories_rounded;
+    if (type.contains(L10nStrings.AppStrings.resume)) return Icons.badge_rounded;
     return Icons.description_rounded;
   }
 }
@@ -355,7 +356,7 @@ class _MetaRow extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, size: 14, color: AppColors.lightCream70),
-          const SizedBox(width: 6),
+          SizedBox(width: 6),
           Text(
             '$label: ',
             style: GoogleFonts.cairo(

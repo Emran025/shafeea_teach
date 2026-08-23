@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
@@ -12,7 +13,7 @@ import 'document_card.dart';
 class DocumentsSection extends StatelessWidget {
   final List<DocumentEntity> documents;
 
-  const DocumentsSection({super.key, required this.documents});
+  DocumentsSection({super.key, required this.documents});
 
   @override
   Widget build(BuildContext context) {
@@ -28,22 +29,22 @@ class DocumentsSection extends StatelessWidget {
                 color: AppColors.accent.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.folder_copy_rounded,
                 size: 18,
                 color: AppColors.accent,
               ),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10),
             Text(
-              'المستندات والوثائق',
+              L10nStrings.AppStrings.documentsAndFiles,
               style: GoogleFonts.cairo(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: AppColors.lightCream,
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8),
             if (documents.isNotEmpty)
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -63,7 +64,7 @@ class DocumentsSection extends StatelessWidget {
           ],
         ),
 
-        const SizedBox(height: 14),
+        SizedBox(height: 14),
 
         // ── Content ────────────────────────────────────────────────────
         if (documents.isEmpty)
@@ -94,9 +95,9 @@ class _EmptyDocuments extends StatelessWidget {
             size: 36,
             color: AppColors.lightCream38,
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
-            'لا توجد وثائق مرفوعة',
+            L10nStrings.AppStrings.noDocumentsUploaded,
             style: GoogleFonts.cairo(
               fontSize: 13,
               color: AppColors.lightCream70,

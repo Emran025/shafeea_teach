@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // lib/features/daily_tracking/presentation/widgets/session_bottom_toolbar.dart
 
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ import 'task_report_dialog.dart';
 class SessionBottomToolbar extends StatelessWidget {
     final void Function(int) jumpToPage;
 
-  const SessionBottomToolbar({super.key,  required this.jumpToPage});
+  SessionBottomToolbar({super.key,  required this.jumpToPage});
 
 
   @override
@@ -40,7 +41,7 @@ class SessionBottomToolbar extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 10,
-            offset: const Offset(0, -5),
+            offset: Offset(0, -5),
           ),
         ],
       ),
@@ -50,7 +51,7 @@ class SessionBottomToolbar extends StatelessWidget {
           // --- Button 1: Task Report (The most important one) ---
           _ToolbarButton(
             icon: Icons.assignment_turned_in_outlined,
-            label: 'تقرير المهمة',
+            label: L10nStrings.AppStrings.taskReport,
             onTap: () {
               // We need references to both BLoCs from the screen's context.
               final trackingBloc = BlocProvider.of<TrackingSessionBloc>(
@@ -73,7 +74,7 @@ class SessionBottomToolbar extends StatelessWidget {
                       BlocProvider.value(value: trackingBloc),
                       BlocProvider.value(value: quranReaderBloc),
                     ],
-                    child: const TaskReportDialog(),
+                    child: TaskReportDialog(),
                   );
                 },
               );
@@ -85,12 +86,12 @@ class SessionBottomToolbar extends StatelessWidget {
           // --- Button 2: Go to Page ---
           _ToolbarButton(
             icon: Icons.list_alt_rounded,
-            label: 'الفهرس', // From AppStrings
+            label: L10nStrings.AppStrings.index, // From AppStrings
             onTap: () {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true, // Allows the sheet to be taller
-                shape: const RoundedRectangleBorder(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                 ),
                 builder: (_) {
@@ -113,7 +114,7 @@ class SessionBottomToolbar extends StatelessWidget {
           // --- Button 3: Audio Player (Future enhancement) ---
           _ToolbarButton(
             icon: Icons.report,
-            label: 'عرض الأخطاء',
+            label: L10nStrings.AppStrings.viewMistakes,
             onTap: () {
               // We need references to both BLoCs from the screen's context.
               final trackingBloc = BlocProvider.of<TrackingSessionBloc>(
@@ -136,7 +137,7 @@ class SessionBottomToolbar extends StatelessWidget {
                       BlocProvider.value(value: trackingBloc),
                       BlocProvider.value(value: quranReaderBloc),
                     ],
-                    child: const MistakesDialog(),
+                    child: MistakesDialog(),
                   );
                 },
               );
@@ -146,7 +147,7 @@ class SessionBottomToolbar extends StatelessWidget {
           // --- Button 4: More Options (Could include theme, font size etc.) ---
           _ToolbarButton(
             icon: Icons.more_vert,
-            label: 'المزيد',
+            label: L10nStrings.AppStrings.more,
             onTap: () {
               // Placeholder for more options.
               print('More Options Tapped');
@@ -181,7 +182,7 @@ class _ToolbarButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, size: 26, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(height: 4),
+            SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(

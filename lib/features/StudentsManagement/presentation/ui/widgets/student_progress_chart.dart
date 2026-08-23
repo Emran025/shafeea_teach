@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shafeea/features/supervisor_dashboard/domain/entities/chart_filter.dart';
@@ -15,7 +16,7 @@ class StudentProgressChart extends StatefulWidget {
   final ChartFilter filter;
   final Function(ChartFilter)? onFilterChanged;
 
-  const StudentProgressChart({
+  StudentProgressChart({
     super.key,
     required this.progressData,
     required this.filter,
@@ -60,9 +61,9 @@ class _StudentProgressChartState extends State<StudentProgressChart> {
       children: [
         _buildTitelIndicator(widget.tile),
         // Filters Section
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         _buildFiltersSection(),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         SizedBox(
           height: 350,
@@ -106,7 +107,7 @@ class _StudentProgressChartState extends State<StudentProgressChart> {
           ),
           child: Icon(tile.icon, size: 26, color: AppColors.lightCream),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -131,7 +132,7 @@ class _StudentProgressChartState extends State<StudentProgressChart> {
     );
   }
 
-  String tempSelected = 'فترة زمنية';
+  String tempSelected = L10nStrings.AppStrings.timePeriodOption;
 
   Widget _buildFiltersSection() {
     return Container(
@@ -145,21 +146,21 @@ class _StudentProgressChartState extends State<StudentProgressChart> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'المعايير',
+            L10nStrings.AppStrings.criteria,
             style: Theme.of(
               context,
             ).textTheme.titleLarge?.copyWith(color: AppColors.lightCream),
           ),
 
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Row(
             children: [
               Expanded(
                 child: _buildFilterDropdown(
-                  label: 'الفترة الزمنية',
+                  label: L10nStrings.AppStrings.timePeriodLabel,
                   value: _currentFilter.timePeriod,
-                  items: const ['week', 'month', 'quarter', 'year'],
-                  labels: const ['أسبوع', 'شهر', 'ربع سنة', 'سنة'],
+                  items: ['week', 'month', 'quarter', 'year'],
+                  labels: [L10nStrings.AppStrings.weekOption, L10nStrings.AppStrings.monthOption, L10nStrings.AppStrings.quarterYearOption, L10nStrings.AppStrings.yearOption],
                   onChanged: (value) {
                     setState(() {
                       _currentFilter = _currentFilter.copyWith(
@@ -171,14 +172,14 @@ class _StudentProgressChartState extends State<StudentProgressChart> {
                 ),
               ),
 
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 4,
                 child: _buildFilterDropdown(
-                  label: 'نوع المسار',
+                  label: L10nStrings.AppStrings.trackTypeLabel,
                   value: _currentFilter.trackingType,
-                  items: const ['memorization', 'review', 'recitation'],
-                  labels: const ['حفظ', 'مراجعة', 'سرد'],
+                  items: ['memorization', 'review', 'recitation'],
+                  labels: [L10nStrings.AppStrings.save, L10nStrings.AppStrings.review, L10nStrings.AppStrings.recitation],
                   onChanged: (value) {
                     setState(() {
                       _currentFilter = _currentFilter.copyWith(
@@ -212,7 +213,7 @@ class _StudentProgressChartState extends State<StudentProgressChart> {
             context,
           ).textTheme.labelSmall?.copyWith(color: AppColors.lightCream70),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         DropdownButton<String>(
           value: value,
           isExpanded: true,

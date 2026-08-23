@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
@@ -13,7 +14,7 @@ class _SectionHeader extends StatelessWidget {
   final String title;
   final IconData icon;
 
-  const _SectionHeader({required this.title, required this.icon});
+  _SectionHeader({required this.title, required this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class _SectionHeader extends StatelessWidget {
       child: Row(
         children: [
           Icon(icon, color: theme.colorScheme.primary, size: 20),
-          const SizedBox(width: 8),
+          SizedBox(width: 8),
           Text(
             title,
             style: theme.textTheme.titleMedium?.copyWith(
@@ -58,7 +59,7 @@ class _SettingsCard extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
             blurRadius: 10,
-            offset: const Offset(0, 4),
+            offset: Offset(0, 4),
           ),
         ],
       ),
@@ -70,7 +71,7 @@ class _SettingsCard extends StatelessWidget {
 // -----------------------------------------------------------------------------
 
 class DataManagementScreen extends StatelessWidget {
-  const DataManagementScreen({super.key});
+  DataManagementScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +81,7 @@ class DataManagementScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('إدارة البيانات'),
+          title: Text(L10nStrings.AppStrings.dataManagement),
           centerTitle: true,
           elevation: 0,
           backgroundColor: theme.appBarTheme.backgroundColor,
@@ -109,15 +110,15 @@ class DataManagementScreen extends StatelessWidget {
                 ),
 
                 dividerColor: Colors.transparent,
-                tabs: const [
-                  Tab(text: 'تصدير', icon: Icon(Icons.file_download_outlined)),
-                  Tab(text: 'استيراد', icon: Icon(Icons.file_upload_outlined)),
+                tabs: [
+                  Tab(text: L10nStrings.AppStrings.export, icon: Icon(Icons.file_download_outlined)),
+                  Tab(text: L10nStrings.AppStrings.import, icon: Icon(Icons.file_upload_outlined)),
                 ],
               ),
             ),
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           physics: BouncingScrollPhysics(),
           children: [ExportDataView(), ImportDataView()],
         ),
@@ -127,7 +128,7 @@ class DataManagementScreen extends StatelessWidget {
 }
 
 class ExportDataView extends StatefulWidget {
-  const ExportDataView({super.key});
+  ExportDataView({super.key});
 
   @override
   State<ExportDataView> createState() => _ExportDataViewState();
@@ -146,7 +147,7 @@ class _ExportDataViewState extends State<ExportDataView> {
       listener: (context, state) {
         if (state is SettingsLoadSuccess) {
           if (state.exportStatus == DataExportStatus.success) {
-            _showSnackBar(context, 'تم تصدير البيانات بنجاح', Colors.green);
+            _showSnackBar(context, L10nStrings.AppStrings.dataExportedSuccessfully, Colors.green);
             context.read<SettingsBloc>().add(SettingsImportExportResetStatus());
           } else if (state.exportStatus == DataExportStatus.failure) {
             _showSnackBar(
@@ -169,8 +170,8 @@ class _ExportDataViewState extends State<ExportDataView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // قسم اختيار البيانات
-              const _SectionHeader(
-                title: 'البيانات المراد تصديرها',
+              _SectionHeader(
+                title: L10nStrings.AppStrings.dataToExport,
                 icon: Icons.checklist_rtl,
               ),
               _SettingsCard(
@@ -210,11 +211,11 @@ class _ExportDataViewState extends State<ExportDataView> {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // قسم تنسيق الملف
-              const _SectionHeader(
-                title: 'تنسيق الملف',
+              _SectionHeader(
+                title: L10nStrings.AppStrings.fileFormat,
                 icon: Icons.format_shapes,
               ),
               Row(
@@ -248,7 +249,7 @@ class _ExportDataViewState extends State<ExportDataView> {
                                   ? colorScheme.primary
                                   : colorScheme.onSurface.withOpacity(0.6),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4),
                             Text(
                               toDisplayString(format),
                               style: TextStyle(
@@ -266,7 +267,7 @@ class _ExportDataViewState extends State<ExportDataView> {
                 }).toList(),
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               // زر الإجراء
               SizedBox(
@@ -303,17 +304,17 @@ class _ExportDataViewState extends State<ExportDataView> {
                                 strokeWidth: 2.5,
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            const Text('جاري التصدير...'),
+                            SizedBox(width: 12),
+                            Text(L10nStrings.AppStrings.exportingInProgress),
                           ],
                         )
-                      : const Row(
+                      : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.file_download_outlined),
                             SizedBox(width: 8),
                             Text(
-                              'تصدير البيانات',
+                              L10nStrings.AppStrings.exportData,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -333,7 +334,7 @@ class _ExportDataViewState extends State<ExportDataView> {
   void _showSnackBar(BuildContext context, String message, Color bgColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: const TextStyle(color: Colors.white)),
+        content: Text(message, style: TextStyle(color: Colors.white)),
         backgroundColor: bgColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -344,7 +345,7 @@ class _ExportDataViewState extends State<ExportDataView> {
 }
 
 class ImportDataView extends StatefulWidget {
-  const ImportDataView({super.key});
+  ImportDataView({super.key});
 
   @override
   State<ImportDataView> createState() => _ImportDataViewState();
@@ -401,8 +402,8 @@ class _ImportDataViewState extends State<ImportDataView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // منطقة اختيار الملف
-              const _SectionHeader(
-                title: 'ملف البيانات',
+              _SectionHeader(
+                title: L10nStrings.AppStrings.dataFile,
                 icon: Icons.attach_file,
               ),
               InkWell(
@@ -439,9 +440,9 @@ class _ImportDataViewState extends State<ImportDataView> {
                             ? colorScheme.primary
                             : colorScheme.onSurface.withOpacity(0.4),
                       ),
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12),
                       Text(
-                        _fileName ?? 'اضغط لاختيار ملف (CSV, JSON)',
+                        _fileName ?? L10nStrings.AppStrings.tapToChooseFileCsvJson,
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: _filePath != null
                               ? colorScheme.primary
@@ -451,7 +452,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                       ),
                       if (_filePath != null)
                         Text(
-                          'تم تحديد الملف جاهز للاستيراد',
+                          L10nStrings.AppStrings.fileSelectedReadyToImport,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: colorScheme.primary.withOpacity(0.7),
                           ),
@@ -461,18 +462,18 @@ class _ImportDataViewState extends State<ImportDataView> {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // قسم اختيار نوع البيانات
-              const _SectionHeader(
-                title: 'نوع البيانات المراد استيرادها',
+              _SectionHeader(
+                title: L10nStrings.AppStrings.dataTypeToImport,
                 icon: Icons.category,
               ),
               _SettingsCard(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: DropdownButtonFormField<EntityType>(
                   value: _selectedEntityType,
-                  decoration: const InputDecoration(border: InputBorder.none),
+                  decoration: InputDecoration(border: InputBorder.none),
                   items: EntityType.values.map((EntityType type) {
                     return DropdownMenuItem<EntityType>(
                       value: type,
@@ -489,11 +490,11 @@ class _ImportDataViewState extends State<ImportDataView> {
                 ),
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: 24),
 
               // استراتيجية التضارب
-              const _SectionHeader(
-                title: 'عند وجود تضارب (تشابه بيانات)',
+              _SectionHeader(
+                title: L10nStrings.AppStrings.onConflictDuplicateData,
                 icon: Icons.merge_type,
               ),
               _SettingsCard(
@@ -527,7 +528,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                 ),
               ),
 
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
 
               SizedBox(
                 width: double.infinity,
@@ -563,17 +564,17 @@ class _ImportDataViewState extends State<ImportDataView> {
                                 strokeWidth: 2.5,
                               ),
                             ),
-                            const SizedBox(width: 12),
-                            const Text('جاري الاستيراد...'),
+                            SizedBox(width: 12),
+                            Text(L10nStrings.AppStrings.importingInProgress),
                           ],
                         )
-                      : const Row(
+                      : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(Icons.file_upload_outlined),
                             SizedBox(width: 8),
                             Text(
-                              'بدء الاستيراد',
+                              L10nStrings.AppStrings.startImport,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -593,7 +594,7 @@ class _ImportDataViewState extends State<ImportDataView> {
   void _showSnackBar(BuildContext context, String message, Color bgColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message, style: const TextStyle(color: Colors.white)),
+        content: Text(message, style: TextStyle(color: Colors.white)),
         backgroundColor: bgColor,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -17,7 +18,7 @@ class QuranJuz {
   final int fromPage;
   final int toPage;
 
-  const QuranJuz({
+  QuranJuz({
     required this.index,
     required this.fromPage,
     required this.toPage,
@@ -33,7 +34,7 @@ class QuranPage {
   final String toSurah;
   final int toAyah;
 
-  const QuranPage({
+  QuranPage({
     required this.page,
     required this.fromSurah,
     required this.fromAyah,
@@ -255,7 +256,7 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             padding: const EdgeInsets.all(24),
-            constraints: const BoxConstraints(maxHeight: 560),
+            constraints: BoxConstraints(maxHeight: 560),
             decoration: BoxDecoration(
               color: AppColors.lightCream.withOpacity(0.05),
               borderRadius: BorderRadius.circular(20),
@@ -273,14 +274,14 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           CircularProgressIndicator(color: AppColors.lightCream),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
-            'جارٍ تحميل بيانات المصحف…',
+            L10nStrings.AppStrings.loadingMushafData,
             style: TextStyle(color: AppColors.lightCream.withOpacity(0.7)),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
         ],
       ),
     );
@@ -293,16 +294,16 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Icon(Icons.error_outline, color: Colors.redAccent, size: 36),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Text(
-            'تعذّر تحميل بيانات المصحف',
+            L10nStrings.AppStrings.failedToLoadMushafData,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: AppColors.lightCream,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             message,
             textAlign: TextAlign.center,
@@ -311,7 +312,7 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
               color: AppColors.lightCream.withOpacity(0.6),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           OutlinedButton(
             onPressed: () => Navigator.of(ctx).pop(),
             style: OutlinedButton.styleFrom(
@@ -320,7 +321,7 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            child: const Text('إغلاق'),
+            child: Text(L10nStrings.AppStrings.closeButtonLabel),
           ),
         ],
       ),
@@ -362,7 +363,7 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             padding: const EdgeInsets.all(16),
-            constraints: const BoxConstraints(maxHeight: 560),
+            constraints: BoxConstraints(maxHeight: 560),
             decoration: BoxDecoration(
               color: AppColors.lightCream.withOpacity(0.05),
               borderRadius: BorderRadius.circular(20),
@@ -377,13 +378,13 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                   children: [
                     IconButton(
                       onPressed: _anchorPage != null ? _resetSelection : null,
-                      icon: const Icon(Icons.refresh),
+                      icon: Icon(Icons.refresh),
                       color: AppColors.lightCream,
-                      tooltip: 'إعادة التحديد',
+                      tooltip: L10nStrings.AppStrings.reselect,
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'اختر نطاق الحفظ',
+                        L10nStrings.AppStrings.selectMemorizationRange,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
@@ -392,19 +393,19 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 40),
+                    SizedBox(width: 40),
                   ],
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4),
                 Text(
-                  'اضغط لتحديد نقطة البداية، ثم نقطة النهاية — يمكنك السحب لضبط أي صفحة بدقة',
+                  L10nStrings.AppStrings.tapToSelectThenDragToAdjust,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 12,
                     color: AppColors.lightCream.withOpacity(0.7),
                   ),
                 ),
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
 
                 // --- Scrubber strip ---
                 SizedBox(
@@ -542,7 +543,7 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                   ),
                 ),
 
-                const SizedBox(height: 18),
+                SizedBox(height: 18),
 
                 // --- Live summary of the selected range ---
                 if (fromInfo != null)
@@ -557,16 +558,16 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _SummaryLine(
-                          label: 'من',
+                          label: L10nStrings.AppStrings.fromLabel,
                           surah: fromInfo.fromSurah,
                           page: lowPage!,
                           ayah: fromInfo.fromAyah,
                           juz: data.juzForPage(lowPage),
                         ),
                         if (toInfo != null) ...[
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           _SummaryLine(
-                            label: 'إلى',
+                            label: L10nStrings.AppStrings.toLabel,
                             surah: toInfo.toSurah,
                             page: highPage!,
                             ayah: toInfo.toAyah,
@@ -574,10 +575,10 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                           ),
                         ],
                         if (signedPages != null) ...[
-                          const SizedBox(height: 6),
+                          SizedBox(height: 6),
                           Row(
                             children: [
-                              const Text(
+                              Text(
                                 'عدد الصفحات: ',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -603,7 +604,7 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                   )
                 else
                   Text(
-                    'لم يتم تحديد أي نطاق بعد',
+                    L10nStrings.AppStrings.noRangeSelectedYet,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: AppColors.lightCream.withOpacity(0.6),
@@ -611,7 +612,7 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                     ),
                   ),
 
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
 
                 // --- Action buttons ---
                 Row(
@@ -625,10 +626,10 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text('إلغاء'),
+                        child: Text('إلغاء'),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
                         onPressed:
@@ -652,7 +653,7 @@ class _QuranPickerDialogState extends State<_QuranPickerDialog> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text('تأكيد'),
+                        child: Text(L10nStrings.AppStrings.confirm),
                       ),
                     ),
                   ],
@@ -714,7 +715,7 @@ class _StripThumb extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: color,
                 border: Border.all(color: Colors.black26, width: 1.5),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
                     color: Colors.black38,
                     blurRadius: 4,
@@ -755,7 +756,7 @@ class _SummaryLine extends StatelessWidget {
       children: [
         Text(
           '$label: ',
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
             color: AppColors.lightCream,
           ),
@@ -792,6 +793,6 @@ class _SummaryLine extends StatelessWidget {
  *       });
  *     },
  *   ),
- *   child: const Text('اختيار نطاق الحفظ'),
+ *   child: Text('اختيار نطاق الحفظ'),
  * )
  */
