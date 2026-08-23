@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:file_picker/file_picker.dart';
@@ -80,7 +81,7 @@ class DataManagementScreen extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('إدارة البيانات'),
+          title: const Text(AppStrings.str_teach_rem_281_3045),
           centerTitle: true,
           elevation: 0,
           backgroundColor: theme.appBarTheme.backgroundColor,
@@ -110,8 +111,8 @@ class DataManagementScreen extends StatelessWidget {
 
                 dividerColor: Colors.transparent,
                 tabs: const [
-                  Tab(text: 'تصدير', icon: Icon(Icons.file_download_outlined)),
-                  Tab(text: 'استيراد', icon: Icon(Icons.file_upload_outlined)),
+                  Tab(text: AppStrings.str_teach_rem_282_502a, icon: Icon(Icons.file_download_outlined)),
+                  Tab(text: AppStrings.str_teach_rem_283_1f9b, icon: Icon(Icons.file_upload_outlined)),
                 ],
               ),
             ),
@@ -146,7 +147,7 @@ class _ExportDataViewState extends State<ExportDataView> {
       listener: (context, state) {
         if (state is SettingsLoadSuccess) {
           if (state.exportStatus == DataExportStatus.success) {
-            _showSnackBar(context, 'تم تصدير البيانات بنجاح', Colors.green);
+            _showSnackBar(context, AppStrings.str_teach_rem_284_4ae2, Colors.green);
             context.read<SettingsBloc>().add(SettingsImportExportResetStatus());
           } else if (state.exportStatus == DataExportStatus.failure) {
             _showSnackBar(
@@ -170,7 +171,7 @@ class _ExportDataViewState extends State<ExportDataView> {
             children: [
               // قسم اختيار البيانات
               const _SectionHeader(
-                title: 'البيانات المراد تصديرها',
+                title: AppStrings.str_teach_rem_285_59d9,
                 icon: Icons.checklist_rtl,
               ),
               _SettingsCard(
@@ -214,7 +215,7 @@ class _ExportDataViewState extends State<ExportDataView> {
 
               // قسم تنسيق الملف
               const _SectionHeader(
-                title: 'تنسيق الملف',
+                title: AppStrings.str_teach_rem_286_f507,
                 icon: Icons.format_shapes,
               ),
               Row(
@@ -304,7 +305,7 @@ class _ExportDataViewState extends State<ExportDataView> {
                               ),
                             ),
                             const SizedBox(width: 12),
-                            const Text('جاري التصدير...'),
+                            const Text(AppStrings.str_teach_rem_287_20b2),
                           ],
                         )
                       : const Row(
@@ -313,7 +314,7 @@ class _ExportDataViewState extends State<ExportDataView> {
                             Icon(Icons.file_download_outlined),
                             SizedBox(width: 8),
                             Text(
-                              'تصدير البيانات',
+                              AppStrings.str_teach_rem_288_3ff5,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -402,7 +403,7 @@ class _ImportDataViewState extends State<ImportDataView> {
             children: [
               // منطقة اختيار الملف
               const _SectionHeader(
-                title: 'ملف البيانات',
+                title: AppStrings.str_teach_rem_289_269f,
                 icon: Icons.attach_file,
               ),
               InkWell(
@@ -441,7 +442,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        _fileName ?? 'اضغط لاختيار ملف (CSV, JSON)',
+                        _fileName ?? AppStrings.str_teach_rem_290_cefb,
                         style: theme.textTheme.bodyLarge?.copyWith(
                           color: _filePath != null
                               ? colorScheme.primary
@@ -451,7 +452,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                       ),
                       if (_filePath != null)
                         Text(
-                          'تم تحديد الملف جاهز للاستيراد',
+                          AppStrings.str_teach_rem_291_b3ff,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: colorScheme.primary.withOpacity(0.7),
                           ),
@@ -465,7 +466,7 @@ class _ImportDataViewState extends State<ImportDataView> {
 
               // قسم اختيار نوع البيانات
               const _SectionHeader(
-                title: 'نوع البيانات المراد استيرادها',
+                title: AppStrings.str_teach_rem_292_3682,
                 icon: Icons.category,
               ),
               _SettingsCard(
@@ -493,7 +494,7 @@ class _ImportDataViewState extends State<ImportDataView> {
 
               // استراتيجية التضارب
               const _SectionHeader(
-                title: 'عند وجود تضارب (تشابه بيانات)',
+                title: AppStrings.str_teach_rem_293_ca5c,
                 icon: Icons.merge_type,
               ),
               _SettingsCard(
@@ -564,7 +565,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                               ),
                             ),
                             const SizedBox(width: 12),
-                            const Text('جاري الاستيراد...'),
+                            const Text(AppStrings.str_teach_rem_294_f97b),
                           ],
                         )
                       : const Row(
@@ -573,7 +574,7 @@ class _ImportDataViewState extends State<ImportDataView> {
                             Icon(Icons.file_upload_outlined),
                             SizedBox(width: 8),
                             Text(
-                              'بدء الاستيراد',
+                              AppStrings.str_teach_rem_295_8017,
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,

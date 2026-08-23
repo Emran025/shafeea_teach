@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -111,7 +112,7 @@ class _DraggaBottomSheetBUttonState<B extends BlocBase<S>, S>
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  "اغلاق",
+                                  AppStrings.str_teach_rem_56_4025,
                                   style: GoogleFonts.cairo(
                                     fontSize: 16,
                                     color: AppColors.lightCream,

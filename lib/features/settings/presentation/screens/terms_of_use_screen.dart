@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/features/settings/presentation/bloc/settings_bloc.dart';
@@ -14,7 +15,7 @@ class TermsOfUseScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('شروط الاستخدام'),
+        title: const Text(AppStrings.str_teach_rem_319_25d7),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         bottom: PreferredSize(preferredSize: Size.zero, child: Container()),
@@ -46,7 +47,7 @@ class TermsOfUseScreen extends StatelessWidget {
                   return _buildTermsContent(context, state.termsOfUse!);
                 }
                 return const Center(
-                  child: Text('لم يتم العثور على شروط الاستخدام.'),
+                  child: Text(AppStrings.str_teach_rem_321_f0fa),
                 );
             }
           }
@@ -64,7 +65,7 @@ class TermsOfUseScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
             child: Text(
-              'التفاصيل الكاملة',
+              AppStrings.str_teach_rem_301_32ad,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -101,7 +102,7 @@ class TermsOfUseScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'شروط الاستخدام',
+                AppStrings.str_teach_rem_319_25d7,
                 style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

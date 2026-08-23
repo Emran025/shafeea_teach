@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -62,7 +63,7 @@ class DailyDetailsDialog extends StatelessWidget {
                       side: const BorderSide(color: AppColors.accent70),
                     ),
                     child: Text(
-                      "إغلاق",
+                      AppStrings.str_teach_rem_80_324a,
                       style: GoogleFonts.cairo(color: AppColors.lightCream),
                     ),
                   ),
@@ -97,9 +98,9 @@ class DailyDetailsDialog extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _buildDetailColumn("من", fromDetail)),
+            Expanded(child: _buildDetailColumn(AppStrings.str_teach_rem_133_8ec0, fromDetail)),
             const VerticalDivider(color: AppColors.accent70),
-            Expanded(child: _buildDetailColumn("إلى", toDetail)),
+            Expanded(child: _buildDetailColumn(AppStrings.str_teach_rem_134_4d10, toDetail)),
           ],
         ),
         // عرض الملاحظات إن وجدت
@@ -117,7 +118,7 @@ class DailyDetailsDialog extends StatelessWidget {
     );
   }
 
-  /// يبني عمودًا لعرض تفاصيل "من" أو "إلى".
+  /// يبني عمودًا لعرض تفاصيل AppStrings.str_teach_rem_133_8ec0 أو AppStrings.str_teach_rem_134_4d10.
   Widget _buildDetailColumn(String header, TrackingUnitDetail detail) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,9 +131,9 @@ class DailyDetailsDialog extends StatelessWidget {
             color: AppColors.lightCream70,
           ),
         ),
-        _buildDetailRow("السورة:", detail.fromSurahName),
-        _buildDetailRow("الصفحة:", detail.fromPage.toString()),
-        _buildDetailRow("الآية:", detail.fromAyah.toString()),
+        _buildDetailRow(AppStrings.str_teach_rem_135_4f5d, detail.fromSurahName),
+        _buildDetailRow(AppStrings.str_teach_rem_136_e31c, detail.fromPage.toString()),
+        _buildDetailRow(AppStrings.str_teach_rem_137_3292, detail.fromAyah.toString()),
       ],
     );
   }

@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // path: lib/features/settings/presentation/screens/settings_screen.dart
 
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         // The user-facing title remains in its original language.
-        title: const Text('الإعدادات'),
+        title: const Text(AppStrings.str_teach_rem_307_af46),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         // Using a zero-height bottom to ensure a clean look with CustomScrollView
@@ -82,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       slivers: [
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: 'المظهر',
+            title: AppStrings.str_teach_rem_308_9547,
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -104,13 +105,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         // --- Account Group ---
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: 'الحساب',
+            title: AppStrings.str_teach_rem_309_3741,
             children: [
               ModernSettingTile(
                 icon: Icons.person_outline,
                 iconBackgroundColor: Colors.blue,
-                title: 'الملف الشخصي',
-                subtitle: 'عرض الملف الشخصي وجلسات التسجيل، تعديل وكلمة المرور',
+                title: AppStrings.str_teach_rem_114_d176,
+                subtitle: AppStrings.str_teach_rem_310_0ead,
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   context.read<SettingsBloc>().add(LoadUserProfile());
@@ -126,13 +127,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         // --- Preferences Group ---
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: 'الإشعارات والتنبيهات',
+            title: AppStrings.str_teach_rem_311_83a0,
             children: [
               ModernSettingTile(
                 icon: Icons.notifications_outlined,
                 iconBackgroundColor: Colors.orange,
-                title: 'تفعيل الإشعارات',
-                subtitle: 'استقبال تنبيهات الدروس والتحديثات',
+                title: AppStrings.str_teach_rem_312_5a85,
+                subtitle: AppStrings.str_teach_rem_313_7645,
                 trailing: Switch(
                   value: state.settings.notificationsEnabled,
                   onChanged: (value) {
@@ -156,13 +157,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: "مركز البيانات",
+            title: AppStrings.str_teach_rem_314_269f,
             children: [
               ModernSettingTile(
                 icon: Icons.storage_outlined,
                 iconBackgroundColor: Colors.indigo,
-                title: 'إدارة البيانات',
-                subtitle: 'استيراد وتصدير بيانات التطبيق',
+                title: AppStrings.str_teach_rem_281_3045,
+                subtitle: AppStrings.str_teach_rem_315_8d27,
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   Navigator.of(context).push(
@@ -180,13 +181,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
         SliverToBoxAdapter(
           child: SettingsGroup(
-            title: 'الدعم والخصوصية',
+            title: AppStrings.str_teach_rem_316_ea3c,
             children: [
               ModernSettingTile(
                 icon: Icons.analytics_outlined,
                 iconBackgroundColor: Colors.purple,
-                title: 'تحليل البيانات',
-                subtitle: 'المساهمة في تحسين التطبيق',
+                title: AppStrings.str_teach_rem_317_3901,
+                subtitle: AppStrings.str_teach_rem_318_06bc,
                 trailing: Switch(
                   value: state.settings.analyticsEnabled,
                   onChanged: (value) {
@@ -206,7 +207,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ModernSettingTile(
                 icon: Icons.description_outlined,
                 iconBackgroundColor: Colors.grey,
-                title: 'شروط الاستخدام',
+                title: AppStrings.str_teach_rem_319_25d7,
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   context.read<SettingsBloc>().add(LoadTermsOfUse());
@@ -223,7 +224,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ModernSettingTile(
                 icon: Icons.privacy_tip_outlined,
                 iconBackgroundColor: Colors.indigoAccent,
-                title: 'سياسة الخصوصية',
+                title: AppStrings.str_teach_rem_299_4478,
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                 onTap: () {
                   // --- START OF UPDATED CODE ---
@@ -251,7 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   return ModernSettingTile(
                     icon: Icons.help_outline,
                     iconBackgroundColor: Colors.green,
-                    title: 'المساعدة والدعم',
+                    title: AppStrings.str_teach_rem_320_5967,
                     trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                     onTap: () {
                       Navigator.of(context).push(

@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/features/settings/presentation/bloc/settings_bloc.dart';
@@ -42,7 +43,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'تم إرسال طلبك بنجاح',
+                  AppStrings.str_teach_rem_328_e714,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
@@ -54,7 +55,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  state.error?.message ?? 'فشل إرسال الطلب',
+                  state.error?.message ?? AppStrings.str_teach_rem_329_b91b,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onError,
                   ),
@@ -78,7 +79,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
               children: [
                 Center(
                   child: Text(
-                    'إرسال طلب جديد',
+                    AppStrings.str_teach_rem_330_142a,
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
@@ -86,7 +87,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'الموضوع',
+                  AppStrings.str_teach_rem_331_f98f,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(
                       context,
@@ -98,7 +99,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                   controller: _subjectController,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    hintText: 'أدخل موضوع الطلب',
+                    hintText: AppStrings.str_teach_rem_332_17c4,
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(
                         context,
@@ -121,14 +122,14 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال الموضوع';
+                      return AppStrings.str_teach_rem_333_a179;
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'الرسالة',
+                  AppStrings.str_teach_rem_334_c69e,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(
                       context,
@@ -141,7 +142,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                   textInputAction: TextInputAction.done,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: 'أدخل تفاصيل الطلب',
+                    hintText: AppStrings.str_teach_rem_335_8dfa,
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(
                         context,
@@ -164,7 +165,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال الرسالة';
+                      return AppStrings.str_teach_rem_336_c64f;
                     }
                     return null;
                   },
@@ -205,7 +206,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                                 ),
                               )
                             : Text(
-                                'إرسال',
+                                AppStrings.str_teach_rem_337_1046,
                                 style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
                                       color: Theme.of(
@@ -238,7 +239,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                       ),
                     ),
                     child: Text(
-                      'إلغاء',
+                      AppStrings.str_teach_rem_14_62a9,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),

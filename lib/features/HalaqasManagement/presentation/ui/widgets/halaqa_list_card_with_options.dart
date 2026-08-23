@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -83,7 +84,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(state.filteredHalaqasFailure?.message ?? 'حدث خطأ'),
+                  Text(state.filteredHalaqasFailure?.message ?? AppStrings.str_teach_rem_74_7cd7),
                   ElevatedButton(
                     onPressed: () => context.read<HalaqaBloc>().add(
                       FilteredHalaqas(
@@ -93,7 +94,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                         monitoringFilter: widget.monitoringFilter,
                       ),
                     ),
-                    child: const Text('إعادة المحاولة'),
+                    child: const Text(AppStrings.str_teach_rem_75_724b),
                   ),
                 ],
               ),
@@ -101,7 +102,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
           }
           final filteredHalaqas = state.filteredHalaqas ?? [];
           if (filteredHalaqas.isEmpty) {
-            return const Center(child: Text('لا يوجد حلقات في هذه الفئة.'));
+            return const Center(child: Text(AppStrings.str_teach_rem_76_2220));
           }
           // .where(
           //   (t) => (status == ActiveStatus.unknown
@@ -266,7 +267,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                       else if (students.isEmpty)
                         const Expanded(
                           child: Center(
-                            child: Text('لا يوجد طلاب معنيين في هذه الحلقة.'),
+                            child: Text(AppStrings.str_teach_rem_78_11bf),
                           ),
                         )
                       else
@@ -313,7 +314,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                                 ),
                                           );
                                         },
-                                        child: StatusTag(lable: "تقرير"),
+                                        child: StatusTag(lable: AppStrings.str_teach_rem_79_adaf),
                                       ),
                                       IconButton(
                                         icon: Icon(
@@ -360,7 +361,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "إغلاق",
+                                AppStrings.str_teach_rem_80_324a,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -401,17 +402,17 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
             children: [
               _simpleListTile(
                 Icons.transfer_within_a_station_outlined,
-                "نقله إلى حلقة أخرى",
+                AppStrings.str_teach_rem_81_a66c,
                 () {
                   Navigator.pop(context);
                 },
               ),
-              _simpleListTile(Icons.person_outlined, "عرض ملفه الشخصي", () {
+              _simpleListTile(Icons.person_outlined, AppStrings.str_teach_rem_82_7dc4, () {
                 Navigator.pop(context);
               }),
               _simpleListTile(
                 Icons.remove_circle_outline,
-                "اتخاذ إجراء معه",
+                AppStrings.str_teach_rem_83_7123,
                 () {
                   Navigator.pop(context);
                   _showHalaqaActionDialog(student);
@@ -451,7 +452,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "إدارة الطالب",
+                      AppStrings.str_teach_rem_35_b134,
                       style: GoogleFonts.cairo(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -462,7 +463,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: ["نقل", "فصل", "إيقاف"].map((action1) {
+                      children: [AppStrings.str_teach_rem_36_5947, AppStrings.str_teach_rem_37_5afc, AppStrings.str_teach_rem_38_0da2].map((action1) {
                         final isSelected = action == action1;
                         return ChoiceChip(
                           label: Text(
@@ -499,7 +500,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                       minLines: 2,
                       maxLines: 4,
                       decoration: InputDecoration(
-                        hintText: "أضف ملاحظة (اختياري)",
+                        hintText: AppStrings.str_teach_rem_39_9c8e,
                         hintStyle: GoogleFonts.cairo(
                           color: AppColors.lightCream70,
                         ),
@@ -522,7 +523,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                               side: BorderSide(color: AppColors.accent70),
                             ),
                             child: Text(
-                              "إلغاء",
+                              AppStrings.str_teach_rem_14_62a9,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -536,12 +537,12 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                               backgroundColor: AppColors.accent,
                             ),
                             onPressed: () {
-                              if (action == "نقل") {
+                              if (action == AppStrings.str_teach_rem_36_5947) {
                                 setState(() {
                                   // currentHalaqas.remove(student);
                                   // add to previous + note
                                 });
-                              } else if (action == "فصل" || action == "إيقاف") {
+                              } else if (action == AppStrings.str_teach_rem_37_5afc || action == AppStrings.str_teach_rem_38_0da2) {
                                 setState(() {
                                   // stoppedStatus[student] = true;
                                 });
@@ -549,7 +550,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                               Navigator.pop(context);
                             },
                             child: Text(
-                              "تنفيذ",
+                              AppStrings.str_teach_rem_40_e108,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -630,7 +631,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  isStopped ? "الحالة: متوقف" : "الحالة: نشط",
+                                  isStopped ? AppStrings.str_teach_rem_84_3709 : AppStrings.str_teach_rem_85_d717,
                                   style: GoogleFonts.cairo(
                                     fontSize: 16,
                                     color: AppColors.lightCream,
@@ -641,7 +642,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                             if (isStopped) ...[
                               SizedBox(height: 16),
                               Text(
-                                "سبب التوقف:",
+                                AppStrings.str_teach_rem_86_396f,
                                 style: GoogleFonts.cairo(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -650,7 +651,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                               ),
                               SizedBox(height: 6),
                               Text(
-                                "لا توجد تفاصيل.",
+                                AppStrings.str_teach_rem_87_fd10,
                                 style: GoogleFonts.cairo(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -672,7 +673,7 @@ class _HalaqaListCardWithOptionsState extends State<HalaqaListCardWithOptions> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "اغلاق",
+                                AppStrings.str_teach_rem_56_4025,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),

@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:shafeea/core/models/user_role.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
@@ -28,7 +29,7 @@ class _TecherDashboardState extends State<TecherDashboard> {
     // StudentsManagementScreen(),
     MonitoringScreen(),
   ];
-  final List<String> headers = ["الرئيسية", "المتابعة الشاملة"];
+  final List<String> headers = [AppStrings.str_teach_rem_348_f98d, AppStrings.str_teach_rem_352_2e3b];
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class _TecherDashboardState extends State<TecherDashboard> {
         ),
 
         drawer: RecitationModeSideBar(
-          title: "مرحباً، عمران",
+          title: AppStrings.str_teach_rem_263_5f0f,
           avatar: Avatar(size: Size(100, 100)),
           items: [
             CustomModeIconButton(
@@ -75,7 +76,7 @@ class _TecherDashboardState extends State<TecherDashboard> {
             ),
             CustomModeIconButton(
               isSelected: false,
-              label: "الإعدادات",
+              label: AppStrings.str_teach_rem_307_af46,
               icon: Icons.settings,
               onTap: () {
                 Navigator.of(context).push(
@@ -89,7 +90,7 @@ class _TecherDashboardState extends State<TecherDashboard> {
             ),
             CustomModeIconButton(
               icon: Icons.logout,
-              label: "تسجيل الخروج",
+              label: AppStrings.str_teach_rem_200_ca2d,
               isSelected: false,
               onTap: () {
                 Navigator.pop(context);

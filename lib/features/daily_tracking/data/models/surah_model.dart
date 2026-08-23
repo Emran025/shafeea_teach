@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // lib/features/quran_reader/data/models/surah_model.dart
 import 'package:equatable/equatable.dart';
 import 'package:shafeea/features/daily_tracking/domain/entities/surah.dart';
@@ -25,7 +26,7 @@ class SurahModel extends Equatable {
   factory SurahModel.fromMap(Map<String, dynamic> map) {
     return SurahModel(
       number: map['Id'] as int,
-      name: map['Name_ar'].replaceAll('ۡ', 'ْ') as String,
+      name: map['Name_ar'].replaceAll(AppStrings.str_teach_rem_232_c7a7, AppStrings.str_teach_rem_233_8855) as String,
       englishName: map['Name_en'] as String,
       englishNameTranslation:
           map['Name_en'] as String, // Using Name_en as fallback

@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -141,9 +142,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 val!.trim().contains('@') ||
                                     val.trim().length >= 7
                                 ? null
-                                : 'بريد أو رقم هاتف غير صالح',
+                                : AppStrings.str_teach_rem_176_89df,
                             decoration: _inputDecoration(
-                              "رقم الهاتف أو البريد الإلكتروني",
+                              AppStrings.str_teach_rem_177_9ba1,
                               Icons.email,
                             ),
                           ),
@@ -157,7 +158,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                      'تم ارسال رابط تعيين كلمة السر الى الإيميل',
+                                      AppStrings.str_teach_rem_178_ddd8,
                                     ),
                                   ),
                                 );
@@ -180,7 +181,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                       color: AppColors.lightCream,
                                     )
                                   : CustomButton(
-                                      text: 'تعيين',
+                                      text: AppStrings.str_teach_rem_179_cefd,
                                       onPressed: () =>
                                           _submitForgetPassword(context),
                                     );

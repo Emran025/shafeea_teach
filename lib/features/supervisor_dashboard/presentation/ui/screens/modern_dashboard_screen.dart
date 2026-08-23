@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
@@ -69,7 +70,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
     return FloatingActionButton.extended(
       onPressed: _handleQuickAction,
       label: Text(
-        "إجراء سريع",
+        AppStrings.str_teach_rem_360_d22c,
         style: GoogleFonts.cairo(color: AppColors.lightCream),
       ),
       icon: Icon(Icons.flash_on, color: AppColors.lightCream),
@@ -92,7 +93,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
 
   Widget _buildHeader() {
     return Text(
-      "الإحصائيات العامة",
+      AppStrings.str_teach_rem_361_0afe,
       style: Theme.of(context).textTheme.titleLarge,
     );
   }
@@ -121,7 +122,7 @@ class DashboardDataManager {
   List<_DashboardStat> getInitialStats(UserRole role) {
     return [
       _DashboardStat(
-        'الطلاب',
+        AppStrings.str_teach_rem_6_36bc,
         '342',
         Icons.group,
         _colorGradients[1],
@@ -129,14 +130,14 @@ class DashboardDataManager {
       ),
       if (role == UserRole.supervisor)
         _DashboardStat(
-          'المعلمين',
+          AppStrings.str_teach_rem_4_faa1,
           '23',
           Icons.school,
           _colorGradients[3],
           _trendsData[3],
         ),
       _DashboardStat(
-        'الحلقات',
+        AppStrings.str_teach_rem_5_f960,
         '57',
         Icons.book,
         _colorGradients[0],
@@ -194,17 +195,17 @@ class _DashboardStateBuilder {
   ) {
     final updatedStats = stats.map((stat) {
       switch (stat.title) {
-        case 'الطلاب':
+        case AppStrings.str_teach_rem_6_36bc:
           return stat.copyWith(
             suTitle: "${state.countsDeltaEntity!.studentCount.count}",
           );
 
-        case 'المعلمين':
+        case AppStrings.str_teach_rem_4_faa1:
           return stat.copyWith(
             suTitle: "${state.countsDeltaEntity!.teacherCount.count}",
           );
 
-        case 'الحلقات':
+        case AppStrings.str_teach_rem_5_f960:
           return stat.copyWith(
             suTitle: "${state.countsDeltaEntity!.halaqaCount.count}",
           );
@@ -279,11 +280,11 @@ class _DashboardStateBuilder {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("📢 آخر التنبيهات", style: Theme.of(context).textTheme.titleLarge),
+        Text(AppStrings.str_teach_rem_362_1a2e, style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 12),
         const _NotificationCard(
-          title: "تمت إضافة حلقة جديدة بإشراف الشيخ خالد",
-          timeAgo: "منذ 3 دقائق",
+          title: AppStrings.str_teach_rem_363_da17,
+          timeAgo: AppStrings.str_teach_rem_364_282a,
         ),
       ],
     );
@@ -345,7 +346,7 @@ class _StatCardWidget extends StatelessWidget {
   ) {
     return [
       Text(
-        "📊 مخططات الطلاب التفصيلية",
+        AppStrings.str_teach_rem_365_9bef,
         style: Theme.of(
           context,
         ).textTheme.titleLarge?.copyWith(color: AppColors.lightCream),
@@ -357,8 +358,8 @@ class _StatCardWidget extends StatelessWidget {
           qualityData: state.chartData ?? [],
           filter: state.filter!,
           tile: ChartTile(
-            title: 'تقييم جودة الإتقان',
-            subTitle: "حسب الفترة",
+            title: AppStrings.str_teach_rem_366_8312,
+            subTitle: AppStrings.str_teach_rem_367_6d3e,
             icon: Icons.assessment,
           ),
           onFilterChanged: (filter) {
@@ -448,7 +449,7 @@ class _StatCardWidget extends StatelessWidget {
         children: [
           CircularProgressIndicator(color: AppColors.lightCream),
           SizedBox(height: 16),
-          Text("جاري تحميل البيانات..."),
+          Text(AppStrings.str_teach_rem_368_551f),
         ],
       ),
     );
@@ -467,7 +468,7 @@ class _StatCardWidget extends StatelessWidget {
             onPressed: () {
               // Retry logic
             },
-            child: const Text("إعادة المحاولة"),
+            child: const Text(AppStrings.str_teach_rem_75_724b),
           ),
         ],
       ),
@@ -475,7 +476,7 @@ class _StatCardWidget extends StatelessWidget {
   }
 
   Widget _buildInitialState() {
-    return const Center(child: Text("اضغط لتحميل البيانات"));
+    return const Center(child: Text(AppStrings.str_teach_rem_369_fb75));
   }
 }
 

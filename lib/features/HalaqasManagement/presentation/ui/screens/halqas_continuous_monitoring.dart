@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:shafeea/core/models/monitoring_filter.dart';
 import 'package:shafeea/core/models/report_frequency.dart';
@@ -100,17 +101,17 @@ class _HalaqasContinuousMonitoringState
                     tabs: [
                       _buildTab(
                         icon: Icons.schedule,
-                        label: 'المتوقع',
+                        label: AppStrings.str_teach_rem_71_d04c,
                         count: _expectedCount,
                       ),
                       _buildTab(
                         icon: Icons.upload_rounded,
-                        label: 'المرسل',
+                        label: AppStrings.str_teach_rem_72_8faf,
                         count: _sentCount,
                       ),
                       _buildTab(
                         icon: Icons.person_off_outlined,
-                        label: 'المتبقي',
+                        label: AppStrings.str_teach_rem_73_acc2,
                         count: _remainingCount,
                       ),
                     ],

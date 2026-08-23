@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:shafeea/core/models/active_status.dart';
 import 'package:shafeea/core/models/gender.dart';
@@ -60,7 +61,7 @@ final class HalaqaModel {
         json['gender'] as String? ?? Gender.male.labelAr.toLowerCase(),
       ),
 
-      country: json['country'] as String? ?? 'اليمن',
+      country: json['country'] as String? ?? AppStrings.str_teach_rem_8_66d6,
       residence: json['residence'] as String? ?? '',
 
       availableTime: json['availableTime'] as String?,

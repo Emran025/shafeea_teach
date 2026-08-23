@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -138,12 +139,12 @@ class _StudentFormState extends State<StudentForm> {
             CustomTextField(
               controller: widget.nameController,
               prefixIcon: Icons.person,
-              label: "اسم الطالب",
+              label: AppStrings.str_teach_rem_92_8b78,
               keyboardType: TextInputType.name,
             ),
 
             // ── Gender ─────────────────────────────────────────────────────
-            _buildDropdown(widget.genderController, "الجنس", [
+            _buildDropdown(widget.genderController, AppStrings.str_teach_rem_22_223a, [
               ...(Gender.values.map((e) => e.label).toList()),
             ]),
 
@@ -180,7 +181,7 @@ class _StudentFormState extends State<StudentForm> {
             CustomTextField(
               controller: widget.emailController,
               prefixIcon: Icons.email,
-              label: "البريد الإلكتروني",
+              label: AppStrings.str_teach_rem_93_c920,
               keyboardType: TextInputType.emailAddress,
             ),
 
@@ -188,7 +189,7 @@ class _StudentFormState extends State<StudentForm> {
             CustomDatePicker(
               controller: widget.birthDateController,
               icon: Icons.calendar_month_outlined,
-              label: "تأريخ الميلاد",
+              label: AppStrings.str_teach_rem_94_7926,
               onDateSelected: (date) {
                 widget.birthDateController.text = formatDate(date);
               },
@@ -210,7 +211,7 @@ class _StudentFormState extends State<StudentForm> {
                       .first;
                 });
               },
-              label: "رقم الهاتف",
+              label: AppStrings.str_teach_rem_95_a44d,
             ),
 
             // ── WhatsApp ───────────────────────────────────────────────────
@@ -229,13 +230,13 @@ class _StudentFormState extends State<StudentForm> {
                       .first;
                 });
               },
-              label: "رقم الواتسآب",
+              label: AppStrings.str_teach_rem_96_31d4,
             ),
 
             // ── Qualification ──────────────────────────────────────────────
             _buildDropdown(
               widget.qualificationController,
-              "نوع التعليم(المهؤهل)",
+              AppStrings.str_teach_rem_97_204c,
               [...(EducationLevel.values.map((e) => e.labelAr).toList())],
             ),
 
@@ -244,7 +245,7 @@ class _StudentFormState extends State<StudentForm> {
               controller: widget.memorizationLevelController,
               prefixIcon: Icons.calendar_month,
               keyboardType: TextInputType.number,
-              label: "المستوى في الحفظ",
+              label: AppStrings.str_teach_rem_98_2b4f,
               onTap: _openMemorizationPicker,
               readOnly: true,
             ),
@@ -253,7 +254,7 @@ class _StudentFormState extends State<StudentForm> {
             CustomTextField(
               controller: widget.countryController,
               prefixIcon: Icons.home_filled,
-              label: "محل الميلاد",
+              label: AppStrings.str_teach_rem_99_3480,
               onTap: _changeDialog,
               readOnly: true,
             ),
@@ -262,7 +263,7 @@ class _StudentFormState extends State<StudentForm> {
             CustomTextField(
               controller: widget.residenceController,
               prefixIcon: Icons.home_filled,
-              label: "بلد الإقامة",
+              label: AppStrings.str_teach_rem_100_88b3,
               onTap: _changeDialog,
               readOnly: true,
             ),
@@ -271,7 +272,7 @@ class _StudentFormState extends State<StudentForm> {
             CustomTimePicker(
               controller: widget.availableTimeController,
               icon: Icons.timelapse_rounded,
-              label: "الوقت المتاح",
+              label: AppStrings.str_teach_rem_25_4f19,
               onTimeSelected: (date) {
                 widget.availableTimeController.text = "$date";
               },
@@ -313,13 +314,13 @@ class _StudentFormState extends State<StudentForm> {
           filled: true,
           fillColor: AppColors.lightCream12,
           prefixIcon: const Icon(Icons.alternate_email, color: AppColors.lightCream70),
-          labelText: "اسم المستخدم",
+          labelText: AppStrings.str_teach_rem_101_a48b,
           labelStyle: GoogleFonts.cairo(color: AppColors.lightCream70),
           helperText: state.usernameCheckStatus ==
                   StudentUsernameCheckStatus.loaded
               ? (state.usernameCheck
-                  ? "اسم المستخدم متاح ✓"
-                  : "اسم المستخدم غير متاح")
+                  ? AppStrings.str_teach_rem_102_e6f9
+                  : AppStrings.str_teach_rem_103_3aa6)
               : null,
           helperStyle: GoogleFonts.cairo(
             color: state.usernameCheck ? Colors.green : AppColors.error,
@@ -396,9 +397,9 @@ class _StudentFormState extends State<StudentForm> {
                 value: e,
                 child: Text(
                   e == "Male"
-                      ? "ذكر"
+                      ? AppStrings.str_teach_33_6862
                       : e == "Female" || e == "female"
-                      ? "أنثى"
+                      ? AppStrings.str_teach_34_6947
                       : e,
                   style: GoogleFonts.cairo(
                     color: AppColors.lightCream70,

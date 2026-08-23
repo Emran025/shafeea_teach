@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // lib/core/database/app_database.dart
 import 'package:sqflite/sqflite.dart';
 // ignore: depend_on_referenced_packages
@@ -181,27 +182,27 @@ class AppDatabase {
     await txn.insert(_kRolesTable, {
       'id': 1,
       'code': 'power_admin',
-      'nameAr': 'مشرف نظام',
+      'nameAr': AppStrings.str_teach_1_eb38,
     });
     await txn.insert(_kRolesTable, {
       'id': 2,
       'code': 'supervisor',
-      'nameAr': 'مشرف',
+      'nameAr': AppStrings.str_teach_2_2005,
     });
     await txn.insert(_kRolesTable, {
       'id': 3,
       'code': 'teacher',
-      'nameAr': 'معلم',
+      'nameAr': AppStrings.str_teach_3_f36a,
     });
     await txn.insert(_kRolesTable, {
       'id': 4,
       'code': 'student',
-      'nameAr': 'طالب',
+      'nameAr': AppStrings.str_teach_4_a008,
     });
     await txn.insert(_kRolesTable, {
       'id': 5,
       'code': 'Halaqa',
-      'nameAr': 'حلقة',
+      'nameAr': AppStrings.str_teach_5_7a63,
     });
 
     // Units (e.g., page, juz)
@@ -212,9 +213,9 @@ class AppDatabase {
         nameAr TEXT    NOT NULL
       )
     ''');
-    await txn.insert(_kUnitsTable, {'id': 1, 'code': 'juz', 'nameAr': 'جزء'});
-    await txn.insert(_kUnitsTable, {'id': 2, 'code': 'hizb', 'nameAr': 'حزب'});
-    await txn.insert(_kUnitsTable, {'id': 3, 'code': 'page', 'nameAr': 'صفحة'});
+    await txn.insert(_kUnitsTable, {'id': 1, 'code': 'juz', 'nameAr': AppStrings.str_teach_44_355d});
+    await txn.insert(_kUnitsTable, {'id': 2, 'code': 'hizb', 'nameAr': AppStrings.str_teach_45_0a04});
+    await txn.insert(_kUnitsTable, {'id': 3, 'code': 'page', 'nameAr': AppStrings.str_teach_48_d56b});
 
     // Frequencies (e.g., daily, weekly)
     await txn.execute('''
@@ -228,25 +229,25 @@ class AppDatabase {
     await txn.insert(_kFrequenciesTable, {
       'id': 1,
       'code': 'daily',
-      'nameAr': 'يوميًا',
+      'nameAr': AppStrings.str_teach_6_79a5,
       'daysCount': 1,
     });
     await txn.insert(_kFrequenciesTable, {
       'id': 2,
       'code': 'weekly',
-      'nameAr': 'أسبوعيًا',
+      'nameAr': AppStrings.str_teach_7_f3ad,
       'daysCount': 7,
     });
     await txn.insert(_kFrequenciesTable, {
       'id': 3,
       'code': 'twiceAWeek',
-      'nameAr': 'مرتين بالأسبوع',
+      'nameAr': AppStrings.str_teach_8_5484,
       'daysCount': 3,
     });
     await txn.insert(_kFrequenciesTable, {
       'id': 4,
       'code': 'thriceAWeek',
-      'nameAr': 'ثلاث مرات بالأسبوع',
+      'nameAr': AppStrings.str_teach_9_d6b7,
       'daysCount': 2,
     });
 
@@ -261,17 +262,17 @@ class AppDatabase {
     await txn.insert(_kTrackingTypesTable, {
       'id': 1,
       'code': 'Memorization',
-      'nameAr': 'الحفظ',
+      'nameAr': AppStrings.str_teach_10_4c69,
     });
     await txn.insert(_kTrackingTypesTable, {
       'id': 2,
       'code': 'Review',
-      'nameAr': 'المراجعة',
+      'nameAr': AppStrings.str_teach_11_f297,
     });
     await txn.insert(_kTrackingTypesTable, {
       'id': 3,
       'code': 'Recitation',
-      'nameAr': 'السرد',
+      'nameAr': AppStrings.str_teach_12_9d55,
     });
 
     // Attendance Types (e.g., present, absent)
@@ -285,12 +286,12 @@ class AppDatabase {
     await txn.insert(_kAttendanceTypesTable, {
       'id': 1,
       'code': 'present',
-      'nameAr': 'حاضر',
+      'nameAr': AppStrings.str_teach_13_1745,
     });
     await txn.insert(_kAttendanceTypesTable, {
       'id': 2,
       'code': 'absent',
-      'nameAr': 'غياب',
+      'nameAr': AppStrings.str_teach_14_85f0,
     });
   }
 

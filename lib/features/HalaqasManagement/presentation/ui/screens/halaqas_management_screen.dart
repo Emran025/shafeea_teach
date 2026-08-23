@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -100,7 +101,7 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
               },
               icon: Icon(Icons.add, color: AppColors.lightCream),
               label: Text(
-                "إضافة حلقة",
+                AppStrings.str_teach_rem_65_db6b,
                 style: GoogleFonts.cairo(
                   fontWeight: FontWeight.bold,
                   color: AppColors.lightCream,
@@ -232,7 +233,7 @@ class _HalaqaManagementScreenState extends State<HalaqaManagementScreen> {
           Icons.search,
           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
         ),
-        hintText: "ابحث عن حلقة...",
+        hintText: AppStrings.str_teach_rem_66_d490,
         hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
@@ -315,7 +316,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'يرجى اختيار المعلم المسؤول عن الحلقة',
+              AppStrings.str_teach_rem_67_bb3f,
               style: GoogleFonts.cairo(color: AppColors.lightCream),
             ),
             backgroundColor: AppColors.error,
@@ -345,7 +346,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'يرجى اختيار المعلم المسؤول عن الحلقة',
+              AppStrings.str_teach_rem_67_bb3f,
               style: GoogleFonts.cairo(color: AppColors.lightCream),
             ),
             backgroundColor: AppColors.error,
@@ -361,9 +362,9 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
         name: form.nameController.text,
         gender: Gender.fromLabel(
           form.genderController.text == 'Male' ||
-                  form.genderController.text == 'ذكر'
-              ? 'ذكر'
-              : 'أنثى',
+                  form.genderController.text == AppStrings.str_teach_33_6862
+              ? AppStrings.str_teach_33_6862
+              : AppStrings.str_teach_34_6947,
         ),
         country: form.countryController.text,
         residence: form.residenceController.text,
@@ -454,7 +455,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                               // Navigator.pop(context);
                             },
                             child: Text(
-                              "حاول مجددًا",
+                              AppStrings.str_teach_rem_62_232f,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -517,7 +518,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            "بناء حلقة",
+                            AppStrings.str_teach_rem_68_c4df,
                             style: GoogleFonts.cairo(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -560,7 +561,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "الغاء",
+                                AppStrings.str_teach_rem_69_32ae,
                                 style: GoogleFonts.cairo(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -582,7 +583,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "اضافة آخر",
+                                AppStrings.str_teach_rem_70_9150,
                                 style: GoogleFonts.cairo(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
@@ -603,7 +604,7 @@ class _AddHalaqaDialogState extends State<AddHalaqaDialog> {
                                 });
                               },
                               child: Text(
-                                "حفظ",
+                                AppStrings.str_teach_41_a699,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                   fontSize: 13,

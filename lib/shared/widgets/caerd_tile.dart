@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:shafeea/shared/widgets/taj.dart';
 
@@ -20,7 +21,7 @@ class CustomListTile extends StatelessWidget {
   final VoidCallback? onMoreTab;
   const CustomListTile({
     super.key,
-    this.tajLable = "تقرير",
+    this.tajLable = AppStrings.str_teach_rem_79_adaf,
     this.subtitle = "",
     required this.title,
     required this.moreIcon,

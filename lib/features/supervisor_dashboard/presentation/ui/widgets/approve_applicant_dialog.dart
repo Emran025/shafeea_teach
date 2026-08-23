@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -31,14 +32,14 @@ class _ApproveApplicantDialogState extends State<ApproveApplicantDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'تأكيد القبول',
+              AppStrings.str_teach_rem_370_1573,
               style: GoogleFonts.cairo(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            const Text('هل أنت متأكد من قبول هذا المقدم؟'),
+            const Text(AppStrings.str_teach_rem_371_22d2),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -47,7 +48,7 @@ class _ApproveApplicantDialogState extends State<ApproveApplicantDialog> {
                     onPressed: _isLoading
                         ? null
                         : () => Navigator.of(context).pop(),
-                    child: const Text('إلغاء'),
+                    child: const Text(AppStrings.str_teach_rem_14_62a9),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -69,7 +70,7 @@ class _ApproveApplicantDialogState extends State<ApproveApplicantDialog> {
                               strokeWidth: 2,
                             ),
                           )
-                        : const Text('قبول'),
+                        : const Text(AppStrings.str_teach_rem_127_d99d),
                   ),
                 ),
               ],

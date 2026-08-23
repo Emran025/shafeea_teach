@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 
 class CallNotificationOverlay extends StatelessWidget {
@@ -42,10 +43,10 @@ class CallNotificationOverlay extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
                     Text(
-                      'مكالمة واردة',
+                      AppStrings.str_teach_rem_279_1af7,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
-                    Text('طلب تسميع من طالب'),
+                    Text(AppStrings.str_teach_rem_280_bd0e),
                   ],
                 ),
               ),

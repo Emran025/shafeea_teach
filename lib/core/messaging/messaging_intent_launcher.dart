@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,7 +13,7 @@ enum WhatsAppFlavor {
   const WhatsAppFlavor(this.packageName);
 
   String get displayName =>
-      this == standard ? 'واتساب' : 'واتساب للأعمال';
+      this == standard ? AppStrings.str_teach_15_034f : AppStrings.str_teach_16_6716;
 }
 
 /// Opens the platform SMS composer or WhatsApp with pre-filled [text] (offline intent).

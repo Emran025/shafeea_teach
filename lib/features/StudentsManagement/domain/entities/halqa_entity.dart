@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -15,7 +16,7 @@ class AssignedHalaqasEntity {
     this.enrollmentId = '0',
 
     this.halaqaId = "0",
-    this.name = 'النور',
+    this.name = AppStrings.str_teach_rem_88_0d98,
     this.avatar = 'assets/images/logo2.png',
     this.enrolledAt = '2025-07-08 22:21:36',
     this.studentId = "0",
@@ -23,7 +24,7 @@ class AssignedHalaqasEntity {
   const AssignedHalaqasEntity.empty()
     : id = '0',
       enrollmentId = '0',
-      name = 'النور',
+      name = AppStrings.str_teach_rem_88_0d98,
       avatar = 'assets/images/logo2.png',
       enrolledAt = '2025-07-08 22:21:36',
       halaqaId = '0',

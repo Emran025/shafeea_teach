@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flag/flag_widget.dart';
@@ -110,7 +111,7 @@ class _PhoneZoneFormState extends State<PhoneZoneForm> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      _changeDialog(controller, "رمز الدولة");
+                      _changeDialog(controller, AppStrings.str_teach_rem_414_4650);
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),

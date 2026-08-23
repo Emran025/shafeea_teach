@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/core/models/user_role.dart';
@@ -38,8 +39,8 @@ class _StudentsManagementScreenState extends State<StudentsManagementScreen>
           bottom: TabBar(
             controller: _tabController,
             tabs: const [
-              Tab(text: "الطلاب الحاليون"),
-              Tab(text: "طلبات التقديم"),
+              Tab(text: AppStrings.str_teach_rem_129_9a5b),
+              Tab(text: AppStrings.str_teach_rem_130_105c),
             ],
           ),
         ),

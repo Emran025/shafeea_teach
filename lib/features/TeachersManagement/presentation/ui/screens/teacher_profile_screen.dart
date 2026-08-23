@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,7 +39,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
       create: (context) =>
           sl<TeacherBloc>()..add(TeacherDetailsFetched(widget.teacherId)),
       child: Scaffold(
-        appBar: AppBar(title: Text("الملف الشخصي"), elevation: 0),
+        appBar: AppBar(title: Text(AppStrings.str_teach_rem_114_d176), elevation: 0),
         body: BlocBuilder<TeacherBloc, TeacherState>(
           builder: (context, status) {
             if (status.detailsStatus == TeacherDetailsStatus.failure) {
@@ -54,20 +55,20 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                     children: [
                       _buildHeader(context, status.selectedTeacher!),
                       SizedBox(height: 24),
-                      _buildInfoRow("البريد", status.selectedTeacher!.email),
+                      _buildInfoRow(AppStrings.str_teach_rem_116_ca05, status.selectedTeacher!.email),
 
                       Row(
                         children: [
                           Expanded(
                             child: _buildInfoRow(
-                              "الجنس",
+                              AppStrings.str_teach_rem_22_223a,
                               status.selectedTeacher!.gender.labelAr,
                             ),
                           ),
                           SizedBox(width: 8),
                           Expanded(
                             child: _buildInfoRow(
-                              "الجنسية",
+                              AppStrings.str_teach_rem_118_03f8,
                               status.selectedTeacher!.country,
                             ),
                           ),
@@ -77,14 +78,14 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                         children: [
                           Expanded(
                             child: _buildInfoRow(
-                              "بلد الإقامة",
+                              AppStrings.str_teach_rem_100_88b3,
                               status.selectedTeacher!.residence,
                             ),
                           ),
                           SizedBox(width: 8),
                           Expanded(
                             child: _buildInfoRow(
-                              "المدينة",
+                              AppStrings.str_teach_rem_119_d4ff,
                               status.selectedTeacher!.city,
                             ),
                           ),
@@ -100,7 +101,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                           children: [
                             Expanded(
                               child: _buildInfoRow(
-                                "رقم الهاتف",
+                                AppStrings.str_teach_rem_95_a44d,
                                 status.selectedTeacher!.phone,
                               ),
                             ),
@@ -125,7 +126,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                           children: [
                             Expanded(
                               child: _buildInfoRow(
-                                "رقم الواتس",
+                                AppStrings.str_teach_rem_117_d270,
                                 status.selectedTeacher!.whatsAppPhone,
                               ),
                             ),
@@ -144,7 +145,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                         children: [
                           Expanded(
                             child: _buildInfoRow(
-                              "المؤهل",
+                              AppStrings.str_teach_rem_155_3bfc,
                               status.selectedTeacher!.qualification,
                             ),
                           ),
@@ -152,11 +153,11 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: _buildInfoRow("العمر"," ${status.selectedTeacher!.birthDate}")),
+                          Expanded(child: _buildInfoRow(AppStrings.str_teach_rem_156_5697," ${status.selectedTeacher!.birthDate}")),
                           SizedBox(width: 8),
                           Expanded(
                             child: _buildInfoRow(
-                              "سنوات العمل",
+                              AppStrings.str_teach_rem_157_7a74,
                               " ${status.selectedTeacher!.experienceYears}",
                             ),
                           ),
@@ -183,7 +184,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                                   ),
                                   SizedBox(width: 10),
                                   Text(
-                                    "تعديل البيانات",
+                                    AppStrings.str_teach_rem_121_a7a8,
                                     style: GoogleFonts.cairo(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -212,7 +213,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                           ActiveStatus.active) ...[
                         SizedBox(height: 15),
                         Text(
-                          "الحلقات",
+                          AppStrings.str_teach_rem_5_f960,
                           style: GoogleFonts.cairo(
                             fontSize: 18,
                             color: AppColors.lightCream70,
@@ -239,7 +240,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  "رفض",
+                                  AppStrings.str_teach_rem_126_5ea6,
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream,
                                   ),
@@ -262,7 +263,7 @@ class _TeacherProfileScreenState extends State<TeacherProfileScreen> {
                                   // Navigator.pop(context);
                                 },
                                 child: Text(
-                                  "قبول",
+                                  AppStrings.str_teach_rem_127_d99d,
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream,
                                   ),

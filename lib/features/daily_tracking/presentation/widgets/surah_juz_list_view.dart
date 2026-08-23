@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // lib/features/quran_reader/presentation/widgets/surah_juz_list_view.dart
 import '../../../../core/utils/data_status.dart';
 import 'package:flutter/material.dart';
@@ -175,7 +176,7 @@ class SurahJuzListView extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {},
-              child: const Text('إعادة المحاولة'),
+              child: const Text(AppStrings.str_teach_rem_75_724b),
             ),
           ],
         ),

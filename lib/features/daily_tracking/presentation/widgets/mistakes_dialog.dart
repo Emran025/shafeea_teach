@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,7 +85,7 @@ class _MistakesDialogState extends State<MistakesDialog> {
         Expanded(
           child: OutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("اغلاق"),
+            child: const Text(AppStrings.str_teach_rem_56_4025),
           ),
         ),
       ],

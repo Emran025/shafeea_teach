@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -91,7 +92,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "تغيير المعلم",
+                      AppStrings.str_teach_rem_29_7558,
                       style: GoogleFonts.cairo(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -110,7 +111,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                         });
                       },
                       decoration: InputDecoration(
-                        hintText: "ابحث عن معلم...",
+                        hintText: AppStrings.str_teach_rem_17_0dee,
                         hintStyle: GoogleFonts.cairo(
                           color: AppColors.lightCream70,
                         ),
@@ -131,7 +132,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                         ? Expanded(
                             child: Center(
                               child: Text(
-                                "لا يوجد معلمون",
+                                AppStrings.str_teach_rem_30_0100,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream70,
                                 ),
@@ -178,7 +179,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                               side: BorderSide(color: AppColors.accent70),
                             ),
                             child: Text(
-                              "إلغاء",
+                              AppStrings.str_teach_rem_14_62a9,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -196,7 +197,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                               Navigator.pop(context);
                             },
                             child: Text(
-                              "تأكيد",
+                              AppStrings.str_teach_rem_20_20d3,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -245,7 +246,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                 child: Text(
                   student.name.isNotEmpty
                       ? student.name.substring(0, 1)
-                      : '؟',
+                      : AppStrings.str_teach_rem_31_e083,
                   style: GoogleFonts.cairo(
                     fontWeight: FontWeight.bold,
                     color: AppColors.lightCream,
@@ -275,7 +276,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
               onPressed: () {
                 if (onPressed != null) onPressed();
               },
-              child: StatusTag(lable: "اتخاذ اجراء"),
+              child: StatusTag(lable: AppStrings.str_teach_rem_32_e68b),
             ),
             IconButton(
               icon: Icon(Icons.more_vert, color: AppColors.lightCream),
@@ -318,7 +319,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                     const Icon(Icons.edit, color: AppColors.lightCream),
                     const SizedBox(width: 8),
                     Text(
-                      "تعديل اسم الحلقة",
+                      AppStrings.str_teach_rem_33_e028,
                       style: GoogleFonts.cairo(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -333,10 +334,10 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                   style: GoogleFonts.cairo(color: AppColors.lightCream),
                   cursorColor: AppColors.lightCream,
                   decoration: InputDecoration(
-                    hintText: "ادخل اسم الحلقة الجديد...",
+                    hintText: AppStrings.str_teach_rem_34_f9a4,
                     hintStyle:
                         GoogleFonts.cairo(color: AppColors.lightCream70),
-                    labelText: "اسم الحلقة",
+                    labelText: AppStrings.str_teach_rem_21_b511,
                     labelStyle: GoogleFonts.cairo(
                       color: AppColors.lightCream70,
                     ),
@@ -369,7 +370,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                           side: BorderSide(color: AppColors.accent70),
                         ),
                         child: Text(
-                          "إلغاء",
+                          AppStrings.str_teach_rem_14_62a9,
                           style:
                               GoogleFonts.cairo(color: AppColors.lightCream),
                         ),
@@ -386,7 +387,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                           Navigator.pop(context);
                         },
                         child: Text(
-                          "تأكيد",
+                          AppStrings.str_teach_rem_20_20d3,
                           style:
                               GoogleFonts.cairo(color: AppColors.lightCream),
                         ),
@@ -429,7 +430,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "إدارة الطالب",
+                      AppStrings.str_teach_rem_35_b134,
                       style: GoogleFonts.cairo(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -440,7 +441,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: ["نقل", "فصل", "إيقاف"].map((action1) {
+                      children: [AppStrings.str_teach_rem_36_5947, AppStrings.str_teach_rem_37_5afc, AppStrings.str_teach_rem_38_0da2].map((action1) {
                         final isSelected = action == action1;
                         return ChoiceChip(
                           label: Text(
@@ -478,7 +479,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                       minLines: 2,
                       maxLines: 4,
                       decoration: InputDecoration(
-                        hintText: "أضف ملاحظة (اختياري)",
+                        hintText: AppStrings.str_teach_rem_39_9c8e,
                         hintStyle: GoogleFonts.cairo(
                           color: AppColors.lightCream70,
                         ),
@@ -502,7 +503,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                               side: BorderSide(color: AppColors.accent70),
                             ),
                             child: Text(
-                              "إلغاء",
+                              AppStrings.str_teach_rem_14_62a9,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -520,7 +521,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                               Navigator.pop(context);
                             },
                             child: Text(
-                              "تنفيذ",
+                              AppStrings.str_teach_rem_40_e108,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -551,7 +552,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
         backgroundColor: AppColors.darkBackground,
         appBar: AppBar(
           title: Text(
-            "تعديل الحلقة",
+            AppStrings.str_teach_rem_41_53a1,
             style: GoogleFonts.cairo(color: AppColors.lightCream),
           ),
         ),
@@ -568,7 +569,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                     final halaqaName = halaqa?.name ?? '…';
                     final teacherName = halaqa?.teacherName.isNotEmpty == true
                         ? halaqa!.teacherName
-                        : 'معلم غير محدد';
+                        : AppStrings.str_teach_rem_42_8acd;
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: BackdropFilter(
@@ -587,14 +588,14 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                             children: [
                               buildInfoRow(
                                 icon: Icons.school,
-                                label: "اسم الحلقة:",
+                                label: AppStrings.str_teach_rem_43_1b1e,
                                 value: halaqaName,
                                 onEdit: _editHalqaNameDialog,
                               ),
                               const SizedBox(height: 16),
                               buildInfoRow(
                                 icon: Icons.person,
-                                label: "المعلم الحالي:",
+                                label: AppStrings.str_teach_rem_44_28dd,
                                 value: teacherName,
                                 onEdit: _changeTeacherDialog,
                               ),
@@ -608,7 +609,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    "أضف طلاب للحلقة:",
+                                    AppStrings.str_teach_rem_45_175e,
                                     style: GoogleFonts.cairo(
                                       fontSize: 16,
                                       color: AppColors.lightCream,
@@ -634,7 +635,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                                       elevation: 0,
                                     ),
                                     child: Text(
-                                      "اختر طلاب",
+                                      AppStrings.str_teach_rem_46_96d6,
                                       style: GoogleFonts.cairo(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -664,7 +665,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                               Icon(Icons.people, color: AppColors.accent),
                               SizedBox(width: 8),
                               Text(
-                                "الطلاب الحاليين",
+                                AppStrings.str_teach_rem_47_b713,
                                 style: GoogleFonts.cairo(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -686,7 +687,7 @@ class _HalaqaEditScreenState extends State<HalaqaEditScreen>
                             child: students.isEmpty
                                 ? Center(
                                     child: Text(
-                                      "لا يوجد طلاب في هذه الحلقة",
+                                      AppStrings.str_teach_rem_48_cc67,
                                       style: GoogleFonts.cairo(
                                         color: AppColors.lightCream70,
                                       ),
@@ -765,7 +766,7 @@ class _CandidateStudentPickerDialogState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "إضافة طلاب للحلقة",
+                    AppStrings.str_teach_rem_9_7caf,
                     style: GoogleFonts.cairo(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -777,7 +778,7 @@ class _CandidateStudentPickerDialogState
                     style: GoogleFonts.cairo(color: AppColors.lightCream),
                     onChanged: (val) => setState(() => _searchQuery = val),
                     decoration: InputDecoration(
-                      hintText: "ابحث عن طالب...",
+                      hintText: AppStrings.str_teach_rem_11_936a,
                       hintStyle: GoogleFonts.cairo(
                         color: AppColors.lightCream70,
                       ),
@@ -798,7 +799,7 @@ class _CandidateStudentPickerDialogState
                     child: filtered.isEmpty
                         ? Center(
                             child: Text(
-                              "لا يوجد طلاب متاحون",
+                              AppStrings.str_teach_rem_49_efc1,
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream70,
                               ),
@@ -848,7 +849,7 @@ class _CandidateStudentPickerDialogState
                             side: BorderSide(color: AppColors.accent70),
                           ),
                           child: Text(
-                            "إلغاء",
+                            AppStrings.str_teach_rem_14_62a9,
                             style: GoogleFonts.cairo(
                               color: AppColors.lightCream,
                             ),
@@ -866,7 +867,7 @@ class _CandidateStudentPickerDialogState
                             Navigator.pop(context);
                           },
                           child: Text(
-                            "إضافة",
+                            AppStrings.str_teach_rem_50_9b32,
                             style: GoogleFonts.cairo(
                               color: AppColors.lightCream,
                             ),
@@ -949,7 +950,7 @@ Widget buildInfoRow({
             borderRadius: BorderRadius.circular(10),
           ),
           child: Text(
-            "تعديل",
+            AppStrings.str_teach_rem_51_0357,
             style: GoogleFonts.cairo(
               fontSize: 13,
               color: AppColors.lightCream,

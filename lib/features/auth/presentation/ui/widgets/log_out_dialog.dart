@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +39,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    state.logOutFailure?.message ?? 'فشل تسجيل الخروج',
+                    state.logOutFailure?.message ?? AppStrings.str_teach_rem_224_f908,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onError,
                     ),
@@ -61,7 +62,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
             children: [
               // العنوان
               Text(
-                'تسجيل الخروج',
+                AppStrings.str_teach_rem_200_ca2d,
                 style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
                   fontWeight: FontWeight.bold,
@@ -71,7 +72,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
 
               // الرسالة
               Text(
-                'هل تريد تسجيل الخروج من التطبيق؟',
+                AppStrings.str_teach_rem_225_1787,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(
                     context,
@@ -96,7 +97,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                   ),
                   Expanded(
                     child: Text(
-                      'حذف بيانات التسجيل المخزنة',
+                      AppStrings.str_teach_rem_226_08a1,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(
                           context,
@@ -111,7 +112,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
               Padding(
                 padding: const EdgeInsets.only(left: 48),
                 child: Text(
-                  'سيتم حذف اسم المستخدم وكلمة المرور المحفوظة',
+                  AppStrings.str_teach_rem_227_6267,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(
                       context,
@@ -146,7 +147,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                         ),
                       ),
                       child: Text(
-                        'البقاء',
+                        AppStrings.str_teach_rem_228_5ef7,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               color: Theme.of(context).colorScheme.onBackground,
@@ -169,8 +170,8 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                                 LogOutRequested(
                                   deleteCredentials: _deleteCredentials,
                                   message: _deleteCredentials
-                                      ? 'تم تسجيل الخروج وحذف بيانات الاعتماد'
-                                      : 'تم تسجيل الخروج',
+                                      ? AppStrings.str_teach_rem_229_02a4
+                                      : AppStrings.str_teach_rem_230_cc4b,
                                 ),
                               );
                             },
@@ -197,7 +198,7 @@ class _LogoutConfirmationDialogState extends State<LogoutConfirmationDialog> {
                               ),
                             )
                           : Text(
-                              'تسجيل الخروج',
+                              AppStrings.str_teach_rem_200_ca2d,
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     color: Theme.of(

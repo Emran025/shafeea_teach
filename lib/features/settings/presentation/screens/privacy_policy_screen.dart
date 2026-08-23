@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // lib/features/settings/presentation/screens/privacy_policy_screen.dart
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('سياسة الخصوصية'),
+        title: const Text(AppStrings.str_teach_rem_299_4478),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         // Using a zero-height bottom to ensure a clean look with CustomScrollView
@@ -62,7 +63,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 }
                 // Handle the edge case where status is success but data is null.
                 return const Center(
-                  child: Text('لم يتم العثور على سياسة الخصوصية.'),
+                  child: Text(AppStrings.str_teach_rem_300_972f),
                 );
             }
           }
@@ -89,7 +90,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
             child: Text(
-              'التفاصيل الكاملة',
+              AppStrings.str_teach_rem_301_32ad,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -132,7 +133,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'سياسة الخصوصية',
+                AppStrings.str_teach_rem_299_4478,
                 style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

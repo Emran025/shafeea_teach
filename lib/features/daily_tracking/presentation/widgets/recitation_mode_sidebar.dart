@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // lib/features/daily_tracking/presentation/widgets/recitation_mode_sidebar.dart
 
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class RecitationSideBar extends StatelessWidget {
       builder: (context, state) {
         final selectedType = state.currentTaskType;
         return RecitationModeSideBar(
-          title: "مرحباً، عمران",
+          title: AppStrings.str_teach_rem_263_5f0f,
           avatar: Avatar(size: Size(100, 100)),
           items: [
             CustomModeIconButton(
@@ -70,19 +71,19 @@ class RecitationSideBar extends StatelessWidget {
 
             CustomModeIconButton(
               icon: Icons.video_call,
-              label: 'بدء مكالمة',
+              label: AppStrings.str_teach_rem_264_7276,
               isSelected: false,
               onTap: () {
                 Navigator.of(context).pop();
                 // TODO: Trigger WebRTC Call Accept/Join here
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('جاري بدء الجلسة التفاعلية...')),
+                  const SnackBar(content: Text(AppStrings.str_teach_rem_265_d2c5)),
                 );
               },
             ),
             CustomModeIconButton(
               icon: Icons.assessment,
-              label: 'تقرير',
+              label: AppStrings.str_teach_rem_79_adaf,
               isSelected: false,
               onTap: () {
                 // Action to show the final report dialog
@@ -101,7 +102,7 @@ class RecitationSideBar extends StatelessWidget {
             ),
             CustomModeIconButton(
               icon: Icons.arrow_back,
-              label: 'عودة',
+              label: AppStrings.str_teach_rem_266_811c,
               isSelected: false,
               onTap: () {
                 Navigator.of(context).pop();

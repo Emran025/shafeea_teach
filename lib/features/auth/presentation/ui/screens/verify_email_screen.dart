@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -60,14 +61,14 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
       listener: (context, state) {
         if (state.verificationStatus == VerificationStatus.success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('تم إرسال رابط التفعيل مجدداً.')),
+            const SnackBar(content: Text(AppStrings.str_teach_rem_191_d842)),
           );
         }
         if (state.verificationStatus == VerificationStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.verificationFailure?.message ?? 'فشل الإرسال',
+                state.verificationFailure?.message ?? AppStrings.str_teach_rem_192_6ebb,
               ),
             ),
           );
@@ -127,7 +128,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
 
                   // ── Title ──
                   const Text(
-                    'تأكيد بريدك الإلكتروني (المعلم)',
+                    AppStrings.str_teach_rem_193_8a7f,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -140,8 +141,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                   const SizedBox(height: 12),
 
                   Text(
-                    'أرسلنا رابط التفعيل إلى بريدك الإلكتروني.\n'
-                    'انقر على الرابط في البريد للمتابعة.',
+                    AppStrings.str_teach_rem_194_cafb
+                    AppStrings.str_teach_rem_195_a07f,
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.6),
                       fontSize: 14,
@@ -173,7 +174,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'في انتظار التأكيد — تحقق من صندوق الوارد والبريد المزعج',
+                            AppStrings.str_teach_rem_196_7fa1,
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.75),
                               fontSize: 13,
@@ -209,8 +210,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                               : const Icon(Icons.refresh_rounded),
                           label: Text(
                             isLoading
-                                ? 'جارٍ الإرسال…'
-                                : 'إعادة إرسال رابط التفعيل',
+                                ? AppStrings.str_teach_rem_197_cd7b
+                                : AppStrings.str_teach_rem_198_216b,
                             style: const TextStyle(
                               fontFamily: 'Cairo',
                               fontWeight: FontWeight.bold,
@@ -239,7 +240,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                       onPressed: _checkVerificationStatus,
                       icon: const Icon(Icons.sync_rounded, size: 18),
                       label: const Text(
-                        'لقد تحققت — تحديث الحالة',
+                        AppStrings.str_teach_rem_199_6e04,
                         style: TextStyle(
                           fontFamily: 'Cairo',
                           fontWeight: FontWeight.w600,
@@ -267,7 +268,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                       color: Colors.white38,
                     ),
                     label: const Text(
-                      'تسجيل الخروج',
+                      AppStrings.str_teach_rem_200_ca2d,
                       style: TextStyle(
                         color: Colors.white38,
                         fontFamily: 'Cairo',

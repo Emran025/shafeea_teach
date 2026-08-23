@@ -1,3 +1,4 @@
+import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
@@ -25,11 +26,11 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
 
 
   List<String> selectorItems = [
-    "الطلاب",
-    "الحفاظ",
-    "الأداء",
-    "الملاحظات",
-    "التوجيه",
+    AppStrings.str_teach_rem_6_36bc,
+    AppStrings.str_teach_rem_52_c09c,
+    AppStrings.str_teach_rem_53_9141,
+    AppStrings.str_teach_rem_54_8727,
+    AppStrings.str_teach_rem_55_bac3,
   ];
 
   static const List<List<double>> trends = [
@@ -157,7 +158,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "اغلاق",
+                                AppStrings.str_teach_rem_56_4025,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -222,7 +223,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "إحصائية أسبوعية",
+                      AppStrings.str_teach_rem_57_c05b,
                       style: GoogleFonts.cairo(
                         color: AppColors.lightCream,
                         fontSize: 14,
@@ -328,15 +329,15 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildMiniStat(
-                  "المعدل",
+                  AppStrings.str_teach_rem_58_d2b3,
                   "${stat.trend.reduce((a, b) => a + b) ~/ stat.trend.length}",
                 ),
                 _buildMiniStat(
-                  "أعلى قيمة",
+                  AppStrings.str_teach_rem_59_9179,
                   "${stat.trend.reduce((a, b) => a > b ? a : b)}",
                 ),
                 _buildMiniStat(
-                  "أقل قيمة",
+                  AppStrings.str_teach_rem_60_4d07,
                   "${stat.trend.reduce((a, b) => a < b ? a : b)}",
                 ),
               ],
@@ -376,7 +377,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                 Center(),
                 _openWeeklyDetail(
                   _DashboardStat(
-                    'الحضور',
+                    AppStrings.str_teach_rem_61_f6f7,
                     '294',
                     Icons.check_circle,
                     gradients[0],
@@ -505,7 +506,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                                   // Navigator.pop(context);
                                 },
                                 child: Text(
-                                  "حاول مجددًا",
+                                  AppStrings.str_teach_rem_62_232f,
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream,
                                   ),
@@ -568,7 +569,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                                 ],
                               ),
                               Text(
-                                " •  ${state.selectedHalaqa!.teacherName.isNotEmpty ? state.selectedHalaqa!.teacherName : 'معلم غير محدد'}",
+                                " •  ${state.selectedHalaqa!.teacherName.isNotEmpty ? state.selectedHalaqa!.teacherName : AppStrings.str_teach_rem_42_8acd}",
                                 style: GoogleFonts.cairo(
                                   fontSize: 16,
                                   color: Colors.grey.shade300,
@@ -584,12 +585,12 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildStat(
-                          "الطلاب",
+                          AppStrings.str_teach_rem_6_36bc,
                           state.selectedHalaqa!.sumOfStudents.toString(),
                           Icons.people,
                         ),
                         _buildStat(
-                          "السعة",
+                          AppStrings.str_teach_rem_63_5799,
                           state.selectedHalaqa!.maxOfStudents.toString(),
                           Icons.group,
                         ),
@@ -631,7 +632,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("ملف الحلقة")),
+      appBar: AppBar(title: Text(AppStrings.str_teach_rem_64_9949)),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Navigator.push(
           context,
