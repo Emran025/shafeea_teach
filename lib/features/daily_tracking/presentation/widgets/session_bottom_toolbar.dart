@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // lib/features/daily_tracking/presentation/widgets/session_bottom_toolbar.dart
 
 import 'package:flutter/material.dart';
@@ -51,7 +50,7 @@ class SessionBottomToolbar extends StatelessWidget {
           // --- Button 1: Task Report (The most important one) ---
           _ToolbarButton(
             icon: Icons.assignment_turned_in_outlined,
-            label: AppStrings.str_teach_rem_267_a3f0,
+            label: 'تقرير المهمة',
             onTap: () {
               // We need references to both BLoCs from the screen's context.
               final trackingBloc = BlocProvider.of<TrackingSessionBloc>(
@@ -86,7 +85,7 @@ class SessionBottomToolbar extends StatelessWidget {
           // --- Button 2: Go to Page ---
           _ToolbarButton(
             icon: Icons.list_alt_rounded,
-            label: AppStrings.str_teach_rem_268_df28, // From AppStrings
+            label: 'الفهرس', // From AppStrings
             onTap: () {
               showModalBottomSheet(
                 context: context,
@@ -114,7 +113,7 @@ class SessionBottomToolbar extends StatelessWidget {
           // --- Button 3: Audio Player (Future enhancement) ---
           _ToolbarButton(
             icon: Icons.report,
-            label: AppStrings.str_teach_rem_269_5b21,
+            label: 'عرض الأخطاء',
             onTap: () {
               // We need references to both BLoCs from the screen's context.
               final trackingBloc = BlocProvider.of<TrackingSessionBloc>(
@@ -147,7 +146,7 @@ class SessionBottomToolbar extends StatelessWidget {
           // --- Button 4: More Options (Could include theme, font size etc.) ---
           _ToolbarButton(
             icon: Icons.more_vert,
-            label: AppStrings.str_teach_rem_270_8334,
+            label: 'المزيد',
             onTap: () {
               // Placeholder for more options.
               print('More Options Tapped');

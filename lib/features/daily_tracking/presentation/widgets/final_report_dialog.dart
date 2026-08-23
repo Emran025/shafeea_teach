@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +76,7 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  AppStrings.str_teach_rem_257_ce04,
+                  "التقرير النهائي للجلسة",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -92,7 +91,7 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
                   minLines: 2,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: AppStrings.str_teach_rem_258_ab46,
+                    hintText: "ملاحظات السلوك...",
                     filled: true,
                     fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
                     border: OutlineInputBorder(
@@ -109,7 +108,7 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
                   minLines: 3,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: AppStrings.str_teach_rem_259_01db,
+                    hintText: "ملاحظة عامة على التسميع...",
                     filled: true,
                     fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
                     border: OutlineInputBorder(
@@ -125,7 +124,7 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text(AppStrings.str_teach_rem_14_62a9),
+                        child: const Text("إلغاء"),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -133,7 +132,7 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
                       child: ElevatedButton(
                         // The button now calls the _submitReport method.
                         onPressed: _submitReport,
-                        child: const Text(AppStrings.str_teach_rem_260_abba),
+                        child: const Text("رفع التقرير"),
                       ),
                     ),
                   ],

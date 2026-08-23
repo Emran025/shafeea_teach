@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -117,7 +116,7 @@ class StudentErrorAnalysisChart extends StatelessWidget {
             child: Row(
               children: [
                 Text(
-                  AppStrings.str_teach_rem_140_6d0e,
+                  'المعايير',
                   style: Theme.of(
                     context,
                   ).textTheme.titleLarge?.copyWith(color: AppColors.lightCream),
@@ -128,7 +127,7 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                     groupValue: currentFilter.dimension,
                     activeColor: AppColors.accent,
                     title: Text(
-                      AppStrings.str_teach_rem_241_64da,
+                      "مقدار ورد",
                       style: GoogleFonts.cairo(
                         color: AppColors.lightCream,
                         fontSize: 10,
@@ -151,7 +150,7 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                     groupValue: currentFilter.dimension,
                     activeColor: AppColors.accent,
                     title: Text(
-                      AppStrings.str_teach_rem_139_9e7c,
+                      'فترة زمنية',
                       style: GoogleFonts.cairo(
                         color: AppColors.lightCream,
                         fontSize: 10,
@@ -178,10 +177,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                 Expanded(
                   child: _buildFilterDropdown(
                     context: context,
-                    label: AppStrings.str_teach_rem_141_7637,
+                    label: 'الفترة الزمنية',
                     value: currentFilter.timePeriod,
                     items: const ['week', 'month', 'quarter', 'year'],
-                    labels: const [AppStrings.str_teach_rem_142_6276, AppStrings.str_teach_rem_143_6fd2, AppStrings.str_teach_rem_144_3b7a, AppStrings.str_teach_rem_145_d981],
+                    labels: const ['أسبوع', 'شهر', 'ربع سنة', 'سنة'],
                     onChanged: (value) {
                       context.read<ErrorAnalysisChartBloc>().add(
                         UpdateErrorAnalysisChartFilter(
@@ -195,10 +194,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                 Expanded(
                   child: _buildFilterDropdown(
                     context: context,
-                    label: AppStrings.str_teach_rem_242_fa88,
+                    label: 'مدى الحفظ',
                     value: currentFilter.quantityUnit,
                     items: const ['page', 'hizb', 'juz', 'full_quran'],
-                    labels: const [AppStrings.str_teach_48_d56b, AppStrings.str_teach_45_0a04, AppStrings.str_teach_44_355d, AppStrings.str_teach_rem_243_ccdb],
+                    labels: const ['صفحة', 'حزب', 'جزء', 'مصحف كامل'],
                     onChanged: (value) {
                       context.read<ErrorAnalysisChartBloc>().add(
                         UpdateErrorAnalysisChartFilter(
@@ -213,10 +212,10 @@ class StudentErrorAnalysisChart extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 4,
                 child: _buildFilterDropdown(
                   context: context,
-                  label: AppStrings.str_teach_rem_146_5069,
+                  label: 'نوع المسار',
                   value: currentFilter.trackingType,
                   items: const ['memorization', 'review', 'recitation'],
-                  labels: const [AppStrings.str_teach_41_a699, AppStrings.str_teach_42_315e, AppStrings.str_teach_43_abc4],
+                  labels: const ['حفظ', 'مراجعة', 'سرد'],
                   onChanged: (value) {
                     context.read<ErrorAnalysisChartBloc>().add(
                       UpdateErrorAnalysisChartFilter(
@@ -325,18 +324,18 @@ class _ChartContentState extends State<_ChartContent> {
 
   String _formatPeriodDate(DateTime date) {
     final months = [
-      AppStrings.str_teach_rem_244_db60,
-      AppStrings.str_teach_rem_245_044e,
-      AppStrings.str_teach_rem_246_aead,
-      AppStrings.str_teach_rem_247_da2b,
-      AppStrings.str_teach_rem_248_e8f3,
-      AppStrings.str_teach_rem_249_d144,
-      AppStrings.str_teach_rem_250_6273,
-      AppStrings.str_teach_rem_251_d938,
-      AppStrings.str_teach_rem_252_ad49,
-      AppStrings.str_teach_rem_253_36bc,
-      AppStrings.str_teach_rem_254_1fbb,
-      AppStrings.str_teach_rem_255_a6f7,
+      'يناير',
+      'فبراير',
+      'مارس',
+      'أبريل',
+      'مايو',
+      'يونيو',
+      'يوليو',
+      'أغسطس',
+      'سبتمبر',
+      'أكتوبر',
+      'نوفمبر',
+      'ديسمبر',
     ];
     return '${months[date.month - 1]} ${date.year}';
   }
@@ -344,7 +343,7 @@ class _ChartContentState extends State<_ChartContent> {
   @override
   Widget build(BuildContext context) {
     if (widget.chartData.isEmpty) {
-      return const Text(AppStrings.str_teach_rem_256_3690);
+      return const Text('لا توجد بيانات لعرضها');
     }
     return Column(
       children: [

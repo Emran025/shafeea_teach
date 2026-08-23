@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shafeea/features/supervisor_dashboard/data/models/composite_performance_data.dart';
@@ -69,7 +68,7 @@ class _StudentCountChartState extends State<StudentCountChart> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppStrings.str_teach_rem_140_6d0e,
+                'المعايير',
                 style: Theme.of(
                   context,
                 ).textTheme.titleLarge?.copyWith(color: AppColors.lightCream),
@@ -78,10 +77,10 @@ class _StudentCountChartState extends State<StudentCountChart> {
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: _buildFilterDropdown(
-                  label: AppStrings.str_teach_rem_141_7637,
+                  label: 'الفترة الزمنية',
                   value: _currentFilter.timePeriod,
                   items: const ['week', 'month', 'quarter', 'year'],
-                  labels: const [AppStrings.str_teach_rem_142_6276, AppStrings.str_teach_rem_143_6fd2, AppStrings.str_teach_rem_144_3b7a, AppStrings.str_teach_rem_145_d981],
+                  labels: const ['أسبوع', 'شهر', 'ربع سنة', 'سنة'],
                   onChanged: (value) {
                     final newFilter = _currentFilter.copyWith(
                       timePeriod: value,
@@ -321,7 +320,7 @@ class _StudentCountChartState extends State<StudentCountChart> {
     );
   }
 
-  String tempSelected = AppStrings.str_teach_rem_139_9e7c;
+  String tempSelected = 'فترة زمنية';
 
   Widget _buildFilterDropdown({
     required String label,

@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:shafeea/features/supervisor_dashboard/data/models/bar_chart_datas.dart';
 import 'package:shafeea/features/supervisor_dashboard/data/models/chart_data_point.dart';
 import 'package:shafeea/features/supervisor_dashboard/data/models/composite_performance_data.dart';
@@ -15,12 +14,12 @@ import '../../core/models/mistake_type.dart';
 // =============================================================================
 
 final List<ChartDataPoint> mockErrorData = const [
-  ChartDataPoint(value: 15, label: AppStrings.str_teach_rem_382_7bbe),
-  ChartDataPoint(value: 25, label: AppStrings.str_teach_36_c74e),
-  ChartDataPoint(value: 10, label: AppStrings.str_teach_rem_383_7fa0),
-  ChartDataPoint(value: 5, label: AppStrings.str_teach_rem_384_1a37),
-  ChartDataPoint(value: 18, label: AppStrings.str_teach_rem_385_2cef),
-  ChartDataPoint(value: 12, label: AppStrings.str_teach_rem_386_cb16),
+  ChartDataPoint(value: 15, label: 'تجويد'),
+  ChartDataPoint(value: 25, label: 'نسيان'),
+  ChartDataPoint(value: 10, label: 'وقف'),
+  ChartDataPoint(value: 5, label: 'حركة'),
+  ChartDataPoint(value: 18, label: 'مد'),
+  ChartDataPoint(value: 12, label: 'إدغام'),
 ];
 
 // =============================================================================
@@ -29,24 +28,24 @@ final List<ChartDataPoint> mockErrorData = const [
 // =============================================================================
 
 final LineChartDatas mockProgressData = LineChartDatas(
-  xAxisLabel: AppStrings.str_teach_rem_387_63d0,
-  yAxisLabel: AppStrings.str_teach_rem_388_751c,
+  xAxisLabel: 'الأسبوع',
+  yAxisLabel: 'عدد الصفحات',
   maxY: 100,
   plannedData: const [
-    ChartDataPoint(value: 10, label: AppStrings.str_teach_rem_389_0887),
-    ChartDataPoint(value: 20, label: AppStrings.str_teach_rem_390_f398),
-    ChartDataPoint(value: 30, label: AppStrings.str_teach_rem_391_d2cb),
-    ChartDataPoint(value: 40, label: AppStrings.str_teach_rem_392_0456),
-    ChartDataPoint(value: 50, label: AppStrings.str_teach_rem_393_598e),
-    ChartDataPoint(value: 60, label: AppStrings.str_teach_rem_394_6059),
+    ChartDataPoint(value: 10, label: 'أ1'),
+    ChartDataPoint(value: 20, label: 'أ2'),
+    ChartDataPoint(value: 30, label: 'أ3'),
+    ChartDataPoint(value: 40, label: 'أ4'),
+    ChartDataPoint(value: 50, label: 'أ5'),
+    ChartDataPoint(value: 60, label: 'أ6'),
   ],
   actualData: const [
-    ChartDataPoint(value: 8, label: AppStrings.str_teach_rem_389_0887),
-    ChartDataPoint(value: 25, label: AppStrings.str_teach_rem_390_f398),
-    ChartDataPoint(value: 28, label: AppStrings.str_teach_rem_391_d2cb),
-    ChartDataPoint(value: 35, label: AppStrings.str_teach_rem_392_0456),
-    ChartDataPoint(value: 55, label: AppStrings.str_teach_rem_393_598e),
-    ChartDataPoint(value: 62, label: AppStrings.str_teach_rem_394_6059),
+    ChartDataPoint(value: 8, label: 'أ1'),
+    ChartDataPoint(value: 25, label: 'أ2'),
+    ChartDataPoint(value: 28, label: 'أ3'),
+    ChartDataPoint(value: 35, label: 'أ4'),
+    ChartDataPoint(value: 55, label: 'أ5'),
+    ChartDataPoint(value: 62, label: 'أ6'),
   ],
 );
 
@@ -57,16 +56,16 @@ final LineChartDatas mockProgressData = LineChartDatas(
 
 final CompositePerformanceData mockQualityData = CompositePerformanceData(
   // title: 'تقييم جودة الإتقان (شهري)',
-  xAxisLabel: AppStrings.str_teach_rem_395_20ad,
-  yAxisLabel: AppStrings.str_teach_rem_396_fccb,
+  xAxisLabel: 'الشهر',
+  yAxisLabel: 'الدرجة (0-100)',
   maxY: 100,
   performanceScores: const [
-    ChartDataPoint(value: 85, label: AppStrings.str_teach_rem_397_3c78),
-    ChartDataPoint(value: 92, label: AppStrings.str_teach_rem_398_3ba5),
-    ChartDataPoint(value: 78, label: AppStrings.str_teach_rem_399_50db),
-    ChartDataPoint(value: 95, label: AppStrings.str_teach_rem_400_8b7f),
-    ChartDataPoint(value: 88, label: AppStrings.str_teach_rem_401_78b4),
-    ChartDataPoint(value: 90, label: AppStrings.str_teach_rem_402_9e95),
+    ChartDataPoint(value: 85, label: 'ش1'),
+    ChartDataPoint(value: 92, label: 'ش2'),
+    ChartDataPoint(value: 78, label: 'ش3'),
+    ChartDataPoint(value: 95, label: 'ش4'),
+    ChartDataPoint(value: 88, label: 'ش5'),
+    ChartDataPoint(value: 90, label: 'ش6'),
   ],
 );
 
@@ -78,14 +77,14 @@ final CompositePerformanceData mockQualityData = CompositePerformanceData(
 final CompositePerformanceData mockOverallPerformanceData =
     CompositePerformanceData(
       // title: 'مؤشر الأداء العام المركب (ربع سنوي)',
-      xAxisLabel: AppStrings.str_teach_rem_403_2de0,
-      yAxisLabel: AppStrings.str_teach_rem_404_8631,
+      xAxisLabel: 'الربع',
+      yAxisLabel: 'المؤشر (0-100)',
       maxY: 100,
       performanceScores: const [
-        ChartDataPoint(value: 75, label: AppStrings.str_teach_rem_405_3983),
-        ChartDataPoint(value: 82, label: AppStrings.str_teach_rem_406_74bc),
-        ChartDataPoint(value: 88, label: AppStrings.str_teach_rem_407_3309),
-        ChartDataPoint(value: 91, label: AppStrings.str_teach_rem_408_1fd6),
+        ChartDataPoint(value: 75, label: 'ر1'),
+        ChartDataPoint(value: 82, label: 'ر2'),
+        ChartDataPoint(value: 88, label: 'ر3'),
+        ChartDataPoint(value: 91, label: 'ر4'),
       ],
     );
 
@@ -96,8 +95,8 @@ final CompositePerformanceData mockOverallPerformanceData =
 
 final BarChartDatas mockGraduatesData = BarChartDatas(
   // title: 'عدد الحفاظ المتخرجين (سنوي)',
-  xAxisLabel: AppStrings.str_teach_rem_409_c96d,
-  yAxisLabel: AppStrings.str_teach_rem_91_569f,
+  xAxisLabel: 'السنة',
+  yAxisLabel: 'العدد',
   maxY: 50,
   data: const [
     ChartDataPoint(value: 15, label: '2021'),
@@ -144,8 +143,8 @@ final List<BarChartDatas> mockErrorDataPeriods = List.generate(
         label: MistakeType.memory.labelAr,
       ),
     ],
-    xAxisLabel: AppStrings.str_teach_rem_410_1829,
-    yAxisLabel: AppStrings.str_teach_rem_411_aeaf,
+    xAxisLabel: 'نوع الخطأ',
+    yAxisLabel: 'عدد الأخطاء',
     maxY: 50,
     periodDate: _getPeriodDate(11 - index), // من الشهر الأقدم إلى الأحدث
   ),
@@ -158,20 +157,20 @@ final List<BarChartDatas> mockErrorDataPeriods = List.generate(
 final List<LineChartData> mockProgressDataPeriods = List.generate(
   12,
   (index) => LineChartData(
-    xAxisLabel: AppStrings.str_teach_rem_387_63d0,
-    yAxisLabel: AppStrings.str_teach_rem_388_751c,
+    xAxisLabel: 'الأسبوع',
+    yAxisLabel: 'عدد الصفحات',
     maxY: 100,
     plannedData: const [
-      ChartDataPoint(value: 10, label: AppStrings.str_teach_rem_389_0887),
-      ChartDataPoint(value: 20, label: AppStrings.str_teach_rem_390_f398),
-      ChartDataPoint(value: 30, label: AppStrings.str_teach_rem_391_d2cb),
-      ChartDataPoint(value: 40, label: AppStrings.str_teach_rem_392_0456),
+      ChartDataPoint(value: 10, label: 'أ1'),
+      ChartDataPoint(value: 20, label: 'أ2'),
+      ChartDataPoint(value: 30, label: 'أ3'),
+      ChartDataPoint(value: 40, label: 'أ4'),
     ],
     actualData: [
-      ChartDataPoint(value: 8 + (index * 0.5), label: AppStrings.str_teach_rem_389_0887),
-      ChartDataPoint(value: 25 + (index * 0.3), label: AppStrings.str_teach_rem_390_f398),
-      ChartDataPoint(value: 28 + (index * 0.8), label: AppStrings.str_teach_rem_391_d2cb),
-      ChartDataPoint(value: 35 + (index * 1.2), label: AppStrings.str_teach_rem_392_0456),
+      ChartDataPoint(value: 8 + (index * 0.5), label: 'أ1'),
+      ChartDataPoint(value: 25 + (index * 0.3), label: 'أ2'),
+      ChartDataPoint(value: 28 + (index * 0.8), label: 'أ3'),
+      ChartDataPoint(value: 35 + (index * 1.2), label: 'أ4'),
     ],
     periodDate: _getPeriodDate(11 - index),
   ),
@@ -184,15 +183,15 @@ final List<LineChartData> mockProgressDataPeriods = List.generate(
 final List<CompositePerformanceData> mockQualityDataPeriods = List.generate(
   12,
   (index) => CompositePerformanceData(
-    // title: AppStrings.str_teach_rem_366_8312,
-    xAxisLabel: AppStrings.str_teach_rem_395_20ad,
-    yAxisLabel: AppStrings.str_teach_rem_396_fccb,
+    // title: 'تقييم جودة الإتقان',
+    xAxisLabel: 'الشهر',
+    yAxisLabel: 'الدرجة (0-100)',
     maxY: 100,
     performanceScores: [
-      ChartDataPoint(value: 85 + (index * 0.5), label: AppStrings.str_teach_rem_397_3c78),
-      ChartDataPoint(value: 92 + (index * 0.3), label: AppStrings.str_teach_rem_398_3ba5),
-      ChartDataPoint(value: 78 + (index * 1.2), label: AppStrings.str_teach_rem_399_50db),
-      ChartDataPoint(value: 95 - (index * 0.2), label: AppStrings.str_teach_rem_400_8b7f),
+      ChartDataPoint(value: 85 + (index * 0.5), label: 'ش1'),
+      ChartDataPoint(value: 92 + (index * 0.3), label: 'ش2'),
+      ChartDataPoint(value: 78 + (index * 1.2), label: 'ش3'),
+      ChartDataPoint(value: 95 - (index * 0.2), label: 'ش4'),
     ],
     periodDate: _getPeriodDate(11 - index),
   ),

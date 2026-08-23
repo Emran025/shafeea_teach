@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -84,7 +83,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
           onPressed: _showAddTeachersDialog,
           icon: Icon(Icons.add, color: AppColors.lightCream),
           label: Text(
-            AppStrings.str_teach_rem_154_84bf,
+            "إضافة معلم",
             style: GoogleFonts.cairo(
               fontWeight: FontWeight.bold,
               color: AppColors.lightCream,
@@ -212,7 +211,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
           Icons.search,
           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
         ),
-        hintText: AppStrings.str_teach_rem_17_0dee,
+        hintText: "ابحث عن معلم...",
         hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
@@ -306,9 +305,9 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
             name: form.nameController.text,
             gender: Gender.fromLabel(
               form.genderController.text == 'Male' ||
-                      form.genderController.text == AppStrings.str_teach_33_6862
-                  ? AppStrings.str_teach_33_6862
-                  : AppStrings.str_teach_34_6947,
+                      form.genderController.text == 'ذكر'
+                  ? 'ذكر'
+                  : 'أنثى',
             ),
             birthDate: form.birthDateController.text,
             email: form.emailController.text,
@@ -326,7 +325,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
             status: ActiveStatus.active,
             stopReasons: '',
             avatar: '',
-            bio: AppStrings.str_teach_rem_112_1a39,
+            bio: "خبرة لخمس سنوات",
             halqas: [],
             createdAt: "${DateTime.now()}",
             updatedAt: "${DateTime.now()}",
@@ -410,7 +409,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                                 // Navigator.pop(context);
                               },
                               child: Text(
-                                AppStrings.str_teach_rem_62_232f,
+                                "حاول مجددًا",
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -473,7 +472,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              AppStrings.str_teach_rem_113_edcf,
+                              "اضافة ملف الأستاذ",
                               style: GoogleFonts.cairo(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -516,7 +515,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  AppStrings.str_teach_rem_69_32ae,
+                                  "الغاء",
                                   style: GoogleFonts.cairo(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -538,7 +537,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  AppStrings.str_teach_rem_70_9150,
+                                  "اضافة آخر",
                                   style: GoogleFonts.cairo(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -559,7 +558,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                                   });
                                 },
                                 child: Text(
-                                  AppStrings.str_teach_41_a699,
+                                  "حفظ",
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream,
                                     fontSize: 13,

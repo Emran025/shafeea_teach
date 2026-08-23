@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -139,12 +138,12 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.nameController,
               prefixIcon: Icons.person,
-              label: AppStrings.str_teach_rem_152_d16b,
+              label: "اسم المعلم",
               keyboardType: TextInputType.name,
             ),
 
             // ── Gender ─────────────────────────────────────────────────────
-            _buildDropdown(widget.genderController, AppStrings.str_teach_rem_22_223a, [
+            _buildDropdown(widget.genderController, "الجنس", [
               "Male",
               "Female",
             ]),
@@ -183,7 +182,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.emailController,
               prefixIcon: Icons.email,
-              label: AppStrings.str_teach_rem_93_c920,
+              label: "البريد الإلكتروني",
               keyboardType: TextInputType.emailAddress,
             ),
 
@@ -191,7 +190,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomDatePicker(
               controller: widget.birthDateController,
               icon: Icons.calendar_month_outlined,
-              label: AppStrings.str_teach_rem_94_7926,
+              label: "تأريخ الميلاد",
               onDateSelected: (date) {
                 widget.birthDateController.text = formatDate(date);
               },
@@ -213,7 +212,7 @@ class _TeacherFormState extends State<TeacherForm> {
                       .first;
                 });
               },
-              label: AppStrings.str_teach_rem_95_a44d,
+              label: "رقم الهاتف",
             ),
 
             // ── WhatsApp ───────────────────────────────────────────────────
@@ -232,13 +231,13 @@ class _TeacherFormState extends State<TeacherForm> {
                       .first;
                 });
               },
-              label: AppStrings.str_teach_rem_96_31d4,
+              label: "رقم الواتسآب",
             ),
 
             // ── Qualification ──────────────────────────────────────────────
             _buildDropdown(
               widget.qualificationController,
-              AppStrings.str_teach_rem_97_204c,
+              "نوع التعليم(المهؤهل)",
               [...(EducationLevel.values.map((e) => e.labelAr).toList())],
             ),
 
@@ -246,7 +245,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.experienceYearsController,
               prefixIcon: Icons.calendar_month,
-              label: AppStrings.str_teach_rem_153_076d,
+              label: "سنوات الخبرة",
               keyboardType: TextInputType.number,
             ),
 
@@ -254,7 +253,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.eneregyController,
               prefixIcon: Icons.group,
-              label: AppStrings.str_teach_rem_23_7f8f,
+              label: "الطاقة الإستيعابية",
               keyboardType: TextInputType.number,
             ),
 
@@ -262,7 +261,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.countryController,
               prefixIcon: Icons.home_filled,
-              label: AppStrings.str_teach_rem_99_3480,
+              label: "محل الميلاد",
               onTap: _changeDialog,
               readOnly: true,
             ),
@@ -271,7 +270,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.residenceController,
               prefixIcon: Icons.home_filled,
-              label: AppStrings.str_teach_rem_100_88b3,
+              label: "بلد الإقامة",
               onTap: _changeDialog,
               readOnly: true,
             ),
@@ -280,7 +279,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTimePicker(
               controller: widget.availableTimeController,
               icon: Icons.timelapse_rounded,
-              label: AppStrings.str_teach_rem_25_4f19,
+              label: "الوقت المتاح",
               onTimeSelected: (date) {
                 widget.availableTimeController.text = "$date";
               },
@@ -323,13 +322,13 @@ class _TeacherFormState extends State<TeacherForm> {
           filled: true,
           fillColor: AppColors.lightCream12,
           prefixIcon: const Icon(Icons.alternate_email, color: AppColors.lightCream70),
-          labelText: AppStrings.str_teach_rem_101_a48b,
+          labelText: "اسم المستخدم",
           labelStyle: GoogleFonts.cairo(color: AppColors.lightCream70),
           helperText: state.usernameCheckStatus ==
                   TeacherUsernameCheckStatus.loaded
               ? (state.usernameCheck
-                  ? AppStrings.str_teach_rem_102_e6f9
-                  : AppStrings.str_teach_rem_103_3aa6)
+                  ? "اسم المستخدم متاح ✓"
+                  : "اسم المستخدم غير متاح")
               : null,
           helperStyle: GoogleFonts.cairo(
             color: state.usernameCheck ? Colors.green : AppColors.error,
@@ -390,9 +389,9 @@ class _TeacherFormState extends State<TeacherForm> {
                 value: e,
                 child: Text(
                   e == "Male"
-                      ? AppStrings.str_teach_33_6862
+                      ? "ذكر"
                       : e == "Female" || e == "female"
-                      ? AppStrings.str_teach_34_6947
+                      ? "أنثى"
                       : e,
                   style: GoogleFonts.cairo(
                     color: AppColors.lightCream70,

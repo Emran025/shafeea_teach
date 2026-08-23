@@ -1,10 +1,9 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 enum TrackingUnitTyps {
-  juz(1, AppStrings.str_teach_44_355d, "juz"),
-  hizb(2, AppStrings.str_teach_45_0a04, "hizb"),
-  halfHizb(3, AppStrings.str_teach_46_b643, "halfHizb"),
-  quarterHizb(4, AppStrings.str_teach_47_dfe7, "quarterHizb"),
-  page(5, AppStrings.str_teach_48_d56b, "page");
+  juz(1, 'جزء', "juz"),
+  hizb(2, 'حزب', "hizb"),
+  halfHizb(3, '\u00bd حزب', "halfHizb"),
+  quarterHizb(4, '\u00bc حزب', "quarterHizb"),
+  page(5, 'صفحة', "page");
 
   final int id;
   final String labelAr;
@@ -14,18 +13,18 @@ enum TrackingUnitTyps {
   static TrackingUnitTyps fromLabel(String label) {
     switch (label.toLowerCase()) {
       case 'juz':
-      case AppStrings.str_teach_44_355d:
+      case 'جزء':
         return TrackingUnitTyps.juz;
       case 'hizb':
-      case AppStrings.str_teach_45_0a04:
+      case 'حزب':
         return TrackingUnitTyps.hizb;
       case 'halfHizb':
-      case AppStrings.str_teach_49_376e:
-      case AppStrings.str_teach_rem_0_83e8:
+      case 'نصف حزب':
+      case '½ حزب':
         return TrackingUnitTyps.halfHizb;
       case 'quarterHizb':
-      case AppStrings.str_teach_rem_1_1ed9:
-      case AppStrings.str_teach_rem_2_c137:
+      case 'ربع حزب':
+      case '¼ حزب':
         return TrackingUnitTyps.quarterHizb;
       default:
         return TrackingUnitTyps.page;

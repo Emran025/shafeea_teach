@@ -1,9 +1,8 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 enum Frequency {
-  daily(1, AppStrings.str_teach_6_79a5, "daily"),
-  onceAWeek(2, AppStrings.str_teach_7_f3ad, "onceAWeek"),
-  twiceAWeek(3, AppStrings.str_teach_8_5484, "twiceAWeek"),
-  thriceAWeek(4, AppStrings.str_teach_9_d6b7, "thriceAWeek");
+  daily(1, 'يوميًا', "daily"),
+  onceAWeek(2, 'أسبوعيًا', "onceAWeek"),
+  twiceAWeek(3, 'مرتين بالأسبوع', "twiceAWeek"),
+  thriceAWeek(4, 'ثلاث مرات بالأسبوع', "thriceAWeek");
 
   final int id;
   final String labelAr;
@@ -17,14 +16,14 @@ enum Frequency {
   static Frequency fromLabel(String label) {
     switch (label.toLowerCase()) {
       case 'onceAWeek':
-      case AppStrings.str_teach_40_bfd7:
-      case AppStrings.str_teach_7_f3ad:
+      case 'مرة بالأسبوع':
+      case 'أسبوعيًا':
         return Frequency.onceAWeek;
       case 'twiceAWeek':
-      case AppStrings.str_teach_8_5484:
+      case 'مرتين بالأسبوع':
         return Frequency.twiceAWeek;
       case 'thriceAWeek':
-      case AppStrings.str_teach_9_d6b7:
+      case 'ثلاث مرات بالأسبوع':
         return Frequency.thriceAWeek;
       default:
         return Frequency.daily;

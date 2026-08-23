@@ -1,8 +1,7 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 enum Gender {
   // both(3, 'الجنسين', 'Both'),
-  male(1, AppStrings.str_teach_33_6862, 'Male'),
-  female(2, AppStrings.str_teach_34_6947, 'Female');
+  male(1, 'ذكر', 'Male'),
+  female(2, 'أنثى', 'Female');
 
   final int id;
   final String labelAr;
@@ -21,7 +20,7 @@ enum Gender {
     switch (label.toLowerCase()) {
       case 'female':
       case 'Female':
-      case AppStrings.str_teach_34_6947:
+      case 'أنثى':
         return Gender.female;
       default:
         return Gender.male;

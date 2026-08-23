@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
 import 'package:shafeea/features/StudentsManagement/presentation/ui/screens/students_continuous_monitoring.dart';
@@ -34,8 +33,8 @@ class _MonitoringScreenState extends State<MonitoringScreen>
             controller: _tabController,
             dividerColor: Colors.black12,
             tabs: [
-              Tab(text: AppStrings.str_teach_rem_5_f960),
-              Tab(text: AppStrings.str_teach_rem_6_36bc),
+              Tab(text: "الحلقات"),
+              Tab(text: "الطلاب"),
             ],
           ),
         ),

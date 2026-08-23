@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -47,7 +46,7 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                AppStrings.str_teach_rem_131_9889,
+                "📝 اضافة جلسة متابعة",
                 style: GoogleFonts.cairo(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -79,7 +78,7 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
                 borderSide: BorderSide.none,
               ),
               title: Text(
-                AppStrings.str_teach_rem_132_5859,
+                "المتابعة",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: AppColors.lightCream,
@@ -141,7 +140,7 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
                       widget.onTap();
                       // onPressed!();
                     },
-                    child: StatusTag(lable: AppStrings.str_teach_rem_79_adaf),
+                    child: StatusTag(lable: "تقرير"),
                   ),
                   IconButton(
                     icon: Icon(Icons.more_vert, color: AppColors.lightCream),

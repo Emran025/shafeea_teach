@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/config/di/injection.dart';
@@ -40,8 +39,8 @@ class _TeachersManagementScreenState extends State<TeachersManagementScreen>
             indicatorColor: AppColors.accent,
             controller: _tabController,
             tabs: const [
-              Tab(text: AppStrings.str_teach_rem_158_6205),
-              Tab(text: AppStrings.str_teach_rem_130_105c),
+              Tab(text: "المعلمون الحاليون"),
+              Tab(text: "طلبات التقديم"),
             ],
           ),
         ),

@@ -1,62 +1,61 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 enum EducationLevel {
   unknown(
     0,
-    AppStrings.str_teach_23_d779,
+    'لا يستطيع القراءة والكتابة',
     'Uneducation',
   ),
 
   noFormalEducation(
     1,
-    AppStrings.str_teach_24_9ba4,
+    'لم يتلق تعليمًا نظاميًا',
     'No formal education',
   ),
 
   primaryEducation(
     2,
-    AppStrings.str_teach_25_e4ef,
+    'التعليم الابتدائي',
     'Primary education',
   ),
 
   lowerSecondaryEducation(
     3,
-    AppStrings.str_teach_26_71a5,
+    'التعليم الإعدادي / المتوسط',
     'Lower secondary education',
   ),
 
   upperSecondaryEducation(
     4,
-    AppStrings.str_teach_27_e09b,
+    'التعليم الثانوي',
     'Upper secondary education',
   ),
 
   postsecondaryNonTertiaryEducation(
     5,
-    AppStrings.str_teach_28_18cd,
+    'تعليم بعد الثانوي غير جامعي',
     'Postsecondary non-tertiary education',
   ),
 
   shortCycleTertiaryEducation(
     6,
-    AppStrings.str_teach_29_bd90,
+    'دبلوم / دبلوم مشارك',
     'Short-cycle tertiary education',
   ),
 
   bachelorsDegree(
     7,
-    AppStrings.str_teach_30_81e7,
+    'بكالوريوس',
     "Bachelor's degree",
   ),
 
   mastersDegree(
     8,
-    AppStrings.str_teach_31_caed,
+    'ماجستير',
     "Master's degree",
   ),
 
   doctoralDegree(
     9,
-    AppStrings.str_teach_32_b70f,
+    'دكتوراه',
     'Doctoral degree',
   );
 

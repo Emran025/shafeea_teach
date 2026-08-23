@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,7 +32,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.str_teach_rem_355_2ead)),
+      appBar: AppBar(title: const Text('ملف المقدم')),
       body: BlocListener<SupervisorBloc, SupervisorState>(
         listener: (context, state) {
           if (state is SupervisorLoaded) {
@@ -61,7 +60,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
             } else if (state is SupervisorError) {
               return Center(child: Text(state.message));
             } else {
-              return const Center(child: Text(AppStrings.str_teach_rem_356_392d));
+              return const Center(child: Text('فشل تحميل الملف الشخصي'));
             }
           },
         ),
@@ -81,12 +80,12 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
           children: [
             _buildHeader(context, applicant.user),
             const SizedBox(height: 24),
-            _buildInfoRow(AppStrings.str_teach_rem_93_c920, applicant.user.email),
-            _buildInfoRow(AppStrings.str_teach_rem_95_a44d, applicant.user.phone),
-            _buildInfoRow(AppStrings.str_teach_rem_22_223a, applicant.user.gender),
-            _buildInfoRow(AppStrings.str_teach_rem_357_e7a9, applicant.user.country),
-            _buildInfoRow(AppStrings.str_teach_rem_119_d4ff, applicant.user.city),
-            _buildInfoRow(AppStrings.str_teach_rem_358_5d25, applicant.qualifications ?? ''),
+            _buildInfoRow('البريد الإلكتروني', applicant.user.email),
+            _buildInfoRow('رقم الهاتف', applicant.user.phone),
+            _buildInfoRow('الجنس', applicant.user.gender),
+            _buildInfoRow('الدولة', applicant.user.country),
+            _buildInfoRow('المدينة', applicant.user.city),
+            _buildInfoRow('المؤهلات', applicant.qualifications ?? ''),
             _buildInfoRow('بيان النوايا', applicant.intentStatement ?? ''),
             const SizedBox(height: 24),
             DocumentsSection(documents: applicant.documents),
@@ -118,7 +117,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                 Navigator.of(context).pop(true);
               }
             },
-            child: const Text(AppStrings.str_teach_rem_126_5ea6),
+            child: const Text('رفض'),
           ),
         ),
         const SizedBox(width: 12),
@@ -141,7 +140,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                 ),
               );
             },
-            child: const Text(AppStrings.str_teach_rem_127_d99d),
+            child: const Text('قبول'),
           ),
         ),
       ],
@@ -186,7 +185,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    AppStrings.str_teach_rem_359_7ce7,
+                    'مقدم جديد',
                     style: GoogleFonts.cairo(
                       fontSize: 12,
                       color: AppColors.lightCream,

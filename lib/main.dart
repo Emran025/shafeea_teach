@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,7 +66,7 @@ class TajAlWaqarApp extends StatelessWidget {
         final themeData = AppThemes.getTheme(themeType);
         return MaterialApp.router(
           scrollBehavior: ScrollBehavior(),
-          title: AppStrings.str_teach_0_98f9,
+          title: 'أكاديمية شفيع',
           debugShowCheckedModeBanner: false,
           // --- Localization Setup (Cleaned Up) ---
           // Use the centralized configuration from L10nConfig.

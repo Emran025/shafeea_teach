@@ -1,12 +1,11 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 enum ActiveStatus {
-  active(1, AppStrings.str_teach_17_231a, "Active"),
-  inactive(2, AppStrings.str_teach_18_a1e5, "Inactive"),
-  pending(3, AppStrings.str_teach_19_a338, "Pending"),
-  stopped(4, AppStrings.str_teach_20_fc10, "Stopped"),
+  active(1, 'نشط', "Active"),
+  inactive(2, 'غير نشط', "Inactive"),
+  pending(3, 'معلق', "Pending"),
+  stopped(4, 'متوقف', "Stopped"),
     unknown(0,'UN', "Unknown"),
 
-  waiteing(5, AppStrings.str_teach_21_4bdb, "Waiteing");
+  waiteing(5, 'بانتظار', "Waiteing");
 
   final int id;
   final String labelAr;
@@ -22,16 +21,16 @@ enum ActiveStatus {
 
   static ActiveStatus fromLabel(String label) {
     switch (label.toLowerCase()) {
-      case AppStrings.str_teach_17_231a:
+      case 'نشط':
       case 'active':
         return ActiveStatus.active;
-      case AppStrings.str_teach_18_a1e5:
+      case 'غير نشط':
       case 'inactive':
         return ActiveStatus.inactive;
-      case AppStrings.str_teach_19_a338:
+      case 'معلق':
       case 'pending':
         return ActiveStatus.pending;
-      case AppStrings.str_teach_20_fc10:
+      case 'متوقف':
       case 'stopped':
         return ActiveStatus.pending;
       default:

@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,7 +44,7 @@ class _LoginDialogState extends State<LoginDialog> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            AppStrings.str_teach_rem_215_fde7,
+            'يرجى إدخال البريد الإلكتروني أولاً',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onError,
                 ),
@@ -66,7 +65,7 @@ class _LoginDialogState extends State<LoginDialog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.failure?.message ?? AppStrings.str_teach_rem_216_e2a1,
+                state.failure?.message ?? 'فشل تسجيل الدخول',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onError,
                     ),
@@ -80,7 +79,7 @@ class _LoginDialogState extends State<LoginDialog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.successEntity?.message ?? AppStrings.str_teach_rem_217_a601,
+                state.successEntity?.message ?? 'تم إرسال رابط استعادة كلمة المرور',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
@@ -92,7 +91,7 @@ class _LoginDialogState extends State<LoginDialog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.forgetPasswordFailure?.message ?? AppStrings.str_teach_rem_218_6925,
+                state.forgetPasswordFailure?.message ?? 'فشل إرسال رابط الاستعادة',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onError,
                     ),
@@ -118,7 +117,7 @@ class _LoginDialogState extends State<LoginDialog> {
                 // العنوان
                 Center(
                   child: Text(
-                    AppStrings.str_teach_rem_181_6a83,
+                    'تسجيل الدخول',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                           color: Theme.of(context).colorScheme.onBackground,
                         ),
@@ -128,7 +127,7 @@ class _LoginDialogState extends State<LoginDialog> {
 
                 // حقل البريد الإلكتروني/اسم المستخدم
                 Text(
-                  AppStrings.str_teach_rem_185_c355,
+                  'البريد الإلكتروني أو اسم المستخدم',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
                       ),
@@ -139,7 +138,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    hintText: AppStrings.str_teach_rem_219_9ca2,
+                    hintText: 'أدخل بريدك الإلكتروني أو اسم المستخدم',
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.54),
                         ),
@@ -156,7 +155,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return AppStrings.str_teach_rem_220_8f67;
+                      return 'يرجى إدخال البريد الإلكتروني أو اسم المستخدم';
                     }
                     return null;
                   },
@@ -165,7 +164,7 @@ class _LoginDialogState extends State<LoginDialog> {
 
                 // حقل كلمة المرور
                 Text(
-                  AppStrings.str_teach_rem_187_2eca,
+                  'كلمة المرور',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
                       ),
@@ -176,7 +175,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   obscureText: _obscurePassword,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                    hintText: AppStrings.str_teach_rem_221_cdc0,
+                    hintText: 'أدخل كلمة المرور',
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.54),
                         ),
@@ -204,10 +203,10 @@ class _LoginDialogState extends State<LoginDialog> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppStrings.str_teach_rem_222_7efa;
+                      return 'يرجى إدخال كلمة المرور';
                     }
                     if (value.length < 6) {
-                      return AppStrings.str_teach_rem_212_59b8;
+                      return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
                     }
                     return null;
                   },
@@ -233,7 +232,7 @@ class _LoginDialogState extends State<LoginDialog> {
                           checkColor: Theme.of(context).colorScheme.onPrimary,
                         ),
                         Text(
-                          AppStrings.str_teach_rem_223_9612,
+                          'تذكر كلمة المرور',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
                               ),
@@ -245,7 +244,7 @@ class _LoginDialogState extends State<LoginDialog> {
                     TextButton(
                       onPressed: _handleForgetPassword,
                       child: Text(
-                        AppStrings.str_teach_rem_190_482b,
+                        'نسيت كلمة المرور؟',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Theme.of(context).colorScheme.primary,
                               decoration: TextDecoration.underline,
@@ -286,7 +285,7 @@ class _LoginDialogState extends State<LoginDialog> {
                                 ),
                               )
                             : Text(
-                                AppStrings.str_teach_rem_181_6a83,
+                                'تسجيل الدخول',
                                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                       color: Theme.of(context).colorScheme.onPrimary,
                                       fontWeight: FontWeight.bold,
@@ -314,7 +313,7 @@ class _LoginDialogState extends State<LoginDialog> {
                       ),
                     ),
                     child: Text(
-                      AppStrings.str_teach_rem_14_62a9,
+                      'إلغاء',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Theme.of(context).colorScheme.onBackground,
                           ),

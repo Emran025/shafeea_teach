@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/features/settings/presentation/bloc/settings_bloc.dart';
@@ -33,7 +32,7 @@ class _FaqScreenState extends State<FaqScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(AppStrings.str_teach_rem_296_8e2f),
+            const Text('الأسئلة الشائعة'),
             GestureDetector(
               onTap: () {
                 showDialog(
@@ -44,7 +43,7 @@ class _FaqScreenState extends State<FaqScreen> {
                   ),
                 );
               },
-              child: StatusTag(lable: AppStrings.str_teach_rem_297_55d2),
+              child: StatusTag(lable: 'طلب الدعم'),
             ),
           ],
         ),
@@ -82,7 +81,7 @@ class _FaqScreenState extends State<FaqScreen> {
                   return _buildFaqList(context, state.faqs, false);
                 }
                 return const Center(
-                  child: Text(AppStrings.str_teach_rem_298_48c0),
+                  child: Text('لم يتم العثور على أسئلة شائعة.'),
                 );
             }
           }

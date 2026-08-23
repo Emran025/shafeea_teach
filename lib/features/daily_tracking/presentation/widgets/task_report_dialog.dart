@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -88,16 +87,16 @@ class _TaskReportDialogState extends State<TaskReportDialog> {
                 MistakesList(),
 
                 const Divider(height: 32, thickness: 0.5),
-                _buildSectionHeader(context, AppStrings.str_teach_rem_273_86f4),
+                _buildSectionHeader(context, "تقييم الجودة"),
                 const QualityRatingBar(),
                 const SizedBox(height: 10),
-                _buildSectionHeader(context, AppStrings.str_teach_rem_274_6c57),
+                _buildSectionHeader(context, "ملاحظات المهمة"),
                 TextField(
                   controller: _notesController,
                   minLines: 2,
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: AppStrings.str_teach_rem_275_d506,
+                    hintText: "أضف ملاحظة على المهمة (اختياري)",
                     filled: true,
                     fillColor: theme.colorScheme.surface.withOpacity(0.5),
                     border: OutlineInputBorder(
@@ -140,7 +139,7 @@ class _TaskReportDialogState extends State<TaskReportDialog> {
 
   Widget _buildFinalizeSwitch(ThemeData theme) {
     return SwitchListTile.adaptive(
-      title: const Text(AppStrings.str_teach_rem_276_d3ac),
+      title: const Text("إنهاء المهمة (تضمين في التقرير)"),
       value: _isFinalizingTask,
       onChanged: (newValue) => setState(() => _isFinalizingTask = newValue),
       activeColor: theme.colorScheme.primary,
@@ -154,14 +153,14 @@ class _TaskReportDialogState extends State<TaskReportDialog> {
         Expanded(
           child: OutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text(AppStrings.str_teach_rem_14_62a9),
+            child: const Text("إلغاء"),
           ),
         ),
         const SizedBox(width: 12),
         Expanded(
           child: ElevatedButton(
             onPressed: _saveReport,
-            child: Text(_isFinalizingTask ? AppStrings.str_teach_rem_277_8f92 : AppStrings.str_teach_rem_278_ddc7),
+            child: Text(_isFinalizingTask ? "حفظ وإنهاء" : "حفظ المسودة"),
           ),
         ),
       ],

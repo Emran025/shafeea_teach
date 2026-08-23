@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // lib/core/utils/app_extensions.dart
 
 import 'package:flutter/material.dart';
@@ -37,7 +36,7 @@ extension BuildContextHelpers on BuildContext {
 extension StringHelpers on String {
   /// Converts Arabic-Indic numerals (٠١٢٣٤٥٦٧٨٩) in a string to Western Arabic numerals (0123456789).
   String toWesternArabicNumerals() {
-    const arabic = AppStrings.str_teach_rem_7_1374;
+    const arabic = '٠١٢٣٤٥٦٧٨٩';
     const english = '0123456789';
     String input = this;
     for (int i = 0; i < arabic.length; i++) {
@@ -48,7 +47,7 @@ extension StringHelpers on String {
   
   /// Converts Western Arabic numerals (0123456789) in a string to Arabic-Indic numerals (٠١٢٣٤٥٦٧٨٩).
   String toArabicNumerals() {
-    const arabic = AppStrings.str_teach_rem_7_1374;
+    const arabic = '٠١٢٣٤٥٦٧٨٩';
     const english = '0123456789';
     String input = this;
     for (int i = 0; i < english.length; i++) {

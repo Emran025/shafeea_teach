@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/features/supervisor_dashboard/presentation/bloc/supervisor_bloc.dart';
@@ -15,7 +14,7 @@ class RejectApplicantDialog extends StatefulWidget {
 class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
   final _formKey = GlobalKey<FormState>();
   final _reasonController = TextEditingController(
-    text: AppStrings.str_teach_rem_377_d69f,
+    text: 'سجل المتقدم لا يتماشى مع تطلعات وسياسات مدرستنا.',
   );
 
   @override
@@ -57,7 +56,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
               children: [
                 Center(
                   child: Text(
-                    AppStrings.str_teach_rem_378_c0cc,
+                    'رفض الطلب',
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
@@ -65,7 +64,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  AppStrings.str_teach_rem_379_209c,
+                  'سبب الرفض',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(
                       context,
@@ -79,7 +78,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                   maxLines: 5,
                   maxLength: 1000,
                   decoration: InputDecoration(
-                    hintText: AppStrings.str_teach_rem_380_e7c8,
+                    hintText: 'أدخل سبب الرفض',
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(
                         context,
@@ -102,7 +101,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return AppStrings.str_teach_rem_381_8e6a;
+                      return 'يرجى إدخال سبب الرفض';
                     }
                     return null;
                   },
@@ -140,7 +139,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                                 ),
                               )
                             : Text(
-                                AppStrings.str_teach_rem_126_5ea6,
+                                'رفض',
                                 style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
                                       color: Theme.of(
@@ -173,7 +172,7 @@ class _RejectApplicantDialogState extends State<RejectApplicantDialog> {
                       ),
                     ),
                     child: Text(
-                      AppStrings.str_teach_rem_14_62a9,
+                      'إلغاء',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(context).colorScheme.onBackground,
                       ),

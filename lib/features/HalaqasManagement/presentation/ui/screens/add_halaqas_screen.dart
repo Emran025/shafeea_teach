@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -118,7 +117,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                     children: [
                       // ----- Header -----
                       Text(
-                        AppStrings.str_teach_rem_9_7caf,
+                        "إضافة طلاب للحلقة",
                         style: GoogleFonts.cairo(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -127,7 +126,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        AppStrings.str_teach_rem_10_adfd,
+                        "يُعرض فقط الطلاب غير الملتحقين بحلقة نشطة",
                         style: GoogleFonts.cairo(
                           fontSize: 12,
                           color: AppColors.lightCream70,
@@ -146,7 +145,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: AppStrings.str_teach_rem_11_936a,
+                          hintText: "ابحث عن طالب...",
                           hintStyle: GoogleFonts.cairo(
                             color: AppColors.lightCream70,
                           ),
@@ -181,8 +180,8 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                 const SizedBox(height: 12),
                                 Text(
                                   studentState.status == StudentStatus.loading
-                                      ? AppStrings.str_teach_rem_12_5544
-                                      : AppStrings.str_teach_rem_13_51b7,
+                                      ? "جارٍ تحميل الطلاب..."
+                                      : "لا يوجد طلاب غير ملتحقين حاليًا",
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream70,
                                   ),
@@ -294,7 +293,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                AppStrings.str_teach_rem_14_62a9,
+                                "إلغاء",
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -381,7 +380,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                     children: [
                       // ----- Header -----
                       Text(
-                        AppStrings.str_teach_rem_15_2bea,
+                        "اختر معلمًا متاحًا",
                         style: GoogleFonts.cairo(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -390,7 +389,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        AppStrings.str_teach_rem_16_dd2e,
+                        "يُعرض فقط المعلمون الذين لديهم حلقات متاحة",
                         style: GoogleFonts.cairo(
                           fontSize: 12,
                           color: AppColors.lightCream70,
@@ -409,7 +408,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           });
                         },
                         decoration: InputDecoration(
-                          hintText: AppStrings.str_teach_rem_17_0dee,
+                          hintText: "ابحث عن معلم...",
                           hintStyle: GoogleFonts.cairo(
                             color: AppColors.lightCream70,
                           ),
@@ -442,8 +441,8 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                 const SizedBox(height: 12),
                                 Text(
                                   teacherState.status == TeacherStatus.loading
-                                      ? AppStrings.str_teach_rem_18_dc77
-                                      : AppStrings.str_teach_rem_19_65e9,
+                                      ? "جارٍ تحميل المعلمين..."
+                                      : "لا يوجد معلمون متاحون حاليًا",
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream70,
                                   ),
@@ -550,7 +549,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                AppStrings.str_teach_rem_14_62a9,
+                                "إلغاء",
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -580,7 +579,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                                       Navigator.pop(context);
                                     },
                               child: Text(
-                                AppStrings.str_teach_rem_20_20d3,
+                                "تأكيد",
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -618,24 +617,24 @@ class _HalaqaFormState extends State<HalaqaForm> {
             CustomTextField(
               controller: widget.nameController,
               prefixIcon: Icons.auto_stories_rounded,
-              label: AppStrings.str_teach_rem_21_b511,
+              label: "اسم الحلقة",
               keyboardType: TextInputType.name,
             ),
 
-            _buildDropdown(widget.genderController, AppStrings.str_teach_rem_22_223a, [
+            _buildDropdown(widget.genderController, "الجنس", [
               ...(Gender.values.map((e) => e.label).toList()),
             ]),
             CustomTextField(
               controller: widget.eneregyController,
               prefixIcon: Icons.group,
-              label: AppStrings.str_teach_rem_23_7f8f,
+              label: "الطاقة الإستيعابية",
               keyboardType: TextInputType.number,
             ),
 
             CustomTextField(
               controller: widget.residenceController,
               prefixIcon: Icons.home_filled,
-              label: AppStrings.str_teach_rem_24_8ca1,
+              label: "البلد",
               onTap: _changeCountryDialog,
               readOnly: true,
             ),
@@ -643,7 +642,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
             CustomTimePicker(
               controller: widget.availableTimeController,
               icon: Icons.timelapse_rounded,
-              label: AppStrings.str_teach_rem_25_4f19,
+              label: "الوقت المتاح",
               onTimeSelected: (date) {
                 widget.availableTimeController.text = "$date";
               },
@@ -678,7 +677,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                     Expanded(
                       child: teacher == null
                           ? Text(
-                              AppStrings.str_teach_rem_26_e51c,
+                              "اختر المعلم المسؤول عن الحلقة",
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream70,
                                 fontSize: 14,
@@ -719,7 +718,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          AppStrings.str_teach_rem_27_1e03,
+                          "تغيير",
                           style: GoogleFonts.cairo(
                             fontSize: 11,
                             color: AppColors.lightCream,
@@ -747,7 +746,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
                   const Icon(Icons.add, color: AppColors.mediumDark87),
                   const SizedBox(width: 8),
                   Text(
-                    AppStrings.str_teach_rem_28_3872,
+                    "إضافة طلاب",
                     style: GoogleFonts.cairo(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -876,7 +875,7 @@ class _HalaqaFormState extends State<HalaqaForm> {
               (e) => DropdownMenuItem(
                 value: e,
                 child: Text(
-                  e == "Male" ? AppStrings.str_teach_33_6862 : AppStrings.str_teach_34_6947,
+                  e == "Male" ? "ذكر" : "أنثى",
                   style: GoogleFonts.cairo(
                     color: AppColors.lightCream70,
                     fontSize: 14,

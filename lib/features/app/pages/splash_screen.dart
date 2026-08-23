@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -55,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
           current.authStatus == AuthStatus.authenticated),
       listener: (context, authState) {
         if (authState.authStatus == AuthStatus.authenticated) {
-          print(AppStrings.str_teach_rem_171_c230);
+          print("المستخدم مسجل الدخول - التوجيه إلى الصفحة الرئيسية");
           final userRole = authState.user?.role;
 
           if (userRole == UserRole.teacher) {
@@ -64,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context.go('/home');
           }
         } else if (authState.authStatus == AuthStatus.unauthenticated) {
-          print(AppStrings.str_teach_rem_172_9dc5);
+          print("المستخدم غير مسجل الدخول - التوجيه إلى صفحة الترحيب");
           context.go('/welcome');
         }
       },
@@ -102,7 +101,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const SizedBox(height: 32),
               const Text(
-                AppStrings.str_teach_0_98f9,
+                'أكاديمية شفيع',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 26,

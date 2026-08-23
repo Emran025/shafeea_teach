@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,7 +36,7 @@ class _DocumentCardState extends State<DocumentCard> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppStrings.str_teach_rem_159_de02, style: GoogleFonts.cairo()),
+            content: Text('تعذّر فتح الرابط', style: GoogleFonts.cairo()),
             backgroundColor: AppColors.error,
           ),
         );
@@ -174,21 +173,21 @@ class _DocumentCardState extends State<DocumentCard> {
           if (doc.riwayah != null) ...[
             _MetaRow(
               icon: Icons.menu_book_rounded,
-              label: AppStrings.str_teach_rem_160_d6c2,
+              label: 'الرواية',
               value: doc.riwayah!,
             ),
           ],
           if (doc.issuingPlace != null) ...[
             _MetaRow(
               icon: Icons.location_on_outlined,
-              label: AppStrings.str_teach_rem_161_6e75,
+              label: 'جهة الإصدار',
               value: doc.issuingPlace!,
             ),
           ],
           if (doc.issuingDate != null) ...[
             _MetaRow(
               icon: Icons.calendar_today_outlined,
-              label: AppStrings.str_teach_rem_162_bdf0,
+              label: 'تاريخ الإصدار',
               value: doc.issuingDate!,
             ),
           ],
@@ -239,7 +238,7 @@ class _DocumentCardState extends State<DocumentCard> {
               color: AppColors.accent,
             ),
             label: Text(
-              AppStrings.str_teach_rem_163_3393,
+              'عرض',
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -269,7 +268,7 @@ class _DocumentCardState extends State<DocumentCard> {
               color: AppColors.lightCream,
             ),
             label: Text(
-              _isDownloading ? AppStrings.str_teach_rem_164_95a3 : AppStrings.str_teach_rem_165_2903,
+              _isDownloading ? 'جارٍ التحميل…' : 'تحميل',
               style: GoogleFonts.cairo(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
@@ -292,7 +291,7 @@ class _DocumentCardState extends State<DocumentCard> {
         ),
         const SizedBox(width: 8),
         Text(
-          AppStrings.str_teach_rem_166_9a02,
+          'لا يوجد ملف مرفق',
           style: GoogleFonts.cairo(
             fontSize: 13,
             color: AppColors.lightCream70,
@@ -304,9 +303,9 @@ class _DocumentCardState extends State<DocumentCard> {
   }
 
   IconData _iconForType(String type) {
-    if (type.contains(AppStrings.str_teach_rem_167_d2f6)) return Icons.verified_rounded;
-    if (type.contains(AppStrings.str_teach_41_a699)) return Icons.auto_stories_rounded;
-    if (type.contains(AppStrings.str_teach_rem_168_ef5d)) return Icons.badge_rounded;
+    if (type.contains('إجازة')) return Icons.verified_rounded;
+    if (type.contains('حفظ')) return Icons.auto_stories_rounded;
+    if (type.contains('سيرة')) return Icons.badge_rounded;
     return Icons.description_rounded;
   }
 }

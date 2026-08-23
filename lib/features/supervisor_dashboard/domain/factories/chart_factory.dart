@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // factories/student_chart_factory.dart
 import 'package:intl/intl.dart';
 
@@ -18,7 +17,7 @@ class ChartFactory {
     return LineChartDatas(
       actualData: aggregatedData.actualData,
       xAxisLabel: aggregatedData.xAxisLabel,
-      yAxisLabel: AppStrings.str_teach_rem_341_610e,
+      yAxisLabel: 'عدد الطلاب',
       maxY: aggregatedData.maxY,
     );
   }
@@ -36,7 +35,7 @@ class ChartFactory {
       return CompositePerformanceData(
         performanceScores: aggregated.actualData,
         xAxisLabel: aggregated.xAxisLabel,
-        yAxisLabel: AppStrings.str_teach_rem_341_610e,
+        yAxisLabel: 'عدد الطلاب',
         maxY: aggregated.maxY,
         // periodLabel: _getPeriodLabel(periodData, filter),
       );
@@ -122,18 +121,18 @@ class ChartFactory {
         final parts = periodKey.split('-');
         final monthNames = [
           '',
-          AppStrings.str_teach_rem_244_db60,
-          AppStrings.str_teach_rem_245_044e,
-          AppStrings.str_teach_rem_246_aead,
-          AppStrings.str_teach_rem_247_da2b,
-          AppStrings.str_teach_rem_248_e8f3,
-          AppStrings.str_teach_rem_249_d144,
-          AppStrings.str_teach_rem_250_6273,
-          AppStrings.str_teach_rem_251_d938,
-          AppStrings.str_teach_rem_252_ad49,
-          AppStrings.str_teach_rem_253_36bc,
-          AppStrings.str_teach_rem_254_1fbb,
-          AppStrings.str_teach_rem_255_a6f7,
+          'يناير',
+          'فبراير',
+          'مارس',
+          'أبريل',
+          'مايو',
+          'يونيو',
+          'يوليو',
+          'أغسطس',
+          'سبتمبر',
+          'أكتوبر',
+          'نوفمبر',
+          'ديسمبر',
         ];
         return '${monthNames[int.parse(parts[1])]} ${parts[0]}';
       case 'quarter':
@@ -148,15 +147,15 @@ class ChartFactory {
   static String _getXAxisLabel(ChartFilterEntity filter) {
     switch (filter.timePeriod) {
       case 'week':
-        return AppStrings.str_teach_rem_342_c521;
+        return 'الأسابيع';
       case 'month':
-        return AppStrings.str_teach_rem_343_05b2;
+        return 'الأشهر';
       case 'quarter':
-        return AppStrings.str_teach_rem_344_6e5a;
+        return 'الأرباع السنوية';
       case 'year':
-        return AppStrings.str_teach_rem_345_ada7;
+        return 'السنوات';
       default:
-        return AppStrings.str_teach_rem_346_4e4b;
+        return 'التواريخ';
     }
   }
 

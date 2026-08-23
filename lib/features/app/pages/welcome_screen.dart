@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
@@ -48,7 +47,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 32),
                       const Text(
-                        AppStrings.str_teach_rem_173_9edc,
+                        'مرحبًا بك في \nأكاديمية شفيع',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 26,
@@ -65,7 +64,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       const Text(
-                        AppStrings.str_teach_rem_174_7581,
+                        'منصة تعليمية متكاملة لتعليم ومتابعة طلاب القرآن الكريم، للمعلمين والمشرفين عن بُعد.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16,
@@ -84,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                           shadowColor: AppColors.accent38,
                         ),
                         child: Text(
-                          AppStrings.str_teach_rem_175_5d82,
+                          'ابدأ الآن',
                           style: TextStyle(
                             fontSize: 18,
                             color: Theme.of(context).colorScheme.primary,

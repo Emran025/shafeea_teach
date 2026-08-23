@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:injectable/injectable.dart';
@@ -505,7 +504,7 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
         BarChartDatas(
           data: dataPoints,
           xAxisLabel: ' أنواع الأخطاء',
-          yAxisLabel: AppStrings.str_teach_rem_91_569f,
+          yAxisLabel: 'العدد',
           periodDate: periodDate,
         ),
       );
@@ -539,8 +538,8 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       chartDataList.add(
         BarChartDatas(
           data: dataPoints,
-          xAxisLabel: AppStrings.str_teach_rem_231_9e18,
-          yAxisLabel: AppStrings.str_teach_rem_91_569f,
+          xAxisLabel: 'أنواع الأخطاء',
+          yAxisLabel: 'العدد',
           periodDate: periodDate,
         ),
       );
@@ -638,8 +637,8 @@ final class TrackingLocalDataSourceImpl implements TrackingLocalDataSource {
       chartDataList.add(
         BarChartDatas(
           data: dataPoints,
-          xAxisLabel: AppStrings.str_teach_rem_231_9e18,
-          yAxisLabel: AppStrings.str_teach_rem_91_569f,
+          xAxisLabel: 'أنواع الأخطاء',
+          yAxisLabel: 'العدد',
           periodLabel: _getFormattedPeriodLabel(filter.quantityUnit, key),
         ),
       );

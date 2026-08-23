@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // bloc/student_timeline_bloc.dart
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
@@ -216,7 +215,7 @@ class SupervisorBloc extends Bloc<SupervisorEvent, SupervisorState> {
       emit(currentState.copyWith(chartData: chartData, filter: event.filter));
     } catch (e) {
       if (!isClosed) {
-        emit(SupervisorError(message: AppStrings.str_teach_rem_347_ca5a));
+        emit(SupervisorError(message: 'حدث خطأ غير متوقع'));
       }
     }
   }

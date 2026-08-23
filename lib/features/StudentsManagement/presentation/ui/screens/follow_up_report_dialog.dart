@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -201,7 +200,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
               InkWell(
                 onTap: () => _showDailyDetails(report),
 
-                child: StatusTag(lable: AppStrings.str_teach_rem_104_df35, fontSize: 10, radius: 8),
+                child: StatusTag(lable: "تفاصـــيل", fontSize: 10, radius: 8),
               ),
               // Text(
               //   "تقييم السلوك: ${report.behaviourAssessment.toStringAsFixed(1)} / 5",
@@ -259,12 +258,12 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
               Container(
                 color: AppColors.accent26,
                 child: buildRow([
-                  _buildTableHeader(AppStrings.str_teach_rem_105_83a6),
-                  _buildTableHeader(AppStrings.str_teach_rem_106_5c8f),
-                  _buildTableHeader(AppStrings.str_teach_rem_107_de10),
-                  _buildRotatedHeader(AppStrings.str_teach_rem_108_112f),
-                  _buildRotatedHeader(AppStrings.str_teach_rem_109_90cc),
-                  _buildRotatedHeader(AppStrings.str_teach_rem_110_d73e),
+                  _buildTableHeader("النوع"),
+                  _buildTableHeader("المخطط"),
+                  _buildTableHeader("الفعلي"),
+                  _buildRotatedHeader("التقدم"),
+                  _buildRotatedHeader("الفجوة"),
+                  _buildRotatedHeader("الجودة"),
                 ]),
               ),
               const Divider(height: 0.5, color: AppColors.accent70),
@@ -313,7 +312,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
               side: const BorderSide(color: AppColors.accent70),
             ),
             child: Text(
-              AppStrings.str_teach_rem_80_324a,
+              "إغلاق",
               style: GoogleFonts.cairo(color: AppColors.lightCream),
             ),
           ),

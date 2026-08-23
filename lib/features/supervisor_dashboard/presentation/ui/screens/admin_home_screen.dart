@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
@@ -44,49 +43,49 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
 
     // Everyone gets the dashboard
     _tabs.add(ModernDashboardScreen(role: UserRole.supervisor));
-    headers.add(AppStrings.str_teach_rem_348_f98d);
+    headers.add("الرئيسية");
     _navItems.add(const BottomNavigationBarItem(
       icon: Icon(Icons.dashboard_outlined),
-      label: AppStrings.str_teach_rem_348_f98d,
+      label: 'الرئيسية',
     ));
 
     // School Admin or Teachers Supervisor
     if (roles.contains('school_admin') || roles.contains('teachers_supervisor')) {
       _tabs.add(TeachersManagementScreen());
-      headers.add(AppStrings.str_teach_rem_349_ca37);
+      headers.add("إدارة المعلمين");
       _navItems.add(const BottomNavigationBarItem(
         icon: Icon(Icons.school_outlined),
-        label: AppStrings.str_teach_rem_4_faa1,
+        label: 'المعلمين',
       ));
     }
 
     // School Admin or Students Supervisor
     if (roles.contains('school_admin') || roles.contains('students_supervisor')) {
       _tabs.add(StudentsManagementScreen());
-      headers.add(AppStrings.str_teach_rem_350_78f1);
+      headers.add("إدارة الطلاب");
       _navItems.add(const BottomNavigationBarItem(
         icon: Icon(Icons.group_outlined),
-        label: AppStrings.str_teach_rem_6_36bc,
+        label: 'الطلاب',
       ));
     }
 
     // School Admin or Halaqah Supervisor
     if (roles.contains('school_admin') || roles.contains('halaqah_supervisor')) {
       _tabs.add(HalaqaManagementScreen());
-      headers.add(AppStrings.str_teach_rem_351_7511);
+      headers.add("إدارة الحلقات");
       _navItems.add(const BottomNavigationBarItem(
         icon: Icon(Icons.book_outlined),
-        label: AppStrings.str_teach_rem_5_f960,
+        label: 'الحلقات',
       ));
     }
 
     // School Admin or Reports Supervisor
     if (roles.contains('school_admin') || roles.contains('reports_supervisor')) {
       _tabs.add(MonitoringScreen());
-      headers.add(AppStrings.str_teach_rem_352_2e3b);
+      headers.add("المتابعة الشاملة");
       _navItems.add(const BottomNavigationBarItem(
         icon: Icon(Icons.analytics_outlined),
-        label: AppStrings.str_teach_rem_132_5859,
+        label: 'المتابعة',
       ));
     }
   }
@@ -112,18 +111,18 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
         ),
 
         drawer: RecitationModeSideBar(
-          title: AppStrings.str_teach_rem_263_5f0f,
+          title: "مرحباً، عمران",
           avatar: Avatar(size: Size(100, 100)),
           items: [
             CustomModeIconButton(
               icon: Icons.person,
-              label: AppStrings.str_teach_rem_353_8eda,
+              label: "ملفي الشخصي",
               isSelected: false,
               onTap: () {},
             ),
             CustomModeIconButton(
               icon: Icons.settings,
-              label: AppStrings.str_teach_rem_307_af46,
+              label: "الإعدادات",
               isSelected: false,
               onTap: () {
                 Navigator.of(context).push(
@@ -145,7 +144,7 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
             ),
             CustomModeIconButton(
               icon: Icons.logout,
-              label: AppStrings.str_teach_rem_200_ca2d,
+              label: "تسجيل الخروج",
               isSelected: false,
               onTap: () {
                 Navigator.pop(context);

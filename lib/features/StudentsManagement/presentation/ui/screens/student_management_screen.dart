@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -81,7 +80,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
         onPressed: _showAddStudentsDialog,
         icon: Icon(Icons.add, color: AppColors.lightCream),
         label: Text(
-          AppStrings.str_teach_rem_111_93cc,
+          "إضافة طالب",
           style: GoogleFonts.cairo(
             fontWeight: FontWeight.bold,
             color: AppColors.lightCream,
@@ -205,7 +204,7 @@ class _StudentManagementScreenState extends State<StudentManagementScreen> {
           Icons.search,
           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
         ),
-        hintText: AppStrings.str_teach_rem_11_936a,
+        hintText: "ابحث عن طالب...",
         hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
@@ -300,9 +299,9 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
             name: form.nameController.text,
             gender: Gender.fromLabel(
               form.genderController.text == 'Male' ||
-                      form.genderController.text == AppStrings.str_teach_33_6862
-                  ? AppStrings.str_teach_33_6862
-                  : AppStrings.str_teach_34_6947,
+                      form.genderController.text == 'ذكر'
+                  ? 'ذكر'
+                  : 'أنثى',
             ),
             birthDate: form.birthDateController.text,
             email: form.emailController.text,
@@ -321,7 +320,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
             stopReasons: '',
             avatar: '',
             memorizationLevel: form.memorizationLevelController.text,
-            bio: AppStrings.str_teach_rem_112_1a39,
+            bio: "خبرة لخمس سنوات",
             createdAt: "${DateTime.now()}",
             updatedAt: "${DateTime.now()}",
             username: rawUsername.isEmpty ? null : rawUsername,
@@ -404,7 +403,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                                 // Navigator.pop(context);
                               },
                               child: Text(
-                                AppStrings.str_teach_rem_62_232f,
+                                "حاول مجددًا",
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -467,7 +466,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                             ),
                             const SizedBox(width: 8),
                             Text(
-                              AppStrings.str_teach_rem_113_edcf,
+                              "اضافة ملف الأستاذ",
                               style: GoogleFonts.cairo(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -510,7 +509,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  AppStrings.str_teach_rem_69_32ae,
+                                  "الغاء",
                                   style: GoogleFonts.cairo(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -532,7 +531,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  AppStrings.str_teach_rem_70_9150,
+                                  "اضافة آخر",
                                   style: GoogleFonts.cairo(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -553,7 +552,7 @@ class _AddStudentDialogState extends State<AddStudentDialog> {
                                   });
                                 },
                                 child: Text(
-                                  AppStrings.str_teach_41_a699,
+                                  "حفظ",
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream,
                                     fontSize: 13,

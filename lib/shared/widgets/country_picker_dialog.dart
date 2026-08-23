@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:async';
 import 'dart:ui';
 
@@ -86,7 +85,7 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      AppStrings.str_teach_rem_412_c95d,
+                      'قم بتحديد الدولة...',
                       style: GoogleFonts.cairo(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -100,7 +99,7 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                       style: GoogleFonts.cairo(color: AppColors.lightCream),
                       onChanged: _onSearchChanged,
                       decoration: InputDecoration(
-                        hintText: AppStrings.str_teach_rem_413_e3f2,
+                        hintText: "ابحث عن الدولة",
                         hintStyle: GoogleFonts.cairo(
                           color: AppColors.lightCream70,
                         ),
@@ -189,7 +188,7 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                               side: BorderSide(color: AppColors.accent70),
                             ),
                             child: Text(
-                              AppStrings.str_teach_rem_14_62a9,
+                              "إلغاء",
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -209,7 +208,7 @@ class _CountryPickerDialogState extends State<CountryPickerDialog> {
                               Navigator.pop(context);
                             },
                             child: Text(
-                              AppStrings.str_teach_rem_20_20d3,
+                              "تأكيد",
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),

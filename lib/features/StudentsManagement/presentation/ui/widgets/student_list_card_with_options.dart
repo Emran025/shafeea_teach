@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -82,7 +81,7 @@ class _StudentListCardWithOptionsState
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(state.filteredStudentsFailure?.message ?? AppStrings.str_teach_rem_74_7cd7),
+                  Text(state.filteredStudentsFailure?.message ?? 'حدث خطأ'),
                   ElevatedButton(
                     onPressed: () => context.read<StudentBloc>().add(
                       FilteredStudents(
@@ -93,7 +92,7 @@ class _StudentListCardWithOptionsState
                         monitoringFilter: widget.monitoringFilter,
                       ),
                     ),
-                    child: const Text(AppStrings.str_teach_rem_75_724b),
+                    child: const Text('إعادة المحاولة'),
                   ),
                 ],
               ),
@@ -101,7 +100,7 @@ class _StudentListCardWithOptionsState
           }
           final filteredStudents = state.filteredStudents ?? [];
           if (filteredStudents.isEmpty) {
-            return const Center(child: Text(AppStrings.str_teach_rem_138_5306));
+            return const Center(child: Text('لا يوجد طلاب في هذه الفئة.'));
           }
           // .where(
           //   (t) => (status == ActiveStatus.unknown
@@ -201,17 +200,17 @@ class _StudentListCardWithOptionsState
             children: [
               _simpleListTile(
                 Icons.transfer_within_a_station_outlined,
-                AppStrings.str_teach_rem_81_a66c,
+                "نقله إلى حلقة أخرى",
                 () {
                   Navigator.pop(context);
                 },
               ),
-              _simpleListTile(Icons.person_outlined, AppStrings.str_teach_rem_82_7dc4, () {
+              _simpleListTile(Icons.person_outlined, "عرض ملفه الشخصي", () {
                 Navigator.pop(context);
               }),
               _simpleListTile(
                 Icons.remove_circle_outline,
-                AppStrings.str_teach_rem_83_7123,
+                "اتخاذ إجراء معه",
                 () {
                   Navigator.pop(context);
                   _showStudentActionDialog(student);
@@ -251,7 +250,7 @@ class _StudentListCardWithOptionsState
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      AppStrings.str_teach_rem_35_b134,
+                      "إدارة الطالب",
                       style: GoogleFonts.cairo(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -262,7 +261,7 @@ class _StudentListCardWithOptionsState
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: [AppStrings.str_teach_rem_36_5947, AppStrings.str_teach_rem_37_5afc, AppStrings.str_teach_rem_38_0da2].map((action1) {
+                      children: ["نقل", "فصل", "إيقاف"].map((action1) {
                         final isSelected = action == action1;
                         return ChoiceChip(
                           label: Text(
@@ -299,7 +298,7 @@ class _StudentListCardWithOptionsState
                       minLines: 2,
                       maxLines: 4,
                       decoration: InputDecoration(
-                        hintText: AppStrings.str_teach_rem_39_9c8e,
+                        hintText: "أضف ملاحظة (اختياري)",
                         hintStyle: GoogleFonts.cairo(
                           color: AppColors.lightCream70,
                         ),
@@ -322,7 +321,7 @@ class _StudentListCardWithOptionsState
                               side: BorderSide(color: AppColors.accent70),
                             ),
                             child: Text(
-                              AppStrings.str_teach_rem_14_62a9,
+                              "إلغاء",
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -336,12 +335,12 @@ class _StudentListCardWithOptionsState
                               backgroundColor: AppColors.accent,
                             ),
                             onPressed: () {
-                              if (action == AppStrings.str_teach_rem_36_5947) {
+                              if (action == "نقل") {
                                 setState(() {
                                   // currentStudents.remove(student);
                                   // add to previous + note
                                 });
-                              } else if (action == AppStrings.str_teach_rem_37_5afc || action == AppStrings.str_teach_rem_38_0da2) {
+                              } else if (action == "فصل" || action == "إيقاف") {
                                 setState(() {
                                   // stoppedStatus[student] = true;
                                 });
@@ -349,7 +348,7 @@ class _StudentListCardWithOptionsState
                               Navigator.pop(context);
                             },
                             child: Text(
-                              AppStrings.str_teach_rem_40_e108,
+                              "تنفيذ",
                               style: GoogleFonts.cairo(
                                 color: AppColors.lightCream,
                               ),
@@ -430,7 +429,7 @@ class _StudentListCardWithOptionsState
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  isStopped ? AppStrings.str_teach_rem_84_3709 : AppStrings.str_teach_rem_85_d717,
+                                  isStopped ? "الحالة: متوقف" : "الحالة: نشط",
                                   style: GoogleFonts.cairo(
                                     fontSize: 16,
                                     color: AppColors.lightCream,
@@ -441,7 +440,7 @@ class _StudentListCardWithOptionsState
                             if (isStopped) ...[
                               SizedBox(height: 16),
                               Text(
-                                AppStrings.str_teach_rem_86_396f,
+                                "سبب التوقف:",
                                 style: GoogleFonts.cairo(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -450,7 +449,7 @@ class _StudentListCardWithOptionsState
                               ),
                               SizedBox(height: 6),
                               Text(
-                                student.stopReasons ?? AppStrings.str_teach_rem_87_fd10,
+                                student.stopReasons ?? "لا توجد تفاصيل.",
                                 style: GoogleFonts.cairo(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 14,
@@ -472,7 +471,7 @@ class _StudentListCardWithOptionsState
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                AppStrings.str_teach_rem_56_4025,
+                                "اغلاق",
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),

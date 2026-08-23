@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shafeea/shared/func/date_format.dart';
@@ -41,7 +40,7 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                AppStrings.str_teach_rem_147_98ca,
+                "📝 حلقة الطالب",
                 style: GoogleFonts.cairo(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -106,7 +105,7 @@ class _StudyHalaqaCardState extends State<StudyHalaqaCard> {
                       onPressed: () {
                         // onPressed!();
                       },
-                      child: StatusTag(lable: AppStrings.str_teach_rem_148_5cf1),
+                      child: StatusTag(lable: "تفاصيل"),
                     ),
                     IconButton(
                       icon: Icon(Icons.more_vert, color: AppColors.lightCream),

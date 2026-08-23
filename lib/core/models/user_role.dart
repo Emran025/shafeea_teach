@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 // lib/domain/entities/enums.dart
 
 /// Represents user roles in the system.
@@ -21,23 +20,23 @@ enum UserRole {
   static UserRole fromLabel(String label) {
     switch (label.toLowerCase()) {
       case 'power admin':
-      case AppStrings.str_teach_rem_3_c843:
+      case 'مدير عام':
         return UserRole.powerAdmin;
       case 'supervisor':
       case 'admin':
-      case AppStrings.str_teach_2_2005:
+      case 'مشرف':
         return UserRole.supervisor;
       case 'teacher':
-      case AppStrings.str_teach_3_f36a:
-      case AppStrings.str_teach_rem_4_faa1:
+      case 'معلم':
+      case 'المعلمين':
         return UserRole.teacher;
       case 'halaqa':
-      case AppStrings.str_teach_5_7a63:
-      case AppStrings.str_teach_rem_5_f960:
+      case 'حلقة':
+      case 'الحلقات':
         return UserRole.halaqa;
       case 'student':
-      case AppStrings.str_teach_4_a008:
-      case AppStrings.str_teach_rem_6_36bc:
+      case 'طالب':
+      case 'الطلاب':
         return UserRole.student;
       default:
         return UserRole.unknown;

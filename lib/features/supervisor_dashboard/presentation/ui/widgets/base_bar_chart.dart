@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -150,9 +149,9 @@ class _BaseBarChartState extends State<BaseBarChart> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildMiniStat(AppStrings.str_teach_rem_58_d2b3, "$avrage", ''),
-          _buildMiniStat(AppStrings.str_teach_rem_59_9179, "${maxPoint.value}", minPoint.label),
-          _buildMiniStat(AppStrings.str_teach_rem_60_4d07, "${minPoint.value}", maxPoint.label),
+          _buildMiniStat("المعدل", "$avrage", ''),
+          _buildMiniStat("أعلى قيمة", "${maxPoint.value}", minPoint.label),
+          _buildMiniStat("أقل قيمة", "${minPoint.value}", maxPoint.label),
         ],
       ),
     );

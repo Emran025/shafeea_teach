@@ -1,4 +1,3 @@
-import 'package:shafeea_teach/core/l10n/app_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -129,7 +128,7 @@ class _LogInScreenState extends State<LogInScreen> {
           const Padding(
             padding: EdgeInsets.only(bottom: 12.0),
             child: Text(
-              AppStrings.str_teach_rem_180_3600,
+              "تغيير الحساب",
               style: TextStyle(color: AppColors.lightCream70, fontSize: 12),
             ),
           ),
@@ -267,7 +266,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           ),
                           const SizedBox(height: 24),
                           const Text(
-                            AppStrings.str_teach_rem_181_6a83,
+                            "تسجيل الدخول",
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -296,18 +295,18 @@ class _LogInScreenState extends State<LogInScreen> {
                             validator: (val) {
                               final value = val?.trim() ?? '';
                               if (value.isEmpty) {
-                                return AppStrings.str_teach_rem_182_be9a;
+                                return 'أدخل البريد الإلكتروني أو اسم المستخدم';
                               }
                               if (value.contains('@')) {
                                 return value.contains('.')
                                     ? null
-                                    : AppStrings.str_teach_rem_183_3963;
+                                    : 'بريد إلكتروني غير صالح';
                               }
                               if (value.length >= 3) return null;
-                              return AppStrings.str_teach_rem_184_85d4;
+                              return 'بريد أو اسم مستخدم غير صالح';
                             },
                             decoration: _inputDecoration(
-                              AppStrings.str_teach_rem_185_c355,
+                              "البريد الإلكتروني أو اسم المستخدم",
                               Icons.person_outline,
                             ),
                           ),
@@ -319,9 +318,9 @@ class _LogInScreenState extends State<LogInScreen> {
                             validator: (val) =>
                                 (val != null && val.trim().length >= 6)
                                 ? null
-                                : AppStrings.str_teach_rem_186_ee91,
+                                : 'كلمة المرور قصيرة',
                             decoration: _inputDecoration(
-                              AppStrings.str_teach_rem_187_2eca,
+                              "كلمة المرور",
                               Icons.lock,
                               isPassword: true,
                             ),
@@ -333,7 +332,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               if (state.status == LogInStatus.success) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                    content: Text(AppStrings.str_teach_rem_188_3df5),
+                                    content: Text('تم تسجيل الدخول'),
                                   ),
                                 );
                                 context.go('/splash');
@@ -341,7 +340,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      state.failure?.message ?? AppStrings.str_teach_rem_189_0ed7,
+                                      state.failure?.message ?? 'حدث خطأ ما',
                                     ),
                                   ),
                                 );
@@ -353,7 +352,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                       color: AppColors.lightCream,
                                     )
                                   : CustomButton(
-                                      text: AppStrings.str_teach_rem_181_6a83,
+                                      text: 'تسجيل الدخول',
                                       onPressed: () => _submitLogIn(context),
                                     );
                             },
@@ -370,7 +369,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               );
                             },
                             child: const Text(
-                              AppStrings.str_teach_rem_190_482b,
+                              "نسيت كلمة المرور؟",
                               style: TextStyle(color: AppColors.lightCream70),
                             ),
                           ),
