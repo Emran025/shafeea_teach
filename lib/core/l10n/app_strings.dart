@@ -16,6 +16,19 @@ class AppStrings {
   }
 
   static String get appName => i.appName;
+  static String get addStudentsToHalaqah => i.addStudentsToHalaqah;
+  static String get showOnlyUnenrolledStudents => i.showOnlyUnenrolledStudents;
+  static String get searchForStudent => i.searchForStudent;
+  static String get loadingStudents => i.loadingStudents;
+  static String get noUnenrolledStudents => i.noUnenrolledStudents;
+  static String get cancel => i.cancel;
+  static String get confirm => i.confirm;
+  static String get addStudents => i.addStudents;
+  static String get halaqahName => i.halaqahName;
+  static String get gender => i.gender;
+  static String get capacity => i.capacity;
+  static String get country => i.country;
+  static String get availableTime => i.availableTime;
   static String get supervisorDashboard => i.supervisorDashboard;
   static String get studentsList => i.studentsList;
   static String get teachersList => i.teachersList;
