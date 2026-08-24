@@ -42,6 +42,10 @@ jobs:
           if git diff --name-only HEAD^ HEAD | grep -E '^(android/|ios/|pubspec.yaml|shorebird.yaml)'; then
             echo "Native code or dependencies changed. Full release required."
             echo "needs_release=true" >> $GITHUB_OUTPUT
+            # Trigger the native build workflow
+            if [ -n "${{ secrets.GITHUB_TOKEN }}" ]; then
+              gh workflow run build-all-schools.yml --ref ${{ github.ref_name }} || echo "Could not trigger build-all-schools.yml"
+            fi
           else
             echo "Only Dart/Flutter code changed. Patch is sufficient."
             echo "needs_release=false" >> $GITHUB_OUTPUT
