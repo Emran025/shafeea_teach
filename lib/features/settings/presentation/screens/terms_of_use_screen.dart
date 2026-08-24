@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/features/settings/presentation/bloc/settings_bloc.dart';
@@ -6,7 +7,7 @@ import '../../domain/entities/privacy_policy_entity.dart';
 import '../../domain/entities/terms_of_use_entity.dart';
 
 class TermsOfUseScreen extends StatelessWidget {
-  const TermsOfUseScreen({super.key});
+  TermsOfUseScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class TermsOfUseScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('شروط الاستخدام'),
+        title: Text(L10nStrings.AppStrings.termsOfUse),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         bottom: PreferredSize(preferredSize: Size.zero, child: Container()),
@@ -33,7 +34,7 @@ class TermsOfUseScreen extends StatelessWidget {
             switch (state.termsOfUseStatus) {
               case SectionStatus.initial:
               case SectionStatus.loading:
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator());
               case SectionStatus.failure:
                 return Center(
                   child: Text(
@@ -45,12 +46,12 @@ class TermsOfUseScreen extends StatelessWidget {
                 if (state.termsOfUse != null) {
                   return _buildTermsContent(context, state.termsOfUse!);
                 }
-                return const Center(
-                  child: Text('لم يتم العثور على شروط الاستخدام.'),
+                return Center(
+                  child: Text(L10nStrings.AppStrings.noTermsOfUseFound),
                 );
             }
           }
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -64,7 +65,7 @@ class TermsOfUseScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
             child: Text(
-              'التفاصيل الكاملة',
+              L10nStrings.AppStrings.fullDetails,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -76,7 +77,7 @@ class TermsOfUseScreen extends StatelessWidget {
             return _buildSectionItem(context, terms.sections[index]);
           }, childCount: terms.sections.length),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 32)),
+        SliverToBoxAdapter(child: SizedBox(height: 32)),
       ],
     );
   }
@@ -101,23 +102,23 @@ class TermsOfUseScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'شروط الاستخدام',
+                L10nStrings.AppStrings.termsOfUse,
                 style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 'آخر تحديث: $formattedDate  |  الإصدار: ${terms.version}',
                 style: textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const Divider(height: 24),
+              Divider(height: 24),
               ...terms.summary.map(
                 (point) => ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.check_circle_outline,
                     color: Colors.teal,
                   ),

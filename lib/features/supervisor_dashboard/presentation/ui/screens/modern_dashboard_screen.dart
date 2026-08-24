@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
@@ -17,7 +18,7 @@ import '../../bloc/supervisor_bloc.dart';
 /// Uses BLoC pattern for state management and follows OOP principles
 class ModernDashboardScreen extends StatefulWidget {
   final UserRole role;
-  const ModernDashboardScreen({super.key, required this.role});
+  ModernDashboardScreen({super.key, required this.role});
 
   @override
   State<ModernDashboardScreen> createState() => _ModernDashboardScreenState();
@@ -56,7 +57,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
   void _initializeAnimation() {
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 900),
+      duration: Duration(milliseconds: 900),
     )..forward();
   }
 
@@ -69,7 +70,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
     return FloatingActionButton.extended(
       onPressed: _handleQuickAction,
       label: Text(
-        "إجراء سريع",
+        L10nStrings.AppStrings.quickAction,
         style: GoogleFonts.cairo(color: AppColors.lightCream),
       ),
       icon: Icon(Icons.flash_on, color: AppColors.lightCream),
@@ -83,7 +84,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           Expanded(child: _stateBuilder.buildDashboardContent(context)),
         ],
       ),
@@ -92,7 +93,7 @@ class _ModernDashboardScreenState extends State<ModernDashboardScreen>
 
   Widget _buildHeader() {
     return Text(
-      "الإحصائيات العامة",
+      L10nStrings.AppStrings.generalStatistics,
       style: Theme.of(context).textTheme.titleLarge,
     );
   }
@@ -121,7 +122,7 @@ class DashboardDataManager {
   List<_DashboardStat> getInitialStats(UserRole role) {
     return [
       _DashboardStat(
-        'الطلاب',
+        L10nStrings.AppStrings.students,
         '342',
         Icons.group,
         _colorGradients[1],
@@ -129,14 +130,14 @@ class DashboardDataManager {
       ),
       if (role == UserRole.supervisor)
         _DashboardStat(
-          'المعلمين',
+          L10nStrings.AppStrings.teachers,
           '23',
           Icons.school,
           _colorGradients[3],
           _trendsData[3],
         ),
       _DashboardStat(
-        'الحلقات',
+        L10nStrings.AppStrings.halaqasLabel,
         '57',
         Icons.book,
         _colorGradients[0],
@@ -149,7 +150,7 @@ class DashboardDataManager {
     return ChartFilterEntity(
       entityType: UserRole.student,
       timePeriod: 'year',
-      startDate: DateTime.now().subtract(const Duration(days: 30)),
+      startDate: DateTime.now().subtract(Duration(days: 30)),
       endDate: DateTime.now(),
     );
   }
@@ -164,7 +165,7 @@ class _DashboardStateBuilder {
     return Column(
       children: [
         _buildStatisticsGrid(context),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         _buildNotificationsSection(context),
       ],
     );
@@ -193,31 +194,28 @@ class _DashboardStateBuilder {
     SupervisorLoaded state,
   ) {
     final updatedStats = stats.map((stat) {
-      switch (stat.title) {
-        case 'الطلاب':
-          return stat.copyWith(
-            suTitle: "${state.countsDeltaEntity!.studentCount.count}",
-          );
-
-        case 'المعلمين':
-          return stat.copyWith(
-            suTitle: "${state.countsDeltaEntity!.teacherCount.count}",
-          );
-
-        case 'الحلقات':
-          return stat.copyWith(
-            suTitle: "${state.countsDeltaEntity!.halaqaCount.count}",
-          );
-
-        default:
-          return stat;
+      if (stat.title == L10nStrings.AppStrings.students) {
+        return stat.copyWith(
+          suTitle: "${state.countsDeltaEntity!.studentCount.count}",
+        );
       }
+      if (stat.title == L10nStrings.AppStrings.teachers) {
+        return stat.copyWith(
+          suTitle: "${state.countsDeltaEntity!.teacherCount.count}",
+        );
+      }
+      if (stat.title == L10nStrings.AppStrings.halaqasLabel) {
+        return stat.copyWith(
+          suTitle: "${state.countsDeltaEntity!.halaqaCount.count}",
+        );
+      }
+      return stat;
     }).toList();
 
     return GridView.builder(
-      physics: const BouncingScrollPhysics(),
+      physics: BouncingScrollPhysics(),
       padding: const EdgeInsets.only(bottom: 12),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
@@ -232,9 +230,9 @@ class _DashboardStateBuilder {
   Widget _buildDefaultStatisticsGrid(List<_DashboardStat> stats) {
     return GridView.builder(
       itemCount: stats.length,
-      physics: const BouncingScrollPhysics(),
+      physics: BouncingScrollPhysics(),
       padding: const EdgeInsets.only(bottom: 12),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
@@ -268,7 +266,7 @@ class _DashboardStateBuilder {
         filter: ChartFilterEntity(
           entityType: selectedEntityType,
           timePeriod: 'year',
-          startDate: DateTime.now().subtract(const Duration(days: 30)),
+          startDate: DateTime.now().subtract(Duration(days: 30)),
           endDate: DateTime.now(),
         ),
       ),
@@ -279,11 +277,11 @@ class _DashboardStateBuilder {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("📢 آخر التنبيهات", style: Theme.of(context).textTheme.titleLarge),
-        const SizedBox(height: 12),
-        const _NotificationCard(
-          title: "تمت إضافة حلقة جديدة بإشراف الشيخ خالد",
-          timeAgo: "منذ 3 دقائق",
+        Text(L10nStrings.AppStrings.latestAlerts, style: Theme.of(context).textTheme.titleLarge),
+        SizedBox(height: 12),
+        _NotificationCard(
+          title: L10nStrings.AppStrings.newCircleAddedBySheikhKhalid,
+          timeAgo: L10nStrings.AppStrings.timeAgo3Minutes,
         ),
       ],
     );
@@ -345,20 +343,20 @@ class _StatCardWidget extends StatelessWidget {
   ) {
     return [
       Text(
-        "📊 مخططات الطلاب التفصيلية",
+        L10nStrings.AppStrings.detailedStudentCharts,
         style: Theme.of(
           context,
         ).textTheme.titleLarge?.copyWith(color: AppColors.lightCream),
       ),
-      const SizedBox(height: 16),
+      SizedBox(height: 16),
       SizedBox(
         height: 550,
         child: StudentCountChart(
           qualityData: state.chartData ?? [],
           filter: state.filter!,
           tile: ChartTile(
-            title: 'تقييم جودة الإتقان',
-            subTitle: "حسب الفترة",
+            title: L10nStrings.AppStrings.masteryQualityAssessment,
+            subTitle: L10nStrings.AppStrings.byPeriod,
             icon: Icons.assessment,
           ),
           onFilterChanged: (filter) {
@@ -383,7 +381,7 @@ class _StatCardWidget extends StatelessWidget {
       boxShadow: [
         BoxShadow(
           color: stat.color.first.withOpacity(0.35),
-          offset: const Offset(0, 6),
+          offset: Offset(0, 6),
           blurRadius: 6,
         ),
       ],
@@ -395,7 +393,7 @@ class _StatCardWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(stat.icon, size: 36, color: AppColors.lightCream),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Text(
           stat.suTitle,
           style: GoogleFonts.cairo(
@@ -411,7 +409,7 @@ class _StatCardWidget extends StatelessWidget {
             color: AppColors.lightCream.withOpacity(0.85),
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         Expanded(child: _buildTrendChart()),
       ],
     );
@@ -430,25 +428,25 @@ class _StatCardWidget extends StatelessWidget {
             isStrokeCapRound: true,
             isCurved: true,
             color: AppColors.lightCream.withOpacity(0.8),
-            dotData: const FlDotData(show: false),
+            dotData: FlDotData(show: false),
             barWidth: 2,
           ),
         ],
-        gridData: const FlGridData(show: false),
+        gridData: FlGridData(show: false),
         borderData: FlBorderData(show: false),
-        titlesData: const FlTitlesData(show: false),
+        titlesData: FlTitlesData(show: false),
       ),
     );
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(color: AppColors.lightCream),
           SizedBox(height: 16),
-          Text("جاري تحميل البيانات..."),
+          Text(L10nStrings.AppStrings.loadingData),
         ],
       ),
     );
@@ -459,15 +457,15 @@ class _StatCardWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.error_outline, color: Colors.red, size: 48),
-          const SizedBox(height: 16),
+          Icon(Icons.error_outline, color: Colors.red, size: 48),
+          SizedBox(height: 16),
           Text("حدث خطأ: $message", textAlign: TextAlign.center),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           ElevatedButton(
             onPressed: () {
               // Retry logic
             },
-            child: const Text("إعادة المحاولة"),
+            child: Text(L10nStrings.AppStrings.retry),
           ),
         ],
       ),
@@ -475,7 +473,7 @@ class _StatCardWidget extends StatelessWidget {
   }
 
   Widget _buildInitialState() {
-    return const Center(child: Text("اضغط لتحميل البيانات"));
+    return Center(child: Text(L10nStrings.AppStrings.tapToLoadData));
   }
 }
 
@@ -528,7 +526,7 @@ class _NotificationCard extends StatelessWidget {
         color: Colors.transparent,
         child: ListTile(
           contentPadding: const EdgeInsets.all(16),
-          leading: const Icon(
+          leading: Icon(
             Icons.notifications_active,
             color: AppColors.lightCream,
           ),
@@ -551,7 +549,7 @@ class _NotificationCard extends StatelessWidget {
       color: Theme.of(context).colorScheme.primaryContainer,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(color: AppColors.accent70, width: 0.5),
-      boxShadow: const [
+      boxShadow: [
         BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
       ],
     );

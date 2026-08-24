@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -12,7 +13,7 @@ import 'package:shafeea/features/auth/domain/entities/user_entity.dart';
 // import '../../../../../core/constants/app_colors.dart';
 
 class LogInScreen extends StatefulWidget {
-  const LogInScreen({super.key});
+  LogInScreen({super.key});
 
   @override
   State<LogInScreen> createState() => _LogInScreenState();
@@ -83,16 +84,16 @@ class _LogInScreenState extends State<LogInScreen> {
           : null,
       filled: true,
       fillColor: AppColors.lightCream.withOpacity(0.1),
-      labelStyle: const TextStyle(color: AppColors.lightCream, fontSize: 12),
+      labelStyle: TextStyle(color: AppColors.lightCream, fontSize: 12),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.lightCream26),
+        borderSide: BorderSide(color: AppColors.lightCream26),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.lightCream),
+        borderSide: BorderSide(color: AppColors.lightCream),
       ),
-      errorStyle: const TextStyle(color: Colors.amber),
+      errorStyle: TextStyle(color: Colors.amber),
     );
   }
 
@@ -100,7 +101,7 @@ class _LogInScreenState extends State<LogInScreen> {
   Widget _buildCachedUsersList(BuildContext context, AuthState state) {
     // إذا كانت الحالة تحميل للقائمة، نعرض مؤشر صغير
     if (state.usersListStatus == GetUserStatus.loading) {
-      return const Padding(
+      return Padding(
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Center(
           child: SizedBox(
@@ -125,10 +126,10 @@ class _LogInScreenState extends State<LogInScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(bottom: 12.0),
             child: Text(
-              "تغيير الحساب",
+              L10nStrings.AppStrings.changeAccount,
               style: TextStyle(color: AppColors.lightCream70, fontSize: 12),
             ),
           ),
@@ -136,9 +137,9 @@ class _LogInScreenState extends State<LogInScreen> {
             height: 90,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               itemCount: state.usersList.length,
-              separatorBuilder: (c, i) => const SizedBox(width: 16),
+              separatorBuilder: (c, i) => SizedBox(width: 16),
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 final user = state.usersList[index];
@@ -165,7 +166,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           backgroundColor: AppColors.lightCream,
                           child: Text(
                             user.name.split('').first,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: AppColors.mediumDark,
@@ -173,7 +174,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 6),
+                      SizedBox(width: 6),
                       SizedBox(
                         width: 70,
                         child: Text(
@@ -195,13 +196,13 @@ class _LogInScreenState extends State<LogInScreen> {
               },
             ),
           ),
-          const SizedBox(height: 16),
-          const Divider(
+          SizedBox(height: 16),
+          Divider(
             color: AppColors.lightCream12,
             endIndent: 40,
             indent: 40,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
         ],
       ),
     );
@@ -216,7 +217,7 @@ class _LogInScreenState extends State<LogInScreen> {
         body: Stack(
           children: [
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [AppColors.accent, AppColors.mediumDark],
                   begin: Alignment.topCenter,
@@ -232,14 +233,14 @@ class _LogInScreenState extends State<LogInScreen> {
                     vertical: 32,
                   ),
                   child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 600),
+                    duration: Duration(milliseconds: 600),
                     curve: Curves.easeOut,
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       color: AppColors.lightCream12,
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(color: AppColors.lightCream26),
-                      boxShadow: const [
+                      boxShadow: [
                         BoxShadow(
                           color: AppColors.darkBackground26,
                           blurRadius: 12,
@@ -254,7 +255,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           Hero(
                             tag: 'logo',
                             child: Container(
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: AppColors.lightCream,
                                 shape: BoxShape.circle,
                               ),
@@ -264,16 +265,16 @@ class _LogInScreenState extends State<LogInScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 24),
-                          const Text(
-                            "تسجيل الدخول",
+                          SizedBox(height: 24),
+                          Text(
+                            L10nStrings.AppStrings.logIn,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: AppColors.lightCream,
                             ),
                           ),
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
 
                           // --- إضافة قائمة المستخدمين هنا ---
                           BlocBuilder<AuthBloc, AuthState>(
@@ -291,48 +292,48 @@ class _LogInScreenState extends State<LogInScreen> {
                           TextFormField(
                             controller: emailController,
                             keyboardType: TextInputType.text,
-                            style: const TextStyle(color: AppColors.lightCream),
+                            style: TextStyle(color: AppColors.lightCream),
                             validator: (val) {
                               final value = val?.trim() ?? '';
                               if (value.isEmpty) {
-                                return 'أدخل البريد الإلكتروني أو اسم المستخدم';
+                                return L10nStrings.AppStrings.enterEmailOrUsername;
                               }
                               if (value.contains('@')) {
                                 return value.contains('.')
                                     ? null
-                                    : 'بريد إلكتروني غير صالح';
+                                    : L10nStrings.AppStrings.invalidEmailAddress;
                               }
                               if (value.length >= 3) return null;
-                              return 'بريد أو اسم مستخدم غير صالح';
+                              return L10nStrings.AppStrings.invalidEmailOrUsername;
                             },
                             decoration: _inputDecoration(
-                              "البريد الإلكتروني أو اسم المستخدم",
+                              L10nStrings.AppStrings.emailOrUsername,
                               Icons.person_outline,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                           TextFormField(
                             controller: passwordController,
                             obscureText: _obscurePassword,
-                            style: const TextStyle(color: AppColors.lightCream),
+                            style: TextStyle(color: AppColors.lightCream),
                             validator: (val) =>
                                 (val != null && val.trim().length >= 6)
                                 ? null
-                                : 'كلمة المرور قصيرة',
+                                : L10nStrings.AppStrings.passwordTooShort,
                             decoration: _inputDecoration(
-                              "كلمة المرور",
+                              L10nStrings.AppStrings.password,
                               Icons.lock,
                               isPassword: true,
                             ),
                           ),
 
-                          const SizedBox(height: 24),
+                          SizedBox(height: 24),
                           BlocConsumer<AuthBloc, AuthState>(
                             listener: (context, state) {
                               if (state.status == LogInStatus.success) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('تم تسجيل الدخول'),
+                                  SnackBar(
+                                    content: Text(L10nStrings.AppStrings.loggedIn),
                                   ),
                                 );
                                 context.go('/splash');
@@ -340,7 +341,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      state.failure?.message ?? 'حدث خطأ ما',
+                                      state.failure?.message ?? L10nStrings.AppStrings.somethingWentWrong,
                                     ),
                                   ),
                                 );
@@ -348,28 +349,28 @@ class _LogInScreenState extends State<LogInScreen> {
                             },
                             builder: (context, state) {
                               return state.status == LogInStatus.loading
-                                  ? const CircularProgressIndicator(
+                                  ? CircularProgressIndicator(
                                       color: AppColors.lightCream,
                                     )
                                   : CustomButton(
-                                      text: 'تسجيل الدخول',
+                                      text: L10nStrings.AppStrings.logIn,
                                       onPressed: () => _submitLogIn(context),
                                     );
                             },
                           ),
 
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const ForgetPasswordScreen(),
+                                      ForgetPasswordScreen(),
                                 ),
                               );
                             },
-                            child: const Text(
-                              "نسيت كلمة المرور؟",
+                            child: Text(
+                              L10nStrings.AppStrings.forgotPasswordQuestion,
                               style: TextStyle(color: AppColors.lightCream70),
                             ),
                           ),

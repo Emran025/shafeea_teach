@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // lib/features/settings/presentation/screens/privacy_policy_screen.dart
 
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import '../../domain/entities/privacy_policy_entity.dart';
 /// loading status (loading, success, or failure). This separation of concerns
 /// keeps the UI layer clean and focused on rendering.
 class PrivacyPolicyScreen extends StatelessWidget {
-  const PrivacyPolicyScreen({super.key});
+  PrivacyPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('سياسة الخصوصية'),
+        title: Text(L10nStrings.AppStrings.privacyPolicy),
         backgroundColor: theme.scaffoldBackgroundColor,
         elevation: 0,
         // Using a zero-height bottom to ensure a clean look with CustomScrollView
@@ -46,7 +47,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               case SectionStatus.initial:
               case SectionStatus.loading:
                 // Display a loading indicator while the policy is being fetched.
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator());
               case SectionStatus.failure:
                 // Display a user-friendly error message if the fetch fails.
                 return Center(
@@ -61,14 +62,14 @@ class PrivacyPolicyScreen extends StatelessWidget {
                   return _buildPolicyContent(context, state.privacyPolicy!);
                 }
                 // Handle the edge case where status is success but data is null.
-                return const Center(
-                  child: Text('لم يتم العثور على سياسة الخصوصية.'),
+                return Center(
+                  child: Text(L10nStrings.AppStrings.noPrivacyPolicyFound),
                 );
             }
           }
           // Fallback for any other state (e.g., global failure), though unlikely to be hit
           // if navigated from a successful SettingsScreen.
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -89,7 +90,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 8),
             child: Text(
-              'التفاصيل الكاملة',
+              L10nStrings.AppStrings.fullDetails,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
@@ -105,7 +106,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         ),
 
         // Provides bottom padding for better visual spacing.
-        const SliverToBoxAdapter(child: SizedBox(height: 32)),
+        SliverToBoxAdapter(child: SizedBox(height: 32)),
       ],
     );
   }
@@ -132,24 +133,24 @@ class PrivacyPolicyScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'سياسة الخصوصية',
+                L10nStrings.AppStrings.privacyPolicy,
                 style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 'آخر تحديث: $formattedDate  |  الإصدار: ${policy.version}',
                 style: textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
               ),
-              const Divider(height: 24),
+              Divider(height: 24),
               // Dynamically create a list of summary points.
               ...policy.summary.map(
                 (point) => ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.check_circle_outline,
                     color: Colors.teal,
                   ),

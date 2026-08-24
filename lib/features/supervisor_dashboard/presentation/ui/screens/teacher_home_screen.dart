@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:shafeea/core/models/user_role.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
@@ -13,7 +14,7 @@ import 'supervisor_monitoring_screen.dart';
 // import '../../../../../core/constants/app_colors.dart';
 
 class TecherDashboard extends StatefulWidget {
-  const TecherDashboard({super.key});
+  TecherDashboard({super.key});
 
   @override
   State<TecherDashboard> createState() => _TecherDashboardState();
@@ -28,7 +29,7 @@ class _TecherDashboardState extends State<TecherDashboard> {
     // StudentsManagementScreen(),
     MonitoringScreen(),
   ];
-  final List<String> headers = ["الرئيسية", "المتابعة الشاملة"];
+  final List<String> headers = [L10nStrings.AppStrings.home, L10nStrings.AppStrings.comprehensiveMonitoring];
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class _TecherDashboardState extends State<TecherDashboard> {
         ),
 
         drawer: RecitationModeSideBar(
-          title: "مرحباً، عمران",
+          title: L10nStrings.AppStrings.helloImran,
           avatar: Avatar(size: Size(100, 100)),
           items: [
             CustomModeIconButton(
@@ -75,13 +76,13 @@ class _TecherDashboardState extends State<TecherDashboard> {
             ),
             CustomModeIconButton(
               isSelected: false,
-              label: "الإعدادات",
+              label: L10nStrings.AppStrings.settings,
               icon: Icons.settings,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return const SettingsScreen();
+                      return SettingsScreen();
                     },
                   ),
                 );
@@ -89,7 +90,7 @@ class _TecherDashboardState extends State<TecherDashboard> {
             ),
             CustomModeIconButton(
               icon: Icons.logout,
-              label: "تسجيل الخروج",
+              label: L10nStrings.AppStrings.logOut,
               isSelected: false,
               onTap: () {
                 Navigator.pop(context);

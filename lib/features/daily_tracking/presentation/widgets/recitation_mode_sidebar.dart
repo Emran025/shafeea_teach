@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 // lib/features/daily_tracking/presentation/widgets/recitation_mode_sidebar.dart
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ enum TrackingMode { memorize, review, recite, finalReport, back }
 /// This widget is stateless and driven entirely by the [TrackingSessionBloc].
 /// It displays different tracking modes and dispatches events upon user interaction.
 class RecitationSideBar extends StatelessWidget {
-  const RecitationSideBar({super.key});
+  RecitationSideBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class RecitationSideBar extends StatelessWidget {
       builder: (context, state) {
         final selectedType = state.currentTaskType;
         return RecitationModeSideBar(
-          title: "مرحباً، عمران",
+          title: L10nStrings.AppStrings.helloImran,
           avatar: Avatar(size: Size(100, 100)),
           items: [
             CustomModeIconButton(
@@ -41,7 +42,7 @@ class RecitationSideBar extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 context.read<TrackingSessionBloc>().add(
-                  const TaskTypeChanged(newType: TrackingType.memorization),
+                  TaskTypeChanged(newType: TrackingType.memorization),
                 );
               },
             ),
@@ -52,7 +53,7 @@ class RecitationSideBar extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 context.read<TrackingSessionBloc>().add(
-                  const TaskTypeChanged(newType: TrackingType.review),
+                  TaskTypeChanged(newType: TrackingType.review),
                 );
               },
             ),
@@ -63,26 +64,26 @@ class RecitationSideBar extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 context.read<TrackingSessionBloc>().add(
-                  const TaskTypeChanged(newType: TrackingType.recitation),
+                  TaskTypeChanged(newType: TrackingType.recitation),
                 );
               },
             ),
 
             CustomModeIconButton(
               icon: Icons.video_call,
-              label: 'بدء مكالمة',
+              label: L10nStrings.AppStrings.startCall,
               isSelected: false,
               onTap: () {
                 Navigator.of(context).pop();
                 // TODO: Trigger WebRTC Call Accept/Join here
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('جاري بدء الجلسة التفاعلية...')),
+                  SnackBar(content: Text(L10nStrings.AppStrings.startingInteractiveSession)),
                 );
               },
             ),
             CustomModeIconButton(
               icon: Icons.assessment,
-              label: 'تقرير',
+              label: L10nStrings.AppStrings.reportLabel,
               isSelected: false,
               onTap: () {
                 // Action to show the final report dialog
@@ -93,7 +94,7 @@ class RecitationSideBar extends StatelessWidget {
                     final bloc = context.read<TrackingSessionBloc>();
                     return BlocProvider.value(
                       value: bloc,
-                      child: const FinalReportDialog(),
+                      child: FinalReportDialog(),
                     );
                   },
                 );
@@ -101,7 +102,7 @@ class RecitationSideBar extends StatelessWidget {
             ),
             CustomModeIconButton(
               icon: Icons.arrow_back,
-              label: 'عودة',
+              label: L10nStrings.AppStrings.back,
               isSelected: false,
               onTap: () {
                 Navigator.of(context).pop();

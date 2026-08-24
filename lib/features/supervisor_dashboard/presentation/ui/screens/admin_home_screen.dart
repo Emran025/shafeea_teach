@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/shared/themes/app_theme.dart';
@@ -14,10 +15,9 @@ import '../../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../../auth/presentation/ui/widgets/log_out_dialog.dart';
 import '../../../../settings/presentation/screens/settings_screen.dart';
 
-import 'package:shafeea/core/constants/constants.dart';
 
 class SupervisorDashboard extends StatefulWidget {
-  const SupervisorDashboard({super.key});
+  SupervisorDashboard({super.key});
 
   @override
   State<SupervisorDashboard> createState() => _SupervisorDashboardState();
@@ -43,49 +43,49 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
 
     // Everyone gets the dashboard
     _tabs.add(ModernDashboardScreen(role: UserRole.supervisor));
-    headers.add("الرئيسية");
-    _navItems.add(const BottomNavigationBarItem(
+    headers.add(L10nStrings.AppStrings.home);
+    _navItems.add(BottomNavigationBarItem(
       icon: Icon(Icons.dashboard_outlined),
-      label: 'الرئيسية',
+      label: L10nStrings.AppStrings.home,
     ));
 
     // School Admin or Teachers Supervisor
     if (roles.contains('school_admin') || roles.contains('teachers_supervisor')) {
       _tabs.add(TeachersManagementScreen());
-      headers.add("إدارة المعلمين");
-      _navItems.add(const BottomNavigationBarItem(
+      headers.add(L10nStrings.AppStrings.manageTeachers);
+      _navItems.add(BottomNavigationBarItem(
         icon: Icon(Icons.school_outlined),
-        label: 'المعلمين',
+        label: L10nStrings.AppStrings.teachers,
       ));
     }
 
     // School Admin or Students Supervisor
     if (roles.contains('school_admin') || roles.contains('students_supervisor')) {
       _tabs.add(StudentsManagementScreen());
-      headers.add("إدارة الطلاب");
-      _navItems.add(const BottomNavigationBarItem(
+      headers.add(L10nStrings.AppStrings.manageStudents);
+      _navItems.add(BottomNavigationBarItem(
         icon: Icon(Icons.group_outlined),
-        label: 'الطلاب',
+        label: L10nStrings.AppStrings.students,
       ));
     }
 
     // School Admin or Halaqah Supervisor
     if (roles.contains('school_admin') || roles.contains('halaqah_supervisor')) {
       _tabs.add(HalaqaManagementScreen());
-      headers.add("إدارة الحلقات");
-      _navItems.add(const BottomNavigationBarItem(
+      headers.add(L10nStrings.AppStrings.manageCircles);
+      _navItems.add(BottomNavigationBarItem(
         icon: Icon(Icons.book_outlined),
-        label: 'الحلقات',
+        label: L10nStrings.AppStrings.halaqasLabel,
       ));
     }
 
     // School Admin or Reports Supervisor
     if (roles.contains('school_admin') || roles.contains('reports_supervisor')) {
       _tabs.add(MonitoringScreen());
-      headers.add("المتابعة الشاملة");
-      _navItems.add(const BottomNavigationBarItem(
+      headers.add(L10nStrings.AppStrings.comprehensiveMonitoring);
+      _navItems.add(BottomNavigationBarItem(
         icon: Icon(Icons.analytics_outlined),
-        label: 'المتابعة',
+        label: L10nStrings.AppStrings.followUp,
       ));
     }
   }
@@ -111,24 +111,24 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
         ),
 
         drawer: RecitationModeSideBar(
-          title: "مرحباً، عمران",
+          title: L10nStrings.AppStrings.helloImran,
           avatar: Avatar(size: Size(100, 100)),
           items: [
             CustomModeIconButton(
               icon: Icons.person,
-              label: "ملفي الشخصي",
+              label: L10nStrings.AppStrings.myProfile,
               isSelected: false,
               onTap: () {},
             ),
             CustomModeIconButton(
               icon: Icons.settings,
-              label: "الإعدادات",
+              label: L10nStrings.AppStrings.settings,
               isSelected: false,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return const SettingsScreen();
+                      return SettingsScreen();
                     },
                   ),
                 );
@@ -144,7 +144,7 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
             ),
             CustomModeIconButton(
               icon: Icons.logout,
-              label: "تسجيل الخروج",
+              label: L10nStrings.AppStrings.logOut,
               isSelected: false,
               onTap: () {
                 Navigator.pop(context);
@@ -193,7 +193,7 @@ class _SupervisorDashboardState extends State<SupervisorDashboard> {
       context: context,
       builder: (context) => BlocProvider.value(
         value: context.read<AuthBloc>(),
-        child: const LogoutConfirmationDialog(),
+        child: LogoutConfirmationDialog(),
       ),
     );
   }

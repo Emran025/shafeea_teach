@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ import '../../view_models/student_summary_entity.dart';
 class FollowUpReportDialog extends StatefulWidget {
   final String studentName;
   final FollowUpReportBundleEntity bundle;
-  const FollowUpReportDialog({
+  FollowUpReportDialog({
     super.key,
     required this.studentName,
     required this.bundle,
@@ -66,7 +67,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             padding: const EdgeInsets.all(6),
-            constraints: const BoxConstraints(maxHeight: 600),
+            constraints: BoxConstraints(maxHeight: 600),
             decoration: BoxDecoration(
               color: AppColors.accent12,
               borderRadius: BorderRadius.circular(14),
@@ -77,7 +78,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
                 // --- 1. Summary Header (Data comes directly from the bundle) ---
                 _buildSummaryHeader(performance, summary),
 
-                const Divider(height: 2, color: AppColors.accent70),
+                Divider(height: 2, color: AppColors.accent70),
 
                 Flexible(
                   child: Scrollbar(
@@ -85,7 +86,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
                     child: ListView.separated(
                       padding: const EdgeInsets.only(left: 10, top: 8),
                       itemCount: _sortedReports.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 16),
+                      separatorBuilder: (_, __) => SizedBox(height: 16),
                       itemBuilder: (_, index) {
                         final report = _sortedReports[index];
                         return (report.attendance == AttendanceStatus.present)
@@ -95,7 +96,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
 
                 // --- 3. Close Button ---
                 _buildCloseButton(),
@@ -128,7 +129,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
                   color: AppColors.lightCream,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 "متوسط الإنجاز: ${performance.averageAchievementRate.toStringAsFixed(1)}٪",
                 style: GoogleFonts.cairo(
@@ -155,7 +156,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
                   color: AppColors.lightCream70,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(
                 "الانحراف الكلي: ${summary.totalDeviation.toStringAsFixed(1)} صفحات",
                 style: GoogleFonts.cairo(
@@ -200,7 +201,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
               InkWell(
                 onTap: () => _showDailyDetails(report),
 
-                child: StatusTag(lable: "تفاصـــيل", fontSize: 10, radius: 8),
+                child: StatusTag(lable: L10nStrings.AppStrings.details, fontSize: 10, radius: 8),
               ),
               // Text(
               //   "تقييم السلوك: ${report.behaviourAssessment.toStringAsFixed(1)} / 5",
@@ -211,7 +212,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
               // ),
             ],
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
 
           _buildDetailsTable(report),
         ],
@@ -258,15 +259,15 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
               Container(
                 color: AppColors.accent26,
                 child: buildRow([
-                  _buildTableHeader("النوع"),
-                  _buildTableHeader("المخطط"),
-                  _buildTableHeader("الفعلي"),
-                  _buildRotatedHeader("التقدم"),
-                  _buildRotatedHeader("الفجوة"),
-                  _buildRotatedHeader("الجودة"),
+                  _buildTableHeader(L10nStrings.AppStrings.type),
+                  _buildTableHeader(L10nStrings.AppStrings.planned),
+                  _buildTableHeader(L10nStrings.AppStrings.actual),
+                  _buildRotatedHeader(L10nStrings.AppStrings.progress),
+                  _buildRotatedHeader(L10nStrings.AppStrings.gap),
+                  _buildRotatedHeader(L10nStrings.AppStrings.quality),
                 ]),
               ),
-              const Divider(height: 0.5, color: AppColors.accent70),
+              Divider(height: 0.5, color: AppColors.accent70),
               // ─── صفوف البيانات ───
               ...report.details.map((detail) {
                 final plannedNum = detail.plannedDetail.amount.toDouble();
@@ -290,7 +291,7 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
                         detail.performanceScore.toStringAsFixed(1),
                       ),
                     ]),
-                    const Divider(height: 0.5, color: AppColors.accent26),
+                    Divider(height: 0.5, color: AppColors.accent26),
                   ],
                 );
               }),
@@ -309,10 +310,10 @@ class _FollowUpReportDialogState extends State<FollowUpReportDialog> {
           child: OutlinedButton(
             onPressed: () => Navigator.pop(context),
             style: OutlinedButton.styleFrom(
-              side: const BorderSide(color: AppColors.accent70),
+              side: BorderSide(color: AppColors.accent70),
             ),
             child: Text(
-              "إغلاق",
+              L10nStrings.AppStrings.closeButtonLabel,
               style: GoogleFonts.cairo(color: AppColors.lightCream),
             ),
           ),

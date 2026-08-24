@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,7 +11,7 @@ import 'package:shafeea/shared/func/date_format.dart';
 class DailyDetailsDialog extends StatelessWidget {
   final FollowUpReportEntity report;
 
-  const DailyDetailsDialog({super.key, required this.report});
+  DailyDetailsDialog({super.key, required this.report});
 
   @override
   Widget build(BuildContext context) {
@@ -40,29 +41,29 @@ class DailyDetailsDialog extends StatelessWidget {
                     color: AppColors.lightCream,
                   ),
                 ),
-                const Divider(height: 20, color: AppColors.accent70),
+                Divider(height: 20, color: AppColors.accent70),
                 Flexible(
                   child: ListView.separated(
                     shrinkWrap: true,
                     itemCount: report.details.length,
                     separatorBuilder: (_, __) =>
-                        const Divider(height: 20, color: AppColors.accent26),
+                        Divider(height: 20, color: AppColors.accent26),
                     itemBuilder: (_, index) {
                       final detail = report.details[index];
                       return _buildDetailItem(detail);
                     },
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(
                     onPressed: () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: AppColors.accent70),
+                      side: BorderSide(color: AppColors.accent70),
                     ),
                     child: Text(
-                      "إغلاق",
+                      L10nStrings.AppStrings.closeButtonLabel,
                       style: GoogleFonts.cairo(color: AppColors.lightCream),
                     ),
                   ),
@@ -92,19 +93,19 @@ class DailyDetailsDialog extends StatelessWidget {
             color: AppColors.lightCream,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8),
         // جدول صغير للتفاصيل
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _buildDetailColumn("من", fromDetail)),
-            const VerticalDivider(color: AppColors.accent70),
-            Expanded(child: _buildDetailColumn("إلى", toDetail)),
+            Expanded(child: _buildDetailColumn(L10nStrings.AppStrings.fromLabel, fromDetail)),
+            VerticalDivider(color: AppColors.accent70),
+            Expanded(child: _buildDetailColumn(L10nStrings.AppStrings.toLabel, toDetail)),
           ],
         ),
         // عرض الملاحظات إن وجدت
         if (detail.note.isNotEmpty) ...[
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             "ملاحظات: ${detail.note}",
             style: GoogleFonts.cairo(
@@ -117,7 +118,7 @@ class DailyDetailsDialog extends StatelessWidget {
     );
   }
 
-  /// يبني عمودًا لعرض تفاصيل "من" أو "إلى".
+  /// يبني عمودًا لعرض تفاصيل L10nStrings.AppStrings.fromLabel أو L10nStrings.AppStrings.toLabel.
   Widget _buildDetailColumn(String header, TrackingUnitDetail detail) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,9 +131,9 @@ class DailyDetailsDialog extends StatelessWidget {
             color: AppColors.lightCream70,
           ),
         ),
-        _buildDetailRow("السورة:", detail.fromSurahName),
-        _buildDetailRow("الصفحة:", detail.fromPage.toString()),
-        _buildDetailRow("الآية:", detail.fromAyah.toString()),
+        _buildDetailRow(L10nStrings.AppStrings.surahLabel, detail.fromSurahName),
+        _buildDetailRow(L10nStrings.AppStrings.pageLabel, detail.fromPage.toString()),
+        _buildDetailRow(L10nStrings.AppStrings.ayahLabel, detail.fromAyah.toString()),
       ],
     );
   }

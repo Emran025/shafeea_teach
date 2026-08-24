@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,7 +15,7 @@ import '../../../../TeachersManagement/presentation/ui/widgets/documents_section
 class ApplicantProfileScreen extends StatefulWidget {
   final int applicantId;
 
-  const ApplicantProfileScreen({super.key, required this.applicantId});
+  ApplicantProfileScreen({super.key, required this.applicantId});
 
   @override
   State<ApplicantProfileScreen> createState() => _ApplicantProfileScreenState();
@@ -32,7 +33,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('ملف المقدم')),
+      appBar: AppBar(title: Text(L10nStrings.AppStrings.applicantProfile)),
       body: BlocListener<SupervisorBloc, SupervisorState>(
         listener: (context, state) {
           if (state is SupervisorLoaded) {
@@ -53,14 +54,14 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
         child: BlocBuilder<SupervisorBloc, SupervisorState>(
           builder: (context, state) {
             if (state is SupervisorLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator());
             } else if (state is SupervisorLoaded &&
                 state.applicantProfile != null) {
               return _buildSuccessfulUI(context, state.applicantProfile!);
             } else if (state is SupervisorError) {
               return Center(child: Text(state.message));
             } else {
-              return const Center(child: Text('فشل تحميل الملف الشخصي'));
+              return Center(child: Text(L10nStrings.AppStrings.failedLoadProfile));
             }
           },
         ),
@@ -79,17 +80,17 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
           padding: const EdgeInsets.all(10),
           children: [
             _buildHeader(context, applicant.user),
-            const SizedBox(height: 24),
-            _buildInfoRow('البريد الإلكتروني', applicant.user.email),
-            _buildInfoRow('رقم الهاتف', applicant.user.phone),
-            _buildInfoRow('الجنس', applicant.user.gender),
-            _buildInfoRow('الدولة', applicant.user.country),
-            _buildInfoRow('المدينة', applicant.user.city),
-            _buildInfoRow('المؤهلات', applicant.qualifications ?? ''),
-            _buildInfoRow('بيان النوايا', applicant.intentStatement ?? ''),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
+            _buildInfoRow(L10nStrings.AppStrings.emailLabel, applicant.user.email),
+            _buildInfoRow(L10nStrings.AppStrings.phoneNumberLabel, applicant.user.phone),
+            _buildInfoRow(L10nStrings.AppStrings.genderLabel, applicant.user.gender),
+            _buildInfoRow(L10nStrings.AppStrings.country, applicant.user.country),
+            _buildInfoRow(L10nStrings.AppStrings.city, applicant.user.city),
+            _buildInfoRow(L10nStrings.AppStrings.qualifications, applicant.qualifications ?? ''),
+            _buildInfoRow(L10nStrings.AppStrings.intentStatement, applicant.intentStatement ?? ''),
+            SizedBox(height: 24),
             DocumentsSection(documents: applicant.documents),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             _buildActionButtons(context, applicant),
           ],
         ),
@@ -117,10 +118,10 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                 Navigator.of(context).pop(true);
               }
             },
-            child: const Text('رفض'),
+            child: Text(L10nStrings.AppStrings.reject),
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           child: ElevatedButton(
             onPressed: () {
@@ -140,7 +141,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                 ),
               );
             },
-            child: const Text('قبول'),
+            child: Text(L10nStrings.AppStrings.accept),
           ),
         ),
       ],
@@ -160,7 +161,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
       child: Row(
         children: [
           Avatar(gender: Gender.fromLabel(user.gender), pic: user.avatar),
-          const SizedBox(width: 20),
+          SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +175,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                     color: AppColors.lightCream,
                   ),
                 ),
-                const SizedBox(height: 15),
+                SizedBox(height: 15),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -185,7 +186,7 @@ class _ApplicantProfileScreenState extends State<ApplicantProfileScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
-                    'مقدم جديد',
+                    L10nStrings.AppStrings.newApplicant,
                     style: GoogleFonts.cairo(
                       fontSize: 12,
                       color: AppColors.lightCream,

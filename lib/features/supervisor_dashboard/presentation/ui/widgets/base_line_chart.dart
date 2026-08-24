@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,7 +16,7 @@ class BaseLineChart extends StatefulWidget {
   final Color actualLineColor;
   final Color backgroundColor;
 
-  const BaseLineChart({
+  BaseLineChart({
     super.key,
     required this.chartData,
     this.onRefresh,
@@ -56,13 +57,13 @@ class _BaseLineChartState extends State<BaseLineChart> {
           // Legend
           if (widget.showLegend && widget.chartData.plannedData != null) ...[
             _buildLegend(),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
           ],
 
           // Chart
           AspectRatio(aspectRatio: 3 / 2, child: _buildChart()),
 
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
 
           // Statistics Summary
           _buildStatisticsSummary(),
@@ -77,9 +78,9 @@ class _BaseLineChartState extends State<BaseLineChart> {
       children: [
         if (widget.plannedLineColor != null &&
             widget.chartData.plannedData != null)
-          _buildLegendItem('المخطط', widget.plannedLineColor!),
-        const SizedBox(width: 24),
-        _buildLegendItem('المنفذ الفعلي', widget.actualLineColor),
+          _buildLegendItem(L10nStrings.AppStrings.planned, widget.plannedLineColor!),
+        SizedBox(width: 24),
+        _buildLegendItem(L10nStrings.AppStrings.actualImplementation, widget.actualLineColor),
       ],
     );
   }
@@ -92,7 +93,7 @@ class _BaseLineChartState extends State<BaseLineChart> {
           height: 12,
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: 8),
         Text(
           label,
           style: Theme.of(
@@ -128,7 +129,7 @@ class _BaseLineChartState extends State<BaseLineChart> {
     if (!hasActualData && !hasPlannedData) {
       return Center(
         child: Text(
-          'لا توجد بيانات متاحة',
+          L10nStrings.AppStrings.noDataAvailable,
           style: TextStyle(color: AppColors.lightCream),
         ),
       );
@@ -214,14 +215,14 @@ class _BaseLineChartState extends State<BaseLineChart> {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       dataList[index].label,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.lightCream,
                         fontSize: 10,
                       ),
                     ),
                   );
                 }
-                return const SizedBox();
+                return SizedBox();
               },
               reservedSize: 40, // مساحة مخصصة للعناوين
             ),
@@ -235,7 +236,7 @@ class _BaseLineChartState extends State<BaseLineChart> {
                   padding: const EdgeInsets.only(right: 8.0),
                   child: Text(
                     '${value.toInt()}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.lightCream70,
                       fontSize: 10,
                     ),
@@ -244,10 +245,10 @@ class _BaseLineChartState extends State<BaseLineChart> {
               },
             ),
           ),
-          topTitles: const AxisTitles(
+          topTitles: AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
-          rightTitles: const AxisTitles(
+          rightTitles: AxisTitles(
             sideTitles: SideTitles(showTitles: false),
           ),
         ),
@@ -274,7 +275,7 @@ class _BaseLineChartState extends State<BaseLineChart> {
               return touchedSpots.map((touchedSpot) {
                 return LineTooltipItem(
                   '${touchedSpot.y.toInt()}',
-                  const TextStyle(color: AppColors.lightCream),
+                  TextStyle(color: AppColors.lightCream),
                 );
               }).toList();
             },
@@ -306,9 +307,9 @@ class _BaseLineChartState extends State<BaseLineChart> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildMiniStat('متوسط المخطط', '${plannedAverage.toStringAsFixed(1)}'),
-        _buildMiniStat('متوسط المنفذ', '${actualAverage.toStringAsFixed(1)}'),
-        _buildMiniStat('معدل الانحراف', '${variance.toStringAsFixed(1)}'),
+        _buildMiniStat(L10nStrings.AppStrings.plannedAverageLabel, '${plannedAverage.toStringAsFixed(1)}'),
+        _buildMiniStat(L10nStrings.AppStrings.actualAverageLabel, '${actualAverage.toStringAsFixed(1)}'),
+        _buildMiniStat(L10nStrings.AppStrings.varianceRateLabel, '${variance.toStringAsFixed(1)}'),
       ],
     );
   }

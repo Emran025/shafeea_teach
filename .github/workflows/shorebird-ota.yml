@@ -1,0 +1,150 @@
+name: Shorebird OTA Updates
+# ──────────────────────────────────────────────────────────────────────────────
+# Handles OTA updates via Shorebird using a Matrix for each school.
+# ──────────────────────────────────────────────────────────────────────────────
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'lib/**'
+      - 'pubspec.yaml'
+      - 'android/**'
+      - 'ios/**'
+  workflow_dispatch:
+    inputs:
+      force_release:
+        description: 'Force a full native release instead of a patch'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  detect-changes:
+    name: Detect Native Changes
+    runs-on: ubuntu-latest
+    outputs:
+      needs_release: ${{ steps.check.outputs.needs_release }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Check for Native Changes
+        id: check
+        run: |
+          if [ "${{ github.event.inputs.force_release }}" = "true" ]; then
+            echo "needs_release=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          if git diff --name-only HEAD^ HEAD | grep -E '^(android/|ios/|pubspec.yaml|shorebird.yaml)'; then
+            echo "Native code or dependencies changed. Full release required."
+            echo "needs_release=true" >> $GITHUB_OUTPUT
+            # Trigger the native build workflow
+            if [ -n "${{ secrets.GITHUB_TOKEN }}" ]; then
+              gh workflow run build-all-schools.yml --ref ${{ github.ref_name }} || echo "Could not trigger build-all-schools.yml"
+            fi
+          else
+            echo "Only Dart/Flutter code changed. Patch is sufficient."
+            echo "needs_release=false" >> $GITHUB_OUTPUT
+          fi
+
+  prepare-matrix:
+    name: Fetch Active Schools
+    needs: detect-changes
+    if: needs.detect-changes.outputs.needs_release == 'false'
+    runs-on: ubuntu-latest
+    outputs:
+      matrix:      ${{ steps.schools.outputs.matrix }}
+      has_schools: ${{ steps.schools.outputs.has_schools }}
+    steps:
+      - name: Sign Build API request
+        id: sign
+        env:
+          BUILD_API_PRIVATE_KEY: ${{ secrets.BUILD_API_PRIVATE_KEY }}
+        run: |
+          KEY_FILE=$(mktemp)
+          printf '%s\n' "${BUILD_API_PRIVATE_KEY}" > "${KEY_FILE}"
+          TIMESTAMP=$(date +%s)
+          BODY=""
+          SIGNATURE=$(printf '%s\n%s' "${TIMESTAMP}" "${BODY}" | \
+            openssl dgst -sha256 -sign "${KEY_FILE}" | \
+            base64 | tr -d '\r\n')
+          rm -f "${KEY_FILE}"
+          echo "timestamp=${TIMESTAMP}" >> "$GITHUB_OUTPUT"
+          echo "signature=${SIGNATURE}" >> "$GITHUB_OUTPUT"
+          
+      - name: Fetch active schools
+        id: schools
+        env:
+          BUILD_API_BASE_URL: ${{ secrets.BUILD_API_BASE_URL }}
+        run: |
+          RESPONSE=$(curl -fsSL \
+            -H "X-Build-Timestamp: ${{ steps.sign.outputs.timestamp }}" \
+            -H "X-Build-Signature: ${{ steps.sign.outputs.signature }}" \
+            "${BUILD_API_BASE_URL}/api/build/schools?mode=all")
+          if [[ -z "${RESPONSE}" ]]; then
+            echo "::error::Build API returned an empty response."
+            exit 1
+          fi
+          MATRIX=$(printf '%s' "${RESPONSE}" | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          schools = data.get('data', [])
+          items = []
+          for s in schools:
+              items.append({
+                  'school_id':   s['id'],
+                  'school_code': s['school_code'],
+                  'school_name': s['name'],
+              })
+          if not items:
+              items = [{'_no_schools': True, 'school_id': 0, 'school_code': 'none', 'school_name': 'none'}]
+          print(json.dumps({'include': items}))
+          sys.stderr.write(f'Found {len(schools)} active schools.\n')
+          ")
+          COUNT=$(printf '%s' "${RESPONSE}" | python3 -c "import json,sys; d=json.load(sys.stdin); print(len(d.get('data', [])))")
+          {
+            echo 'matrix<<__MATRIX_EOF__'
+            echo "${MATRIX}"
+            echo '__MATRIX_EOF__'
+          } >> "$GITHUB_OUTPUT"
+          echo "has_schools=$([[ ${COUNT} -gt 0 ]] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+  shorebird-patch:
+    name: "Patch: ${{ matrix.school_code }}"
+    needs: prepare-matrix
+    if: needs.prepare-matrix.outputs.has_schools == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+      fail-fast: false
+      max-parallel: 10
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.x'
+          
+      - name: Setup Shorebird
+        uses: shorebirdtech/setup-shorebird@v1
+        with:
+          cache: true
+          
+      - name: Shorebird Patch for School
+        env:
+          SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
+        run: |
+          if [ -n "${SHOREBIRD_TOKEN}" ]; then
+            shorebird patch android --force \
+              -- --dart-define=SCHOOL_ID=${{ matrix.school_id }} \
+              --dart-define=SCHOOL_CODE=${{ matrix.school_code }} \
+              --dart-define=SCHOOL_NAME="${{ matrix.school_name }}"
+          else
+            echo "⚠️ SHOREBIRD_TOKEN is missing. Cannot deploy patch."
+            exit 1
+          fi

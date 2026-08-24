@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 
 class CallNotificationOverlay extends StatelessWidget {
@@ -5,7 +6,7 @@ class CallNotificationOverlay extends StatelessWidget {
   final VoidCallback onAccept;
   final VoidCallback onReject;
 
-  const CallNotificationOverlay({
+  CallNotificationOverlay({
     Key? key,
     required this.sessionId,
     required this.onAccept,
@@ -35,26 +36,26 @@ class CallNotificationOverlay extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(Icons.call, color: Colors.green, size: 32),
-              const SizedBox(width: 16),
+              Icon(Icons.call, color: Colors.green, size: 32),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
-                      'مكالمة واردة',
+                      L10nStrings.AppStrings.incomingCall,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
-                    Text('طلب تسميع من طالب'),
+                    Text(L10nStrings.AppStrings.studentRecitationRequest),
                   ],
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.check_circle, color: Colors.green),
+                icon: Icon(Icons.check_circle, color: Colors.green),
                 onPressed: onAccept,
               ),
               IconButton(
-                icon: const Icon(Icons.cancel, color: Colors.red),
+                icon: Icon(Icons.cancel, color: Colors.red),
                 onPressed: onReject,
               ),
             ],

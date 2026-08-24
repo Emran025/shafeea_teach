@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +17,7 @@ class BaseBarChart extends StatefulWidget {
 
   final Color backgroundColor;
 
-  const BaseBarChart({
+  BaseBarChart({
     super.key,
     required this.chartData,
     this.onRefresh,
@@ -79,13 +80,13 @@ class _BaseBarChartState extends State<BaseBarChart> {
                       if (index >= 0 && index < widget.chartData.data.length) {
                         return Text(
                           widget.chartData.data[index].label,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppColors.lightCream,
                             fontSize: 10,
                           ),
                         );
                       }
-                      return const SizedBox();
+                      return SizedBox();
                     },
                   ),
                 ),
@@ -95,7 +96,7 @@ class _BaseBarChartState extends State<BaseBarChart> {
                     getTitlesWidget: (value, meta) {
                       return Text(
                         '${value.toInt()}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppColors.lightCream70,
                           fontSize: 10,
                         ),
@@ -103,10 +104,10 @@ class _BaseBarChartState extends State<BaseBarChart> {
                     },
                   ),
                 ),
-                topTitles: const AxisTitles(
+                topTitles: AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
-                rightTitles: const AxisTitles(
+                rightTitles: AxisTitles(
                   sideTitles: SideTitles(showTitles: false),
                 ),
               ),
@@ -149,9 +150,9 @@ class _BaseBarChartState extends State<BaseBarChart> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildMiniStat("المعدل", "$avrage", ''),
-          _buildMiniStat("أعلى قيمة", "${maxPoint.value}", minPoint.label),
-          _buildMiniStat("أقل قيمة", "${minPoint.value}", maxPoint.label),
+          _buildMiniStat(L10nStrings.AppStrings.average, "$avrage", ''),
+          _buildMiniStat(L10nStrings.AppStrings.highestValue, "${maxPoint.value}", minPoint.label),
+          _buildMiniStat(L10nStrings.AppStrings.lowestValue, "${minPoint.value}", maxPoint.label),
         ],
       ),
     );

@@ -1,10 +1,11 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/auth_bloc.dart';
 
 class ChangePasswordDialog extends StatefulWidget {
-  const ChangePasswordDialog({super.key});
+  ChangePasswordDialog({super.key});
 
   @override
   State<ChangePasswordDialog> createState() => _ChangePasswordDialogState();
@@ -40,10 +41,10 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
 
   String? _validateConfirmPassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'يرجى تأكيد كلمة المرور الجديدة';
+      return L10nStrings.AppStrings.pleaseConfirmNewPassword;
     }
     if (value != _newPasswordController.text) {
-      return 'كلمة المرور غير متطابقة';
+      return L10nStrings.AppStrings.passwordsDoNotMatch;
     }
     return null;
   }
@@ -57,7 +58,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.successEntity?.message ?? 'تم تغيير كلمة المرور بنجاح',
+                state.successEntity?.message ?? L10nStrings.AppStrings.passwordChangedSuccessfully,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
@@ -69,7 +70,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.changePasswordFailure?.message ?? 'فشل تغيير كلمة المرور',
+                state.changePasswordFailure?.message ?? L10nStrings.AppStrings.failedToChangePassword,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onError,
                 ),
@@ -97,31 +98,31 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
                   // العنوان
                   Center(
                     child: Text(
-                      'تغيير كلمة المرور',
+                      L10nStrings.AppStrings.changePassword,
                       style: Theme.of(context).textTheme.headlineLarge
                           ?.copyWith(
                             color: Theme.of(context).colorScheme.onBackground,
                           ),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // حقل كلمة المرور الحالية
                   Text(
-                    'كلمة المرور الحالية',
+                    L10nStrings.AppStrings.currentPassword,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(
                         context,
                       ).colorScheme.onBackground.withOpacity(0.87),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   TextFormField(
                     controller: _currentPasswordController,
                     obscureText: _obscureCurrentPassword,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
-                      hintText: 'أدخل كلمة المرور الحالية',
+                      hintText: L10nStrings.AppStrings.enterCurrentPassword,
                       hintStyle: Theme.of(context).textTheme.bodyMedium
                           ?.copyWith(
                             color: Theme.of(
@@ -160,29 +161,29 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'يرجى إدخال كلمة المرور الحالية';
+                        return L10nStrings.AppStrings.pleaseEnterCurrentPassword;
                       }
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
 
                   // حقل كلمة المرور الجديدة
                   Text(
-                    'كلمة المرور الجديدة',
+                    L10nStrings.AppStrings.newPassword,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(
                         context,
                       ).colorScheme.onBackground.withOpacity(0.87),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   TextFormField(
                     controller: _newPasswordController,
                     obscureText: _obscureNewPassword,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
-                      hintText: 'أدخل كلمة المرور الجديدة',
+                      hintText: L10nStrings.AppStrings.enterNewPassword,
                       hintStyle: Theme.of(context).textTheme.bodyMedium
                           ?.copyWith(
                             color: Theme.of(
@@ -221,32 +222,32 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
                     ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'يرجى إدخال كلمة المرور الجديدة';
+                        return L10nStrings.AppStrings.pleaseEnterNewPassword;
                       }
                       if (value.length < 6) {
-                        return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+                        return L10nStrings.AppStrings.passwordMinimumSixCharacters;
                       }
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
 
                   // حقل تأكيد كلمة المرور الجديدة
                   Text(
-                    'تأكيد كلمة المرور الجديدة',
+                    L10nStrings.AppStrings.confirmNewPassword,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(
                         context,
                       ).colorScheme.onBackground.withOpacity(0.87),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   TextFormField(
                     controller: _confirmPasswordController,
                     obscureText: _obscureConfirmPassword,
                     textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
-                      hintText: 'أعد إدخال كلمة المرور الجديدة',
+                      hintText: L10nStrings.AppStrings.reenterNewPassword,
                       hintStyle: Theme.of(context).textTheme.bodyMedium
                           ?.copyWith(
                             color: Theme.of(
@@ -286,7 +287,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
                     validator: _validateConfirmPassword,
                     onFieldSubmitted: (_) => _submitChangePassword(),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
 
                   // زر تغيير كلمة المرور
                   BlocBuilder<AuthBloc, AuthState>(
@@ -324,7 +325,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
                                   ),
                                 )
                               : Text(
-                                  'تغيير كلمة المرور',
+                                  L10nStrings.AppStrings.changePassword,
                                   style: Theme.of(context).textTheme.titleLarge
                                       ?.copyWith(
                                         color: Theme.of(
@@ -339,7 +340,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
                   ),
 
                   // زر الإغلاق
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton(

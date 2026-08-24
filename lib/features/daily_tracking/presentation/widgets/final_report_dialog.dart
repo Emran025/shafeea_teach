@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,7 @@ import '../bloc/tracking_session_bloc.dart'; // Import the BLoC
 /// recitation session. It uses [TextEditingController]s to manage the
 /// input and dispatches an event to the [TrackingSessionBloc] on submission.
 class FinalReportDialog extends StatefulWidget {
-  const FinalReportDialog({super.key});
+  FinalReportDialog({super.key});
 
   @override
   State<FinalReportDialog> createState() => _FinalReportDialogState();
@@ -76,14 +77,14 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "التقرير النهائي للجلسة",
+                  L10nStrings.AppStrings.finalSessionReport,
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.onBackground,
                   ),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 
                 TextField(
                   // Associate the controller with the TextField.
@@ -91,7 +92,7 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
                   minLines: 2,
                   maxLines: 3,
                   decoration: InputDecoration(
-                    hintText: "ملاحظات السلوك...",
+                    hintText: L10nStrings.AppStrings.behaviorNotesHint,
                     filled: true,
                     fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
                     border: OutlineInputBorder(
@@ -100,7 +101,7 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
 
                 TextField(
                   // Associate the controller with the TextField.
@@ -108,7 +109,7 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
                   minLines: 3,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: "ملاحظة عامة على التسميع...",
+                    hintText: L10nStrings.AppStrings.generalRecitationNoteHint,
                     filled: true,
                     fillColor: theme.colorScheme.surfaceVariant.withOpacity(0.5),
                     border: OutlineInputBorder(
@@ -117,22 +118,22 @@ class _FinalReportDialogState extends State<FinalReportDialog> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 
                 Row(
                   children: [
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
-                        child: const Text("إلغاء"),
+                        child: Text("إلغاء"),
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: 12),
                     Expanded(
                       child: ElevatedButton(
                         // The button now calls the _submitReport method.
                         onPressed: _submitReport,
-                        child: const Text("رفع التقرير"),
+                        child: Text(L10nStrings.AppStrings.uploadReport),
                       ),
                     ),
                   ],

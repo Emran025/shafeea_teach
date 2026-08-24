@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +12,7 @@ import 'package:shafeea/features/auth/presentation/bloc/auth_bloc.dart';
 ///  - A "Check Again" action that refreshes auth state (in case user verified in browser)
 ///  - A logout action
 class VerifyEmailScreen extends StatefulWidget {
-  const VerifyEmailScreen({super.key});
+  VerifyEmailScreen({super.key});
 
   @override
   State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
@@ -27,7 +28,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
     super.initState();
     _pulseController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: Duration(seconds: 2),
     )..repeat(reverse: true);
     _pulseAnimation = Tween<double>(begin: 0.85, end: 1.0).animate(
       CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
@@ -60,14 +61,14 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
       listener: (context, state) {
         if (state.verificationStatus == VerificationStatus.success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('تم إرسال رابط التفعيل مجدداً.')),
+            SnackBar(content: Text(L10nStrings.AppStrings.activationLinkResent)),
           );
         }
         if (state.verificationStatus == VerificationStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.verificationFailure?.message ?? 'فشل الإرسال',
+                state.verificationFailure?.message ?? L10nStrings.AppStrings.failedToSend,
               ),
             ),
           );
@@ -83,7 +84,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF0F172A),
+        backgroundColor: Color(0xFF0F172A),
         body: SafeArea(
           child: Directionality(
             textDirection: TextDirection.rtl,
@@ -92,7 +93,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // ── Animated Email Icon ──
                   ScaleTransition(
@@ -102,20 +103,20 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                       height: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           colors: [Color(0xFF0EA5E9), Color(0xFF0284C7)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFF0EA5E9).withOpacity(0.4),
+                            color: Color(0xFF0EA5E9).withOpacity(0.4),
                             blurRadius: 30,
                             spreadRadius: 5,
                           ),
                         ],
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.mark_email_unread_rounded,
                         color: Colors.white,
                         size: 50,
@@ -123,11 +124,11 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // ── Title ──
-                  const Text(
-                    'تأكيد بريدك الإلكتروني (المعلم)',
+                  Text(
+                    L10nStrings.AppStrings.verifyEmailTeacher,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -137,11 +138,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                     textAlign: TextAlign.center,
                   ),
 
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
 
                   Text(
-                    'أرسلنا رابط التفعيل إلى بريدك الإلكتروني.\n'
-                    'انقر على الرابط في البريد للمتابعة.',
+                    '${L10nStrings.AppStrings.activationLinkSentEmail} ${L10nStrings.AppStrings.clickLinkInEmailToContinue}',
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.6),
                       fontSize: 14,
@@ -151,29 +151,29 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                     textAlign: TextAlign.center,
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // ── Status Card ──
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF0EA5E9).withOpacity(0.08),
+                      color: Color(0xFF0EA5E9).withOpacity(0.08),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: const Color(0xFF0EA5E9).withOpacity(0.2),
+                        color: Color(0xFF0EA5E9).withOpacity(0.2),
                       ),
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.access_time_rounded,
                           color: Color(0xFF38BDF8),
                           size: 20,
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'في انتظار التأكيد — تحقق من صندوق الوارد والبريد المزعج',
+                            L10nStrings.AppStrings.awaitingConfirmationCheckInboxSpam,
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.75),
                               fontSize: 13,
@@ -185,7 +185,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32),
 
                   // ── Resend Button ──
                   BlocBuilder<AuthBloc, AuthState>(
@@ -198,7 +198,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                         child: ElevatedButton.icon(
                           onPressed: isLoading ? null : _resendEmail,
                           icon: isLoading
-                              ? const SizedBox(
+                              ? SizedBox(
                                   width: 18,
                                   height: 18,
                                   child: CircularProgressIndicator(
@@ -206,18 +206,18 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                                     strokeWidth: 2,
                                   ),
                                 )
-                              : const Icon(Icons.refresh_rounded),
+                              : Icon(Icons.refresh_rounded),
                           label: Text(
                             isLoading
-                                ? 'جارٍ الإرسال…'
-                                : 'إعادة إرسال رابط التفعيل',
-                            style: const TextStyle(
+                                ? L10nStrings.AppStrings.sendingInProgress
+                                : L10nStrings.AppStrings.resendActivationLink,
+                            style: TextStyle(
                               fontFamily: 'Cairo',
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF0EA5E9),
+                            backgroundColor: Color(0xFF0EA5E9),
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
@@ -230,16 +230,16 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                     },
                   ),
 
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
 
                   // ── Check Again Button ──
                   SizedBox(
                     width: double.infinity,
                     child: OutlinedButton.icon(
                       onPressed: _checkVerificationStatus,
-                      icon: const Icon(Icons.sync_rounded, size: 18),
-                      label: const Text(
-                        'لقد تحققت — تحديث الحالة',
+                      icon: Icon(Icons.sync_rounded, size: 18),
+                      label: Text(
+                        L10nStrings.AppStrings.verifiedUpdateStatus,
                         style: TextStyle(
                           fontFamily: 'Cairo',
                           fontWeight: FontWeight.w600,
@@ -247,7 +247,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                       ),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.white70,
-                        side: const BorderSide(color: Colors.white24),
+                        side: BorderSide(color: Colors.white24),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -256,18 +256,18 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
 
                   // ── Logout ──
                   TextButton.icon(
                     onPressed: _logout,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.logout_rounded,
                       size: 16,
                       color: Colors.white38,
                     ),
-                    label: const Text(
-                      'تسجيل الخروج',
+                    label: Text(
+                      L10nStrings.AppStrings.logOut,
                       style: TextStyle(
                         color: Colors.white38,
                         fontFamily: 'Cairo',
@@ -276,7 +276,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24),
                 ],
               ),
             ),

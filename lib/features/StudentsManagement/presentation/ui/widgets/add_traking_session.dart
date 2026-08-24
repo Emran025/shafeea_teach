@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +17,7 @@ class AddTrakingSession extends StatefulWidget {
   final AssignedHalaqasEntity assignedHalaqasEntity;
   final VoidCallback onTap;
 
-  const AddTrakingSession({
+  AddTrakingSession({
     super.key,
     required this.assignedHalaqasEntity,
     required this.onTap,
@@ -46,7 +47,7 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                "📝 اضافة جلسة متابعة",
+                L10nStrings.AppStrings.addTrackingSession,
                 style: GoogleFonts.cairo(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
@@ -55,7 +56,7 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
@@ -78,7 +79,7 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
                 borderSide: BorderSide.none,
               ),
               title: Text(
-                "المتابعة",
+                L10nStrings.AppStrings.followUp,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: AppColors.lightCream,
@@ -140,7 +141,7 @@ class _AddTrakingSessionState extends State<AddTrakingSession> {
                       widget.onTap();
                       // onPressed!();
                     },
-                    child: StatusTag(lable: "تقرير"),
+                    child: StatusTag(lable: L10nStrings.AppStrings.reportLabel),
                   ),
                   IconButton(
                     icon: Icon(Icons.more_vert, color: AppColors.lightCream),

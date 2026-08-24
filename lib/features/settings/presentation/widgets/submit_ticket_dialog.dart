@@ -1,9 +1,10 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/features/settings/presentation/bloc/settings_bloc.dart';
 
 class SubmitTicketDialog extends StatefulWidget {
-  const SubmitTicketDialog({super.key});
+  SubmitTicketDialog({super.key});
 
   @override
   State<SubmitTicketDialog> createState() => _SubmitTicketDialogState();
@@ -42,7 +43,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'تم إرسال طلبك بنجاح',
+                  L10nStrings.AppStrings.requestSentSuccessfully,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
@@ -54,7 +55,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  state.error?.message ?? 'فشل إرسال الطلب',
+                  state.error?.message ?? L10nStrings.AppStrings.failedToSendRequest,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onError,
                   ),
@@ -78,27 +79,27 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
               children: [
                 Center(
                   child: Text(
-                    'إرسال طلب جديد',
+                    L10nStrings.AppStrings.sendNewRequest,
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 Text(
-                  'الموضوع',
+                  L10nStrings.AppStrings.subject,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(
                       context,
                     ).colorScheme.onBackground.withOpacity(0.87),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextFormField(
                   controller: _subjectController,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
-                    hintText: 'أدخل موضوع الطلب',
+                    hintText: L10nStrings.AppStrings.enterRequestSubject,
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(
                         context,
@@ -121,27 +122,27 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال الموضوع';
+                      return L10nStrings.AppStrings.pleaseEnterSubject;
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Text(
-                  'الرسالة',
+                  L10nStrings.AppStrings.message,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(
                       context,
                     ).colorScheme.onBackground.withOpacity(0.87),
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 TextFormField(
                   controller: _bodyController,
                   textInputAction: TextInputAction.done,
                   maxLines: 5,
                   decoration: InputDecoration(
-                    hintText: 'أدخل تفاصيل الطلب',
+                    hintText: L10nStrings.AppStrings.enterRequestDetails,
                     hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(
                         context,
@@ -164,12 +165,12 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'يرجى إدخال الرسالة';
+                      return L10nStrings.AppStrings.pleaseEnterMessage;
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 BlocBuilder<SettingsBloc, SettingsState>(
                   builder: (context, state) {
                     final isLoading =
@@ -205,7 +206,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                                 ),
                               )
                             : Text(
-                                'إرسال',
+                                L10nStrings.AppStrings.send,
                                 style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
                                       color: Theme.of(
@@ -218,7 +219,7 @@ class _SubmitTicketDialogState extends State<SubmitTicketDialog> {
                     );
                   },
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(

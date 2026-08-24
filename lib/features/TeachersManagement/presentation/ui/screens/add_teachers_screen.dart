@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -138,12 +139,12 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.nameController,
               prefixIcon: Icons.person,
-              label: "اسم المعلم",
+              label: L10nStrings.AppStrings.teacherNameLabel,
               keyboardType: TextInputType.name,
             ),
 
             // ── Gender ─────────────────────────────────────────────────────
-            _buildDropdown(widget.genderController, "الجنس", [
+            _buildDropdown(widget.genderController, L10nStrings.AppStrings.genderLabel, [
               "Male",
               "Female",
             ]),
@@ -182,7 +183,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.emailController,
               prefixIcon: Icons.email,
-              label: "البريد الإلكتروني",
+              label: L10nStrings.AppStrings.emailLabel,
               keyboardType: TextInputType.emailAddress,
             ),
 
@@ -190,7 +191,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomDatePicker(
               controller: widget.birthDateController,
               icon: Icons.calendar_month_outlined,
-              label: "تأريخ الميلاد",
+              label: L10nStrings.AppStrings.dateOfBirthLabel,
               onDateSelected: (date) {
                 widget.birthDateController.text = formatDate(date);
               },
@@ -212,7 +213,7 @@ class _TeacherFormState extends State<TeacherForm> {
                       .first;
                 });
               },
-              label: "رقم الهاتف",
+              label: L10nStrings.AppStrings.phoneNumberLabel,
             ),
 
             // ── WhatsApp ───────────────────────────────────────────────────
@@ -231,13 +232,13 @@ class _TeacherFormState extends State<TeacherForm> {
                       .first;
                 });
               },
-              label: "رقم الواتسآب",
+              label: L10nStrings.AppStrings.whatsappNumberLabel,
             ),
 
             // ── Qualification ──────────────────────────────────────────────
             _buildDropdown(
               widget.qualificationController,
-              "نوع التعليم(المهؤهل)",
+              L10nStrings.AppStrings.educationTypeQualification,
               [...(EducationLevel.values.map((e) => e.labelAr).toList())],
             ),
 
@@ -245,7 +246,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.experienceYearsController,
               prefixIcon: Icons.calendar_month,
-              label: "سنوات الخبرة",
+              label: L10nStrings.AppStrings.yearsOfExperienceLabel,
               keyboardType: TextInputType.number,
             ),
 
@@ -253,7 +254,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.eneregyController,
               prefixIcon: Icons.group,
-              label: "الطاقة الإستيعابية",
+              label: L10nStrings.AppStrings.capacityLabel,
               keyboardType: TextInputType.number,
             ),
 
@@ -261,7 +262,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.countryController,
               prefixIcon: Icons.home_filled,
-              label: "محل الميلاد",
+              label: L10nStrings.AppStrings.placeOfBirth,
               onTap: _changeDialog,
               readOnly: true,
             ),
@@ -270,7 +271,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTextField(
               controller: widget.residenceController,
               prefixIcon: Icons.home_filled,
-              label: "بلد الإقامة",
+              label: L10nStrings.AppStrings.countryOfResidence,
               onTap: _changeDialog,
               readOnly: true,
             ),
@@ -279,7 +280,7 @@ class _TeacherFormState extends State<TeacherForm> {
             CustomTimePicker(
               controller: widget.availableTimeController,
               icon: Icons.timelapse_rounded,
-              label: "الوقت المتاح",
+              label: L10nStrings.AppStrings.availableTimeLabel,
               onTimeSelected: (date) {
                 widget.availableTimeController.text = "$date";
               },
@@ -299,7 +300,7 @@ class _TeacherFormState extends State<TeacherForm> {
     if (state.usernameCheckStatus == TeacherUsernameCheckStatus.loading ||
         state.usernameSuggestionStatus ==
             TeacherUsernameSuggestionStatus.loading) {
-      suffixWidget = const SizedBox(
+      suffixWidget = SizedBox(
         width: 20,
         height: 20,
         child: CircularProgressIndicator(strokeWidth: 2),
@@ -321,14 +322,14 @@ class _TeacherFormState extends State<TeacherForm> {
         decoration: InputDecoration(
           filled: true,
           fillColor: AppColors.lightCream12,
-          prefixIcon: const Icon(Icons.alternate_email, color: AppColors.lightCream70),
-          labelText: "اسم المستخدم",
+          prefixIcon: Icon(Icons.alternate_email, color: AppColors.lightCream70),
+          labelText: L10nStrings.AppStrings.username,
           labelStyle: GoogleFonts.cairo(color: AppColors.lightCream70),
           helperText: state.usernameCheckStatus ==
                   TeacherUsernameCheckStatus.loaded
               ? (state.usernameCheck
-                  ? "اسم المستخدم متاح ✓"
-                  : "اسم المستخدم غير متاح")
+                  ? L10nStrings.AppStrings.usernameAvailable
+                  : L10nStrings.AppStrings.usernameNotAvailable)
               : null,
           helperStyle: GoogleFonts.cairo(
             color: state.usernameCheck ? Colors.green : AppColors.error,
@@ -389,9 +390,9 @@ class _TeacherFormState extends State<TeacherForm> {
                 value: e,
                 child: Text(
                   e == "Male"
-                      ? "ذكر"
+                      ? L10nStrings.AppStrings.genderMale
                       : e == "Female" || e == "female"
-                      ? "أنثى"
+                      ? L10nStrings.AppStrings.genderFemale
                       : e,
                   style: GoogleFonts.cairo(
                     color: AppColors.lightCream70,

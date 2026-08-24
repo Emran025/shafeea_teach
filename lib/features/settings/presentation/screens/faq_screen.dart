@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shafeea/features/settings/presentation/bloc/settings_bloc.dart';
@@ -7,7 +8,7 @@ import '../../domain/entities/faq_entity.dart';
 import '../widgets/submit_ticket_dialog.dart';
 
 class FaqScreen extends StatefulWidget {
-  const FaqScreen({super.key});
+  FaqScreen({super.key});
 
   @override
   State<FaqScreen> createState() => _FaqScreenState();
@@ -32,18 +33,18 @@ class _FaqScreenState extends State<FaqScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('الأسئلة الشائعة'),
+            Text(L10nStrings.AppStrings.frequentlyAskedQuestions),
             GestureDetector(
               onTap: () {
                 showDialog(
                   context: context,
                   builder: (_) => BlocProvider.value(
                     value: BlocProvider.of<SettingsBloc>(context),
-                    child: const SubmitTicketDialog(),
+                    child: SubmitTicketDialog(),
                   ),
                 );
               },
-              child: StatusTag(lable: 'طلب الدعم'),
+              child: StatusTag(lable: L10nStrings.AppStrings.requestSupport),
             ),
           ],
         ),
@@ -64,10 +65,10 @@ class _FaqScreenState extends State<FaqScreen> {
           if (state is SettingsLoadSuccess) {
             switch (state.faqsStatus) {
               case SectionStatus.initial:
-                return const Center(child: CircularProgressIndicator());
+                return Center(child: CircularProgressIndicator());
               case SectionStatus.loading:
                 return state.faqs.isEmpty
-                    ? const Center(child: CircularProgressIndicator())
+                    ? Center(child: CircularProgressIndicator())
                     : _buildFaqList(context, state.faqs, true);
               case SectionStatus.failure:
                 return Center(
@@ -80,12 +81,12 @@ class _FaqScreenState extends State<FaqScreen> {
                 if (state.faqs.isNotEmpty) {
                   return _buildFaqList(context, state.faqs, false);
                 }
-                return const Center(
-                  child: Text('لم يتم العثور على أسئلة شائعة.'),
+                return Center(
+                  child: Text(L10nStrings.AppStrings.noFaqFound),
                 );
             }
           }
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -101,7 +102,7 @@ class _FaqScreenState extends State<FaqScreen> {
       itemCount: faqs.length + (isLoading ? 1 : 0),
       itemBuilder: (context, index) {
         if (index >= faqs.length) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(child: CircularProgressIndicator());
         }
         return _buildFaqItem(context, faqs[index]);
       },

@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -5,7 +6,7 @@ class ApproveApplicantDialog extends StatefulWidget {
   final int applicantId;
   final VoidCallback onConfirm;
 
-  const ApproveApplicantDialog({
+  ApproveApplicantDialog({
     super.key,
     required this.applicantId,
     required this.onConfirm,
@@ -31,15 +32,15 @@ class _ApproveApplicantDialogState extends State<ApproveApplicantDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'تأكيد القبول',
+              L10nStrings.AppStrings.confirmAcceptance,
               style: GoogleFonts.cairo(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
-            const Text('هل أنت متأكد من قبول هذا المقدم؟'),
-            const SizedBox(height: 24),
+            SizedBox(height: 16),
+            Text(L10nStrings.AppStrings.confirmAcceptApplicantQuestion),
+            SizedBox(height: 24),
             Row(
               children: [
                 Expanded(
@@ -47,10 +48,10 @@ class _ApproveApplicantDialogState extends State<ApproveApplicantDialog> {
                     onPressed: _isLoading
                         ? null
                         : () => Navigator.of(context).pop(),
-                    child: const Text('إلغاء'),
+                    child: Text('إلغاء'),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _isLoading
@@ -62,14 +63,14 @@ class _ApproveApplicantDialogState extends State<ApproveApplicantDialog> {
                             widget.onConfirm();
                           },
                     child: _isLoading
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 20,
                             width: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
                             ),
                           )
-                        : const Text('قبول'),
+                        : Text(L10nStrings.AppStrings.accept),
                   ),
                 ),
               ],

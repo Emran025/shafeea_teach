@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shafeea/features/supervisor_dashboard/data/models/composite_performance_data.dart';
@@ -13,7 +14,7 @@ class StudentCountChart extends StatefulWidget {
   final ChartTile tile;
   final Function(ChartFilterEntity)? onFilterChanged; // تحديث نوع الدالة
 
-  const StudentCountChart({
+  StudentCountChart({
     super.key,
     required this.qualityData,
     required this.filter,
@@ -68,19 +69,19 @@ class _StudentCountChartState extends State<StudentCountChart> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'المعايير',
+                L10nStrings.AppStrings.criteria,
                 style: Theme.of(
                   context,
                 ).textTheme.titleLarge?.copyWith(color: AppColors.lightCream),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               SizedBox(
                 width: MediaQuery.of(context).size.width / 2,
                 child: _buildFilterDropdown(
-                  label: 'الفترة الزمنية',
+                  label: L10nStrings.AppStrings.timePeriodLabel,
                   value: _currentFilter.timePeriod,
-                  items: const ['week', 'month', 'quarter', 'year'],
-                  labels: const ['أسبوع', 'شهر', 'ربع سنة', 'سنة'],
+                  items: ['week', 'month', 'quarter', 'year'],
+                  labels: [L10nStrings.AppStrings.weekOption, L10nStrings.AppStrings.monthOption, L10nStrings.AppStrings.quarterYearOption, L10nStrings.AppStrings.yearOption],
                   onChanged: (value) {
                     final newFilter = _currentFilter.copyWith(
                       timePeriod: value,
@@ -220,27 +221,27 @@ class _StudentCountChartState extends State<StudentCountChart> {
           startDate.year + 1,
           startDate.month,
           startDate.day,
-        ).subtract(const Duration(days: 1));
+        ).subtract(Duration(days: 1));
 
       case 'quarter':
         return DateTime(
           startDate.year,
           startDate.month + 3,
           startDate.day,
-        ).subtract(const Duration(days: 1));
+        ).subtract(Duration(days: 1));
 
       case 'month':
         return DateTime(
           startDate.year,
           startDate.month + 1,
           startDate.day,
-        ).subtract(const Duration(days: 1));
+        ).subtract(Duration(days: 1));
 
       case 'week':
-        return startDate.add(const Duration(days: 6));
+        return startDate.add(Duration(days: 6));
 
       default:
-        return startDate.add(const Duration(days: 30));
+        return startDate.add(Duration(days: 30));
     }
   }
 
@@ -250,9 +251,9 @@ class _StudentCountChartState extends State<StudentCountChart> {
       children: [
         _buildTitelIndicator(widget.tile),
 
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         _buildFiltersSection(),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
 
         SizedBox(
           height: 350,
@@ -295,7 +296,7 @@ class _StudentCountChartState extends State<StudentCountChart> {
           ),
           child: Icon(tile.icon, size: 26, color: AppColors.lightCream),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -320,7 +321,7 @@ class _StudentCountChartState extends State<StudentCountChart> {
     );
   }
 
-  String tempSelected = 'فترة زمنية';
+  String tempSelected = L10nStrings.AppStrings.timePeriodOption;
 
   Widget _buildFilterDropdown({
     required String label,
@@ -338,7 +339,7 @@ class _StudentCountChartState extends State<StudentCountChart> {
             context,
           ).textTheme.labelSmall?.copyWith(color: AppColors.lightCream70),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4),
         DropdownButton<String>(
           value: value,
           isExpanded: true,

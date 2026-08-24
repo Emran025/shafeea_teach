@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ import '../../../domain/entities/teacher_entity.dart';
 import 'teacher_profile_screen.dart';
 
 class TeacherManagementScreen extends StatefulWidget {
-  const TeacherManagementScreen({super.key});
+  TeacherManagementScreen({super.key});
 
   @override
   State<TeacherManagementScreen> createState() =>
@@ -68,7 +69,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
       // Provide the existing TeacherBloc to the dialog.
       builder: (_) => BlocProvider.value(
         value: context.read<TeacherBloc>(),
-        child: const AddTeacherDialog(),
+        child: AddTeacherDialog(),
       ),
     );
   }
@@ -77,13 +78,13 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       // The screen is responsible for creating the BLoC and dispatching the initial event.
-      create: (context) => sl<TeacherBloc>()..add(const WatchTeachersStarted()),
+      create: (context) => sl<TeacherBloc>()..add(WatchTeachersStarted()),
       child: Scaffold(
         floatingActionButton: FloatingActionButton.extended(
           onPressed: _showAddTeachersDialog,
           icon: Icon(Icons.add, color: AppColors.lightCream),
           label: Text(
-            "إضافة معلم",
+            L10nStrings.AppStrings.addTeacherButton,
             style: GoogleFonts.cairo(
               fontWeight: FontWeight.bold,
               color: AppColors.lightCream,
@@ -97,7 +98,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildSearchBar(),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Expanded(
                   // Use a BlocBuilder because this part only needs to rebuild based on state.
                   // ...
@@ -106,7 +107,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
                       // --- Central Loading Indicator ---
                       if (state.status == TeacherStatus.loading &&
                           state.teachers.isEmpty) {
-                        return const Center(child: CircularProgressIndicator());
+                        return Center(child: CircularProgressIndicator());
                       }
                       // --- Central Failure View ---
                       if (state.status == TeacherStatus.failure &&
@@ -119,8 +120,8 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
                               ElevatedButton(
                                 onPressed: () => context
                                     .read<TeacherBloc>()
-                                    .add(const TeachersRefreshed()),
-                                child: const Text('Try Again'),
+                                    .add(TeachersRefreshed()),
+                                child: Text('Try Again'),
                               ),
                             ],
                           ),
@@ -133,11 +134,11 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
                         return RefreshIndicator(
                           onRefresh: () async {
                             context.read<TeacherBloc>().add(
-                              const TeachersRefreshed(),
+                              TeachersRefreshed(),
                             );
                             // The refresh completes when the BLoC emits a new state.
                           },
-                          child: const Center(
+                          child: Center(
                             child: Text('No teachers found.'),
                           ),
                         );
@@ -158,14 +159,14 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
                               state.hasMorePages &&
                               !state.isLoadingMore) {
                             context.read<TeacherBloc>().add(
-                              const TeachersRefreshed(),
+                              TeachersRefreshed(),
                             );
                           }
                           // The refresh completes when the BLoC emits a new state.
                         },
                         child: ListView.separated(
                           separatorBuilder: (_, __) =>
-                              const SizedBox(height: 5),
+                              SizedBox(height: 5),
                           controller:
                               _scrollController, // Controller for "load more"
                           itemCount:
@@ -174,7 +175,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
                           itemBuilder: (ctx, i) {
                             if (i >= filteredTeachers.length) {
                               // "Load More" indicator
-                              return const Center(
+                              return Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(16.0),
                                   child: CircularProgressIndicator(),
@@ -211,7 +212,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
           Icons.search,
           color: Theme.of(context).colorScheme.onBackground.withOpacity(0.87),
         ),
-        hintText: "ابحث عن معلم...",
+        hintText: L10nStrings.AppStrings.searchTeacherHint,
         hintStyle: Theme.of(context).textTheme.bodyLarge,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 14,
@@ -257,7 +258,7 @@ class _TeacherManagementScreenState extends State<TeacherManagementScreen> {
 class AddTeacherDialog extends StatefulWidget {
   //   // All controllers are created here, inside the dialog's scope.
 
-  const AddTeacherDialog({super.key});
+  AddTeacherDialog({super.key});
 
   @override
   State<AddTeacherDialog> createState() => _AddTeacherDialogState();
@@ -305,9 +306,9 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
             name: form.nameController.text,
             gender: Gender.fromLabel(
               form.genderController.text == 'Male' ||
-                      form.genderController.text == 'ذكر'
-                  ? 'ذكر'
-                  : 'أنثى',
+                      form.genderController.text == L10nStrings.AppStrings.genderMale
+                  ? L10nStrings.AppStrings.genderMale
+                  : L10nStrings.AppStrings.genderFemale,
             ),
             birthDate: form.birthDateController.text,
             email: form.emailController.text,
@@ -325,7 +326,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
             status: ActiveStatus.active,
             stopReasons: '',
             avatar: '',
-            bio: "خبرة لخمس سنوات",
+            bio: L10nStrings.AppStrings.fiveYearsExperience,
             halqas: [],
             createdAt: "${DateTime.now()}",
             updatedAt: "${DateTime.now()}",
@@ -355,7 +356,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
             // On success, close the dialog
             Navigator.of(context).pop();
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Text('Teacher saved successfully!'),
                 backgroundColor: Colors.green,
               ),
@@ -385,13 +386,13 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(icon, size: 64, color: Colors.red),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Text(
                         message,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16),
                       Row(
                         children: [
                           Expanded(
@@ -409,7 +410,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                                 // Navigator.pop(context);
                               },
                               child: Text(
-                                "حاول مجددًا",
+                                L10nStrings.AppStrings.tryAgain,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -465,14 +466,14 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Center(
-                              child: const Icon(
+                              child: Icon(
                                 Icons.add,
                                 color: AppColors.lightCream,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Text(
-                              "اضافة ملف الأستاذ",
+                              L10nStrings.AppStrings.addTeacherProfile,
                               style: GoogleFonts.cairo(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -481,7 +482,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Padding(
                           padding: const EdgeInsets.only(left: 16),
                           child: Divider(height: 2, color: AppColors.accent70),
@@ -503,7 +504,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 14),
+                        SizedBox(height: 14),
                         Row(
                           children: [
                             Expanded(
@@ -515,7 +516,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  "الغاء",
+                                  L10nStrings.AppStrings.cancel2,
                                   style: GoogleFonts.cairo(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -537,7 +538,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                                   side: BorderSide(color: AppColors.accent70),
                                 ),
                                 child: Text(
-                                  "اضافة آخر",
+                                  L10nStrings.AppStrings.addAnother,
                                   style: GoogleFonts.cairo(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -558,7 +559,7 @@ class _AddTeacherDialogState extends State<AddTeacherDialog> {
                                   });
                                 },
                                 child: Text(
-                                  "حفظ",
+                                  L10nStrings.AppStrings.save,
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream,
                                     fontSize: 13,

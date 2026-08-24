@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,7 @@ import '../bloc/tracking_session_bloc.dart';
 /// listening to the [TrackingSessionBloc] for the core data. It orchestrates user
 /// interactions, dispatching events to update the BLoC and ultimately save the report.
 class MistakesDialog extends StatefulWidget {
-  const MistakesDialog({super.key});
+  MistakesDialog({super.key});
 
   @override
   State<MistakesDialog> createState() => _MistakesDialogState();
@@ -52,10 +53,10 @@ class _MistakesDialogState extends State<MistakesDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(context),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 // We use a single BlocBuilder that watches both BLoCs and decides what to show.
                 MistakesList(),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 _buildActionButtons(),
               ],
             ),
@@ -84,7 +85,7 @@ class _MistakesDialogState extends State<MistakesDialog> {
         Expanded(
           child: OutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("اغلاق"),
+            child: Text(L10nStrings.AppStrings.close),
           ),
         ),
       ],

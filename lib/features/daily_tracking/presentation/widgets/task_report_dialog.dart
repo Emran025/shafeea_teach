@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,7 @@ import 'quality_rating_bar_widget.dart';
 /// listening to the [TrackingSessionBloc] for the core data. It orchestrates user
 /// interactions, dispatching events to update the BLoC and ultimately save the report.
 class TaskReportDialog extends StatefulWidget {
-  const TaskReportDialog({super.key});
+  TaskReportDialog({super.key});
 
   @override
   State<TaskReportDialog> createState() => _TaskReportDialogState();
@@ -82,21 +83,21 @@ class _TaskReportDialogState extends State<TaskReportDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(context),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 // We use a single BlocBuilder that watches both BLoCs and decides what to show.
                 MistakesList(),
 
-                const Divider(height: 32, thickness: 0.5),
-                _buildSectionHeader(context, "تقييم الجودة"),
-                const QualityRatingBar(),
-                const SizedBox(height: 10),
-                _buildSectionHeader(context, "ملاحظات المهمة"),
+                Divider(height: 32, thickness: 0.5),
+                _buildSectionHeader(context, L10nStrings.AppStrings.qualityAssessment),
+                QualityRatingBar(),
+                SizedBox(height: 10),
+                _buildSectionHeader(context, L10nStrings.AppStrings.taskNotes),
                 TextField(
                   controller: _notesController,
                   minLines: 2,
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: "أضف ملاحظة على المهمة (اختياري)",
+                    hintText: L10nStrings.AppStrings.addTaskNoteOptional,
                     filled: true,
                     fillColor: theme.colorScheme.surface.withOpacity(0.5),
                     border: OutlineInputBorder(
@@ -105,9 +106,9 @@ class _TaskReportDialogState extends State<TaskReportDialog> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 _buildFinalizeSwitch(theme),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 _buildActionButtons(),
               ],
             ),
@@ -139,7 +140,7 @@ class _TaskReportDialogState extends State<TaskReportDialog> {
 
   Widget _buildFinalizeSwitch(ThemeData theme) {
     return SwitchListTile.adaptive(
-      title: const Text("إنهاء المهمة (تضمين في التقرير)"),
+      title: Text(L10nStrings.AppStrings.finalizeTaskIncludeInReport),
       value: _isFinalizingTask,
       onChanged: (newValue) => setState(() => _isFinalizingTask = newValue),
       activeColor: theme.colorScheme.primary,
@@ -153,14 +154,14 @@ class _TaskReportDialogState extends State<TaskReportDialog> {
         Expanded(
           child: OutlinedButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text("إلغاء"),
+            child: Text("إلغاء"),
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12),
         Expanded(
           child: ElevatedButton(
             onPressed: _saveReport,
-            child: Text(_isFinalizingTask ? "حفظ وإنهاء" : "حفظ المسودة"),
+            child: Text(_isFinalizingTask ? L10nStrings.AppStrings.saveAndFinish : L10nStrings.AppStrings.saveDraft),
           ),
         ),
       ],

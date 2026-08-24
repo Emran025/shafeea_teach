@@ -1,3 +1,4 @@
+import 'package:shafeea/core/l10n/app_strings.dart' as L10nStrings;
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
@@ -14,7 +15,7 @@ import 'halaqa_edit_screen.dart';
 
 class HalaqaProfileScreen extends StatefulWidget {
   final String halaqaId;
-  const HalaqaProfileScreen({super.key, required this.halaqaId});
+  HalaqaProfileScreen({super.key, required this.halaqaId});
   @override
   State<HalaqaProfileScreen> createState() => _HalaqaProfileScreenState();
 }
@@ -25,11 +26,11 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
 
 
   List<String> selectorItems = [
-    "الطلاب",
-    "الحفاظ",
-    "الأداء",
-    "الملاحظات",
-    "التوجيه",
+    L10nStrings.AppStrings.students,
+    L10nStrings.AppStrings.memorizers,
+    L10nStrings.AppStrings.performance,
+    L10nStrings.AppStrings.notes,
+    L10nStrings.AppStrings.guidance,
   ];
 
   static const List<List<double>> trends = [
@@ -157,7 +158,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                                 side: BorderSide(color: AppColors.accent70),
                               ),
                               child: Text(
-                                "اغلاق",
+                                L10nStrings.AppStrings.close,
                                 style: GoogleFonts.cairo(
                                   color: AppColors.lightCream,
                                 ),
@@ -217,12 +218,12 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                   ),
                   child: Icon(stat.icon, size: 32, color: AppColors.lightCream),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "إحصائية أسبوعية",
+                      L10nStrings.AppStrings.weeklyStatistics,
                       style: GoogleFonts.cairo(
                         color: AppColors.lightCream,
                         fontSize: 14,
@@ -241,7 +242,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
               ],
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
             AspectRatio(
               aspectRatio: 3 / 2,
               child: Stack(
@@ -321,28 +322,28 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
               ),
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
             // Stats summary
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildMiniStat(
-                  "المعدل",
+                  L10nStrings.AppStrings.average,
                   "${stat.trend.reduce((a, b) => a + b) ~/ stat.trend.length}",
                 ),
                 _buildMiniStat(
-                  "أعلى قيمة",
+                  L10nStrings.AppStrings.highestValue,
                   "${stat.trend.reduce((a, b) => a > b ? a : b)}",
                 ),
                 _buildMiniStat(
-                  "أقل قيمة",
+                  L10nStrings.AppStrings.lowestValue,
                   "${stat.trend.reduce((a, b) => a < b ? a : b)}",
                 ),
               ],
             ),
 
-            // const SizedBox(height: 24),
+            // SizedBox(height: 24),
           ],
         ),
       ),
@@ -376,7 +377,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                 Center(),
                 _openWeeklyDetail(
                   _DashboardStat(
-                    'الحضور',
+                    L10nStrings.AppStrings.attendance,
                     '294',
                     Icons.check_circle,
                     gradients[0],
@@ -450,7 +451,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
             //   // On success, close the dialog
             //   Navigator.of(context).pop();
             //   ScaffoldMessenger.of(context).showSnackBar(
-            //     const SnackBar(
+            //     SnackBar(
             //       content: Text('Halaqa saved successfully!'),
             //       backgroundColor: Colors.green,
             //     ),
@@ -481,13 +482,13 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(icon, size: 64, color: Colors.red),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Text(
                           message,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 16),
+                          style: TextStyle(fontSize: 16),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                         Row(
                           children: [
                             Expanded(
@@ -505,7 +506,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                                   // Navigator.pop(context);
                                 },
                                 child: Text(
-                                  "حاول مجددًا",
+                                  L10nStrings.AppStrings.tryAgain,
                                   style: GoogleFonts.cairo(
                                     color: AppColors.lightCream,
                                   ),
@@ -584,12 +585,12 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _buildStat(
-                          "الطلاب",
+                          L10nStrings.AppStrings.students,
                           state.selectedHalaqa!.sumOfStudents.toString(),
                           Icons.people,
                         ),
                         _buildStat(
-                          "السعة",
+                          L10nStrings.AppStrings.capacity,
                           state.selectedHalaqa!.maxOfStudents.toString(),
                           Icons.group,
                         ),
@@ -631,7 +632,7 @@ class _HalaqaProfileScreenState extends State<HalaqaProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("ملف الحلقة")),
+      appBar: AppBar(title: Text(L10nStrings.AppStrings.halaqaProfile)),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Navigator.push(
           context,
