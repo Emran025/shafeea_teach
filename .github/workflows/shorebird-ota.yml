@@ -140,11 +140,11 @@ jobs:
           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
         run: |
           if [ -n "${SHOREBIRD_TOKEN}" ]; then
-            shorebird patch android --force \
+            shorebird patch android --force --release-version 1.0.0+1 \
               -- --dart-define=SCHOOL_ID=${{ matrix.school_id }} \
               --dart-define=SCHOOL_CODE=${{ matrix.school_code }} \
               --dart-define=SCHOOL_NAME="${{ matrix.school_name }}"
           else
-            echo "⚠️ SHOREBIRD_TOKEN is missing. Cannot deploy patch."
+            echo "::error::SHOREBIRD_TOKEN is missing. Aborting patch to prevent unauthorized or silent failures."
             exit 1
           fi
