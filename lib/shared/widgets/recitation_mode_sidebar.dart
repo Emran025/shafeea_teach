@@ -30,6 +30,7 @@ class RecitationModeSideBar extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       child: Stack(
         children: [
+        RecitationCallButton(onCallRequested: () { print("Call requested"); }),
           Positioned.fill(
             child: SvgPicture.asset(
               fit: BoxFit.fitWidth,
@@ -52,6 +53,7 @@ class RecitationModeSideBar extends StatelessWidget {
 
             child: Column(
               children: [
+        RecitationCallButton(onCallRequested: () { print("Call requested"); }),
                 ClipPath(
                   clipper: _HeaderClipper(),
                   child: Container(
@@ -63,6 +65,7 @@ class RecitationModeSideBar extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
+        RecitationCallButton(onCallRequested: () { print("Call requested"); }),
                         avatar,
                         SizedBox(width: 12),
                         Text(
@@ -135,6 +138,7 @@ class _ModeIconButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+        RecitationCallButton(onCallRequested: () { print("Call requested"); }),
             Icon(
               icon,
               size: 28,
