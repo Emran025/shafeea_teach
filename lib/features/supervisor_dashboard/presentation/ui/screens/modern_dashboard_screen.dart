@@ -119,7 +119,7 @@ class DashboardDataManager {
     [Color(0xFFFFA17F), Color(0xFF00223E)],
   ];
 
-  List<_DashboardStat> getInitialStats(UserRole role) {
+  List<_DashboardStat> getInitialStats(UserRole role, {List<String>? permissions}) {
     return [
       _DashboardStat(
         L10nStrings.AppStrings.students,
@@ -128,7 +128,7 @@ class DashboardDataManager {
         _colorGradients[1],
         _trendsData[1],
       ),
-      if (role == UserRole.supervisor)
+      if (role == UserRole.supervisor || role == UserRole.powerAdmin || (permissions != null && permissions.contains('view_teachers')))
         _DashboardStat(
           L10nStrings.AppStrings.teachers,
           '23',
@@ -136,13 +136,14 @@ class DashboardDataManager {
           _colorGradients[3],
           _trendsData[3],
         ),
-      _DashboardStat(
-        L10nStrings.AppStrings.halaqasLabel,
-        '57',
-        Icons.book,
-        _colorGradients[0],
-        _trendsData[0],
-      ),
+      if (role == UserRole.supervisor || role == UserRole.powerAdmin || (permissions != null && permissions.contains('view_halaqas')))
+        _DashboardStat(
+          L10nStrings.AppStrings.halaqasLabel,
+          '57',
+          Icons.book,
+          _colorGradients[0],
+          _trendsData[0],
+        ),
     ];
   }
 
