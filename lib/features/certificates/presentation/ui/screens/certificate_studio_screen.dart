@@ -1,3 +1,5 @@
+import 'package:csv/csv.dart';
+import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 import 'dart:io';
 
@@ -34,17 +36,48 @@ class _CertificateStudioScreenState extends State<CertificateStudioScreen> {
   }
 
   Future<void> _pickCsv() async {
-    // Mocking CSV import for now
-    setState(() {
-      _students = [
-        {'name': 'أحمد محمد', 'phone': '966500000001'},
-        {'name': 'خالد عبدالله', 'phone': '966500000002'},
-      ];
-    });
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تم استيراد ${_students.length} طالب بنجاح (تجريبي)')),
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['csv'],
       );
+      if (result != null && result.files.single.path != null) {
+        final file = File(result.files.single.path!);
+        final csvString = await file.readAsString();
+        final rows = const CsvToListConverter().convert(csvString);
+        
+        if (rows.length < 2) return;
+        
+        final headers = rows.first.map((e) => e.toString().trim()).toList();
+        final students = <Map<String, dynamic>>[];
+        
+        for (var i = 1; i < rows.length; i++) {
+          final row = rows[i];
+          final student = <String, dynamic>{};
+          for (var j = 0; j < headers.length; j++) {
+            if (j < row.length) {
+              student[headers[j]] = row[j].toString().trim();
+            }
+          }
+          students.add(student);
+        }
+        
+        setState(() {
+          _students = students;
+        });
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('تم استيراد ${_students.length} طالب بنجاح')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('خطأ في قراءة الملف: $e')),
+        );
+      }
     }
   }
 
@@ -86,7 +119,7 @@ class _CertificateStudioScreenState extends State<CertificateStudioScreen> {
           ...s,
           'recipient_name': s['name'] ?? s['اسم الطالب'] ?? 'بدون اسم',
           'recipient_whatsapp': s['phone'] ?? s['whatsapp'] ?? s['رقم الجوال'],
-        }).toList(),
+        }),
       };
 
       final prefs = await SharedPreferences.getInstance();
@@ -203,7 +236,7 @@ class _CertificateStudioScreenState extends State<CertificateStudioScreen> {
                                   height: box['height'],
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.red, width: 2),
-                                    color: Colors.white.withOpacity(0.5),
+                                    color: Colors.white.withValues(alpha: (0.5),
                                   ),
                                   child: Center(
                                     child: Text(
@@ -217,7 +250,7 @@ class _CertificateStudioScreenState extends State<CertificateStudioScreen> {
                                 ),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ),
                     ),
